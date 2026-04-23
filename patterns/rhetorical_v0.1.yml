@@ -1,0 +1,145 @@
+# patterns/rhetorical_v0.1.yml
+#
+# Rhetorical figure patterns for the RhetoricalAnnotator.
+# Source: FRAMEWORK_DESIGN.md §4.3 (rhetorical layer).
+# Grounded in: Simmerling & Janich 2015; Smithson 2008.
+#
+# Design note (FRAMEWORK_DESIGN.md §5 Module 3d):
+#   v0 uses lexicon + patterns only (no statistical metaphor identification).
+#   The seed is deliberately small — expand after first descriptive pass.
+#   Known double-counting with lexical annotator (e.g. blind_spot) is intentional.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "0.1"
+
+figures:
+
+  # ── Spatial / journey metaphors ──────────────────────────────────────────
+  # "Unmapped terrain", "uncharted territory", "stepping into unknown"
+  # These frame NK as unexplored space. Simmerling & Janich 2015.
+
+  - figure_id: "rhetor.metaphor.spatial.uncharted"
+    family: "metaphor"
+    subtype: "spatial_journey"
+    description: "Uncharted / unmapped — spatial journey framing of NK"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.spatial.uncharted"
+    patterns:
+      - [{LOWER: "uncharted"}]
+      - [{LOWER: "unmapped"}]
+      - [{LOWER: "terra"}, {LOWER: "incognita"}]
+
+  - figure_id: "rhetor.metaphor.spatial.new_territory"
+    family: "metaphor"
+    subtype: "spatial_journey"
+    description: "Stepping into / entering new/unknown territory"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.spatial.new_territory"
+    patterns:
+      - [{LOWER: {IN: ["stepping", "venturing", "moving"]}}, {LOWER: "into"}, {LOWER: {IN: ["unknown", "new", "uncharted"]}}]
+      - [{LOWER: "new"}, {LOWER: {IN: ["territory", "terrain", "ground"]}}]
+      - [{LOWER: "unknown"}, {LOWER: {IN: ["territory", "terrain", "ground"]}}]
+
+  # ── Visibility metaphors ─────────────────────────────────────────────────
+  # Ignorance as inability to see. Simmerling & Janich 2015.
+
+  - figure_id: "rhetor.metaphor.visibility.blind_spot"
+    family: "metaphor"
+    subtype: "visibility"
+    description: "Blind spot — canonical visibility metaphor for NK"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.visibility.blind_spot"
+    patterns:
+      - [{LOWER: "blind"}, {LOWER: "spot"}]
+      - [{LOWER: "blind"}, {LOWER: "spots"}]
+
+  - figure_id: "rhetor.metaphor.visibility.dark"
+    family: "metaphor"
+    subtype: "visibility"
+    description: "In the dark / shot in the dark — inability to see the situation"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.visibility.dark"
+    patterns:
+      - [{LOWER: "in"}, {LOWER: "the"}, {LOWER: "dark"}]
+      - [{LOWER: "shot"}, {LOWER: "in"}, {LOWER: "the"}, {LOWER: "dark"}]
+      - [{LOWER: "dark"}, {LOWER: {IN: ["area", "zone", "corner"]}}]
+
+  - figure_id: "rhetor.metaphor.visibility.overlook"
+    family: "metaphor"
+    subtype: "visibility"
+    description: "Overlook / miss — failure-of-sight framing"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.visibility.overlook"
+    patterns:
+      - [{LEMMA: "overlook", POS: "VERB"}]
+      - [{LOWER: "easy"}, {LOWER: "to"}, {LOWER: "miss"}]
+
+  # ── Gap / container metaphors ─────────────────────────────────────────────
+  # Knowledge gaps, missing pieces, holes in understanding. Simmerling & Janich 2015.
+
+  - figure_id: "rhetor.metaphor.gap.knowledge_gap"
+    family: "metaphor"
+    subtype: "container"
+    description: "Knowledge gap / research gap — NK as a void in a container"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.gap.knowledge_gap"
+    patterns:
+      - [{LOWER: "knowledge"}, {LOWER: {IN: ["gap", "gaps", "hole", "holes"]}}]
+      - [{LOWER: "research"}, {LOWER: {IN: ["gap", "gaps"]}}]
+      - [{LOWER: "information"}, {LOWER: {IN: ["gap", "gaps"]}}]
+
+  - figure_id: "rhetor.metaphor.gap.missing_piece"
+    family: "metaphor"
+    subtype: "container"
+    description: "Missing piece / part — container fragment metaphor"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.gap.missing_piece"
+    patterns:
+      - [{LOWER: "missing"}, {LOWER: {IN: ["piece", "part", "link", "step"]}}]
+
+  # ── Comparison / approximator figures ────────────────────────────────────
+  # "A kind of X" structures signal epistemic hedging. Simmerling & Janich 2015.
+
+  - figure_id: "rhetor.comparison.kind_of"
+    family: "comparison"
+    subtype: "approximator"
+    description: "Kind of / sort of X — approximative comparison hedging"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.comparison.kind_of"
+    patterns:
+      - [{LOWER: {IN: ["kind", "sort", "type"]}}, {LOWER: "of"}]
+      - [{LOWER: "a"}, {LOWER: {IN: ["kind", "sort", "type"]}}, {LOWER: "of"}]
+
+  - figure_id: "rhetor.comparison.something_like"
+    family: "comparison"
+    subtype: "approximator"
+    description: "Something like / looks like / acts like — approximative framing"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.comparison.something_like"
+    patterns:
+      - [{LOWER: "something"}, {LOWER: "like"}]
+      - [{LOWER: "looks"}, {LOWER: "like"}]
+      - [{LOWER: "feels"}, {LOWER: "like"}]
+      - [{LOWER: "acts"}, {LOWER: "like"}]
+
+  # ── Personification figures ───────────────────────────────────────────────
+  # Abstractions treated as agents. Less common in SE but worth tracking.
+
+  - figure_id: "rhetor.personification.poor_cousin"
+    family: "personification"
+    subtype: "poor_cousin"
+    description: "'Poor cousin of X' — personification expressing relative neglect"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.personification.poor_cousin"
+    patterns:
+      - [{LOWER: "poor"}, {LOWER: "cousin"}]
+      - [{LOWER: "poor"}, {LOWER: {IN: ["relative", "sibling", "relation"]}}]
+
+  - figure_id: "rhetor.personification.elephant_room"
+    family: "personification"
+    subtype: "avoidance"
+    description: "Elephant in the room — acknowledged but unaddressed NK"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.personification.elephant_room"
+    patterns:
+      - [{LOWER: "elephant"}, {LOWER: "in"}, {LOWER: "the"}, {LOWER: "room"}]

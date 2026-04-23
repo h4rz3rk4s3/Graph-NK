@@ -1,0 +1,221 @@
+# ontology/schema.yml
+#
+# Human-readable source of truth for the GraphRAG-NK ontology.
+# The executable DDL is in ontology/ontology.cypher.
+# This file is the authoritative reference during design; the Cypher is its DB projection.
+#
+# Cross-references: FRAMEWORK_DESIGN.md §4; BUILD_SPEC.md §4 (data shapes).
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "0.1"
+description: >
+  Two-layer ontology for the GraphRAG-NK research pipeline.
+  Layer 1 (SE-artefact) models what exists in a GitHub repository.
+  Layer 2 (NK-analytical) overlays linguistic evidence of non-knowledge
+  on top of the artefact layer, without coupling the two layers.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 1 — SE-artefact
+# ─────────────────────────────────────────────────────────────────────────────
+se_artefact_layer:
+  nodes:
+    Repository:
+      natural_key: [full_name]
+      properties:
+        full_name:   {type: string, example: "python/cpython"}
+        stars:       {type: integer}
+        language:    {type: string}
+        created_at:  {type: datetime}
+        mined_at:    {type: datetime}
+
+    Actor:
+      natural_key: [login]
+      properties:
+        login: {type: string}
+        type:  {type: string, enum: [User, Bot]}
+        name:  {type: string, nullable: true}
+
+    Issue:
+      natural_key: [repo, number]
+      properties:
+        repo:       {type: string}
+        number:     {type: integer}
+        state:      {type: string, enum: [open, closed]}
+        created_at: {type: datetime}
+        closed_at:  {type: datetime, nullable: true}
+        labels:     {type: list[string]}
+
+    PullRequest:
+      natural_key: [repo, number]
+      properties:
+        repo:       {type: string}
+        number:     {type: integer}
+        state:      {type: string, enum: [open, closed]}
+        merged:     {type: boolean}
+        created_at: {type: datetime}
+        closed_at:  {type: datetime, nullable: true}
+
+    Commit:
+      natural_key: [sha]
+      properties:
+        sha:          {type: string}
+        authored_at:  {type: datetime}
+        committed_at: {type: datetime}
+        message_summary: {type: string}  # first line of commit message
+
+    Comment:
+      natural_key: [github_comment_id]
+      properties:
+        github_comment_id: {type: string}
+        kind: {type: string, enum: [issue, pr_review, pr_issue]}
+        created_at: {type: datetime}
+
+    TextUnit:
+      natural_key: [id]
+      description: >
+        The atomic unit of NK analysis. Every piece of natural language text
+        from any artefact (title, body, commit message, comment) is a TextUnit.
+        Annotation always targets TextUnits, never raw artefacts directly.
+        See FRAMEWORK_DESIGN.md §4.1 for the rationale.
+      properties:
+        id:          {type: string, example: "issue:python/cpython:12345:body"}
+        text:        {type: string, description: "Raw text after stripping (see extractor)"}
+        lang:        {type: string, example: "en", nullable: true}
+        token_count: {type: integer, description: "Naive whitespace-split count"}
+        sha256:      {type: string, description: "For dedup across artefacts"}
+        position:    {type: integer, description: "Order within parent: 0=title,1=body,2+=comment"}
+        created_at:  {type: datetime, nullable: true}
+
+  relationships:
+    CONTAINS:
+      from: Repository
+      to: [Issue, PullRequest, Commit]
+    AUTHORED:
+      from: Actor
+      to: [Issue, PullRequest, Commit, Comment]
+    HAS_COMMENT:
+      from: [Issue, PullRequest]
+      to: Comment
+    HAS_TEXT:
+      from: [Issue, PullRequest, Commit, Comment]
+      to: TextUnit
+      properties:
+        role: {type: string, enum: [title, body, commit_message, comment_body]}
+    REFERENCES:
+      from: [PullRequest, Issue, Commit]
+      to: Issue
+      description: "Cross-references extracted from text (fixes #N, closes #N, etc.)"
+      properties:
+        mechanism: {type: string, enum: [closes, fixes, resolves, refs, see, bare]}
+        source_text_unit: {type: string, description: "ID of the TextUnit containing the reference"}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 2 — NK-analytical
+# ─────────────────────────────────────────────────────────────────────────────
+nk_analytical_layer:
+  design_principle: >
+    Every detection is a distinct Signal node — never a property flag on TextUnit.
+    This preserves multi-layer evidence structure and is the core commitment that
+    makes RQ5 (classifier vs. linguistic evidence) tractable.
+    See FRAMEWORK_DESIGN.md §1.2.
+
+  nodes:
+    Signal:
+      natural_key: [id]
+      description: >
+        A single piece of evidence of non-knowledge, emitted by one annotator rule.
+        Provenance (rule_id, rule_version) is mandatory — signals without provenance
+        are invalid and must not be written to the graph.
+      properties:
+        id:           {type: string, description: "{text_unit_id}::{rule_id}::{span_start}"}
+        layer:        {type: string, enum: [lexical, morpho_syntactic, word_formation, rhetorical, classifier]}
+        category:     {type: string}
+        subcategory:  {type: string, nullable: true}
+        surface_form: {type: string}
+        span_start:   {type: integer}
+        span_end:     {type: integer}
+        rule_id:      {type: string}
+        rule_version: {type: string}
+        confidence:   {type: float, nullable: true}
+        payload:      {type: map}
+
+    LexicalMarker:
+      natural_key: [lemma, lexicon_version]
+      description: >
+        A dictionary entry from lexicons/*.yml. Shared across all TextUnits —
+        one node per marker, not one per occurrence. Enables corpus-wide
+        marker frequency queries without scanning every Signal.
+      properties:
+        lemma:            {type: string}
+        lexicon_version:  {type: string}
+        pos:              {type: string}
+        category:         {type: string}
+        subcategory:      {type: string}
+        polarity:         {type: string, enum: [neutral, pejorative, valorising]}
+        source_citation:  {type: string}
+
+    RhetoricalFigure:
+      natural_key: [figure_id]
+      description: >
+        A figure type from patterns/rhetorical_*.yml. One node per figure type,
+        not per occurrence. Enables figure inventory queries.
+      properties:
+        figure_id:        {type: string}
+        family:           {type: string, enum: [metaphor, personification, hyperbole, comparison, irony]}
+        subtype:          {type: string}
+        description:      {type: string}
+        source_citation:  {type: string}
+
+    ClassifierVerdict:
+      natural_key: [text_unit_id, model_id, model_version]
+      description: >
+        The RoBERTa classifier's per-TextUnit verdict. Kept separate from Signal
+        to support RQ5: classifier vs. linguistic evidence disagreement analysis.
+        See FRAMEWORK_DESIGN.md §2 (RQ5).
+      properties:
+        text_unit_id:  {type: string}
+        model_id:      {type: string}
+        model_version: {type: string}
+        label:         {type: integer, enum: [0, 1]}
+        confidence:    {type: float}
+        predicted_at:  {type: datetime}
+
+    IgnoranceType:
+      natural_key: [type_id]
+      description: >
+        A taxonomic label (e.g. from Roberts 2013 Organizational Ignorance).
+        NEVER assigned at ingest — only post-hoc by analysts or clustering.
+        The scope field distinguishes imported types (from literature) from
+        derived types (found empirically in SE data).
+        See FRAMEWORK_DESIGN.md §4.5.
+      properties:
+        type_id:    {type: string}
+        name:       {type: string}
+        definition: {type: string}
+        source:     {type: string}
+        scope:      {type: string, enum: [imported, derived]}
+
+  relationships:
+    HAS_SIGNAL:
+      from: TextUnit
+      to: Signal
+    MATCHES_MARKER:
+      from: Signal
+      to: LexicalMarker
+      description: "Only for Signal.layer == 'lexical'"
+    INSTANTIATES:
+      from: Signal
+      to: RhetoricalFigure
+      description: "Only for Signal.layer == 'rhetorical'"
+    CLASSIFIED_AS:
+      from: TextUnit
+      to: ClassifierVerdict
+    TYPED_AS:
+      from: TextUnit
+      to: IgnoranceType
+      description: "Post-hoc only. Never written by pipeline workers."
+      properties:
+        annotator:   {type: string}
+        confidence:  {type: float, nullable: true}
+        rationale:   {type: string, nullable: true}
+        annotated_at: {type: datetime}

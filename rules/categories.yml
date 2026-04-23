@@ -1,0 +1,141 @@
+# rules/categories.yml
+#
+# Master registry of all Signal categories.
+# Every rule_id prefix used by an annotator must have an entry here.
+# The annotator worker validates rule IDs against this file at startup.
+#
+# Source: FRAMEWORK_DESIGN.md §4.3 table.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "0.1"
+
+categories:
+  # ── Lexical ──────────────────────────────────────────────────────────────
+  - rule_prefix: "lex."
+    layer: "lexical"
+    category: "prototype"
+    subcategories:
+      - epistemic_state
+      - error_or_failure
+      - controversy
+      - risk
+      - imprecision
+    source: "Janich & Simon 2017; Janich & Simmerling 2013"
+
+  - rule_prefix: "lex."
+    layer: "lexical"
+    category: "fixed_phrase"
+    subcategories:
+      - visibility_metaphor
+      - gap_phrase
+    source: "Simmerling & Janich 2015"
+
+  - rule_prefix: "lex."
+    layer: "lexical"
+    category: "shared_feature"
+    subcategories:
+      - absence_of_X
+      - pending_resolution
+      - non_deterministic_behaviour
+      - spec_gap
+      - doc_gap
+    source: "Müller & Stegmüller 2019"
+
+  # ── Morpho-syntactic ─────────────────────────────────────────────────────
+  - rule_prefix: "morph.tense."
+    layer: "morpho_syntactic"
+    category: "tense"
+    subcategories:
+      - past_nk
+      - present_nk
+      - future_nk
+    source: "Janich 2020"
+
+  - rule_prefix: "morph.mod."
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategories:
+      - epistemic
+      - deontic
+      - quasi_modal
+    source: "Hyland 1998; Vold 2006; Marshman 2008"
+
+  - rule_prefix: "morph.hedge."
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategories:
+      - adverbial
+      - approximator
+    source: "Szarvas et al. 2012; Vincze et al. 2008"
+
+  - rule_prefix: "morph.neg."
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategories:
+      - adverbial_not
+      - quantifier_no
+      - temporal_never
+    source: "Vincze et al. 2008; Helmer et al. 2016"
+
+  - rule_prefix: "morph.syn."
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategories:
+      - question_answer
+      - adversative
+    source: "Bongelli et al. 2018; Simon 2020"
+
+  # ── Word-formation ────────────────────────────────────────────────────────
+  - rule_prefix: "affix.prefix."
+    layer: "word_formation"
+    category: "affix_negation"
+    subcategories:
+      - un_prefix
+      - in_prefix
+      - non_prefix
+      - dis_prefix
+    source: "Janich & Simmerling 2013"
+
+  - rule_prefix: "affix.suffix."
+    layer: "word_formation"
+    category: "affix_negation"
+    subcategories:
+      - less_suffix
+    source: "Janich & Simmerling 2013"
+
+  - rule_prefix: "affix.suffix."
+    layer: "word_formation"
+    category: "affix_modality"
+    subcategories:
+      - able_suffix
+    source: "Janich & Simmerling 2013"
+
+  # ── Rhetorical ───────────────────────────────────────────────────────────
+  - rule_prefix: "rhetor."
+    layer: "rhetorical"
+    category: "metaphor"
+    subcategories:
+      - spatial_journey
+      - visibility
+      - container
+    source: "Simmerling & Janich 2015; Smithson 2008"
+
+  - rule_prefix: "rhetor."
+    layer: "rhetorical"
+    category: "personification"
+    subcategories: []
+    source: "Simmerling & Janich 2015"
+
+  - rule_prefix: "rhetor."
+    layer: "rhetorical"
+    category: "comparison"
+    subcategories:
+      - approximator
+    source: "Simmerling & Janich 2015"
+
+  # ── Classifier ────────────────────────────────────────────────────────────
+  - rule_prefix: "clf."
+    layer: "classifier"
+    category: "roberta_binary"
+    subcategories: []
+    source: "RoBERTa fine-tuned NK classifier (see settings.classifier_model_path)"

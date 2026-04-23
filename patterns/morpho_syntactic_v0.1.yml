@@ -1,0 +1,217 @@
+# patterns/morpho_syntactic_v0.1.yml
+#
+# Morpho-syntactic detection patterns for the SpacyMorphoAnnotator.
+# Source of truth: FRAMEWORK_DESIGN.md §4.3 (morpho_syntactic layer).
+# Each pattern is a spaCy Matcher or DependencyMatcher spec in YAML form.
+# The annotator loads this file at startup and compiles patterns into spaCy.
+#
+# Literature grounding:
+#   Negation     → Vincze et al. 2008; Helmer et al. 2016
+#   Modality     → Hyland 1998; Vold 2006; Marshman 2008
+#   Hedging      → Szarvas et al. 2012
+#   Tense        → Janich 2020
+#   Syntactic    → Bongelli et al. 2018; Simon 2020
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "0.1"
+
+patterns:
+
+  # ── Negation ──────────────────────────────────────────────────────────────
+
+  - id: "morph.neg.adverbial_not"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "adverbial_not"
+    source: "Vincze et al. 2008"
+    type: "Matcher"
+    pattern:
+      - {LOWER: "not"}
+
+  - id: "morph.neg.contraction_nt"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "adverbial_not"
+    source: "Vincze et al. 2008"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["n't", "nt"]}}
+
+  - id: "morph.neg.temporal_never"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "temporal_never"
+    source: "Vincze et al. 2008; Helmer et al. 2016"
+    type: "Matcher"
+    pattern:
+      - {LOWER: "never"}
+
+  - id: "morph.neg.quantifier_no"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "quantifier_no"
+    source: "Vincze et al. 2008"
+    note: "Only when 'no' acts as a determiner (no idea, no way). POS filter is essential."
+    type: "Matcher"
+    pattern:
+      - {LOWER: "no", POS: "DET"}
+
+  - id: "morph.neg.nobody_nothing"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "quantifier_no"
+    source: "Vincze et al. 2008"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["nobody", "nothing", "nowhere", "neither", "nor"]}}
+
+  # ── Modality ──────────────────────────────────────────────────────────────
+
+  - id: "morph.mod.epistemic"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "epistemic"
+    source: "Hyland 1998; Vold 2006"
+    note: "Epistemic modals expressing possibility/likelihood rather than permission/obligation."
+    type: "Matcher"
+    pattern:
+      - {TAG: "MD", LOWER: {IN: ["can", "could", "may", "might", "would"]}}
+
+  - id: "morph.mod.deontic"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "deontic"
+    source: "Hyland 1998; Marshman 2008"
+    note: "Deontic: obligation/necessity. Often signals an acknowledged gap (must be fixed, should work)."
+    type: "Matcher"
+    pattern:
+      - {TAG: "MD", LOWER: {IN: ["must", "should", "shall", "ought"]}}
+
+  - id: "morph.mod.quasi_seem"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "quasi_modal"
+    source: "Hyland 1998"
+    note: "Quasi-modal verbs: seem/appear signal epistemic distance, a core NK marker."
+    type: "Matcher"
+    pattern:
+      - {LEMMA: {IN: ["seem", "appear"]}, POS: "VERB"}
+
+  - id: "morph.mod.quasi_tend"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "quasi_modal"
+    source: "Hyland 1998"
+    type: "Matcher"
+    pattern:
+      - {LEMMA: {IN: ["tend", "suggest", "indicate"]}, POS: "VERB"}
+
+  # ── Hedging ──────────────────────────────────────────────────────────────
+
+  - id: "morph.hedge.adverbial_perhaps"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "adverbial"
+    source: "Szarvas et al. 2012"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["perhaps", "possibly", "probably", "presumably", "arguably", "conceivably"]}}
+
+  - id: "morph.hedge.adverbial_maybe"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "adverbial"
+    source: "Szarvas et al. 2012"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["maybe", "likely", "unlikely"]}}
+
+  - id: "morph.hedge.approximator_kind_of"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "approximator"
+    source: "Szarvas et al. 2012; Simmerling & Janich 2015"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["kind", "sort", "type"]}}
+      - {LOWER: "of"}
+
+  - id: "morph.hedge.approximator_somehow"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "approximator"
+    source: "Szarvas et al. 2012"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["somehow", "somewhat", "roughly", "approximately", "around", "about"]}}
+
+  # ── Tense (NK-framing via temporal constructions) ─────────────────────────
+  # These detect temporal adverbials that frame NK in past, present, or future.
+  # They are not exhaustive (full tense detection needs the dependency tree);
+  # this seed targets the most frequent NK-framing patterns from Janich 2020.
+
+  - id: "morph.tense.past_nk_yet"
+    layer: "morpho_syntactic"
+    category: "tense"
+    subcategory: "past_nk"
+    source: "Janich 2020"
+    note: "'not yet' — canonical past-progressive NK frame: 'we haven't fixed this yet'"
+    type: "Matcher"
+    pattern:
+      - {LOWER: "not"}
+      - {LOWER: "yet", OP: "?"}
+      - {LOWER: "yet"}
+
+  - id: "morph.tense.future_nk_will_never"
+    layer: "morpho_syntactic"
+    category: "tense"
+    subcategory: "future_nk"
+    source: "Janich 2020"
+    type: "Matcher"
+    pattern:
+      - {LOWER: "will"}
+      - {LOWER: "never"}
+
+  - id: "morph.tense.future_nk_wont_know"
+    layer: "morpho_syntactic"
+    category: "tense"
+    subcategory: "future_nk"
+    source: "Janich 2020"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["won't", "wont", "cannot", "can't"]}}
+      - {LOWER: {IN: ["know", "tell", "say", "determine"]}}
+
+  # ── Syntactic patterns ────────────────────────────────────────────────────
+
+  - id: "morph.syn.adversative_but"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "adversative"
+    source: "Simon 2020"
+    note: "Adversative 'but' frequently marks an NK contrast (I tried X but I don't know Y)."
+    type: "Matcher"
+    pattern:
+      - {LOWER: "but"}
+
+  - id: "morph.syn.adversative_however"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "adversative"
+    source: "Simon 2020"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["however", "although", "though", "yet", "nevertheless", "nonetheless"]}}
+
+  - id: "morph.syn.question_mark"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "question_answer"
+    source: "Bongelli et al. 2018; Spranz-Fogasy 2014"
+    note: >
+      Presence of a question mark in a TextUnit signals a Q&A or epistemic-query
+      structure. The annotator also checks if the same TextUnit contains a declarative
+      sentence — see morpho_syntactic.py _detect_question_answer.
+    type: "Matcher"
+    pattern:
+      - {IS_PUNCT: true, LOWER: "?"}

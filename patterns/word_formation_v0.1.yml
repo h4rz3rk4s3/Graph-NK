@@ -1,0 +1,111 @@
+# patterns/word_formation_v0.1.yml
+#
+# Word-formation (affix) patterns for the AffixAnnotator.
+# Source: FRAMEWORK_DESIGN.md §4.3 (word_formation layer).
+# Literature: Janich & Simmerling 2013.
+#
+# Design note (BUILD_SPEC.md M7):
+#   This annotator is intentionally noisy. Blocklists prevent the most
+#   obvious SE false positives, but many affixed tokens will not be NK markers.
+#   The research purpose is to discover which affixed forms recur in SE discourse —
+#   refinement happens after the first descriptive pass, not before.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "0.1"
+
+prefixes:
+  - prefix: "un"
+    rule_id: "affix.prefix.un"
+    category: "affix_negation"
+    subcategory: "un_prefix"
+    min_stem_length: 4
+    source: "Janich & Simmerling 2013"
+    blocklist:
+      # Common SE terms that start with 'un' but are not negations of NK
+      - under
+      - until
+      - unit
+      - union
+      - unique
+      - university
+      - unless
+      - update
+      - upload
+      - url
+      - use
+      - user
+      - utf
+
+  - prefix: "in"
+    rule_id: "affix.prefix.in"
+    category: "affix_negation"
+    subcategory: "in_prefix"
+    min_stem_length: 4
+    source: "Janich & Simmerling 2013"
+    blocklist:
+      # Very common SE false positives
+      - income
+      - index
+      - initial
+      - input
+      - install
+      - integer
+      - interface
+      - interior
+      - internal
+      - issue
+      - info
+      - init
+      - inline
+      - into
+      - include
+      - instance
+      - int
+      - in
+
+  - prefix: "non"
+    rule_id: "affix.prefix.non"
+    category: "affix_negation"
+    subcategory: "non_prefix"
+    min_stem_length: 3
+    source: "Janich & Simmerling 2013"
+    blocklist: []
+    # 'non' is a strong NK signal when attached to descriptors (non-deterministic, non-obvious)
+
+  - prefix: "dis"
+    rule_id: "affix.prefix.dis"
+    category: "affix_negation"
+    subcategory: "dis_prefix"
+    min_stem_length: 4
+    source: "Janich & Simmerling 2013"
+    blocklist:
+      - display
+      - distribute
+      - dispatch
+
+suffixes:
+  - suffix: "less"
+    rule_id: "affix.suffix.less"
+    category: "affix_negation"
+    subcategory: "less_suffix"
+    min_word_length: 6
+    target_pos: [ADJ]
+    source: "Janich & Simmerling 2013"
+    blocklist:
+      - unless
+      - less
+
+  - suffix: "able"
+    rule_id: "affix.suffix.able"
+    category: "affix_modality"
+    subcategory: "able_suffix"
+    min_word_length: 6
+    target_pos: [ADJ]
+    source: "Janich & Simmerling 2013"
+    blocklist:
+      - able
+      - table
+      - stable
+      - cable
+      - enable
+      - disable

@@ -1,0 +1,220 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# GraphRAG-NK — Non-Knowledge Lexicon (seed)
+# ─────────────────────────────────────────────────────────────────────────────
+# This file is the *source of truth* for the lexical annotator (Module 3c).
+# Every Signal emitted by the lexical annotator carries:
+#   (rule_id = "lex.<id>", rule_version = <version>, lexicon_version = <version>)
+# so that the exact lexicon state that produced a signal is reconstructable.
+#
+# Add/remove entries by editing this file. Bump `version` on any change.
+# Never reuse a version string for different content — provenance depends on it.
+#
+# Inclusion criteria (from §4.3 of FRAMEWORK_DESIGN.md):
+#   - "prototype": word whose conceptual core denotes NK/uncertainty
+#       (Janich & Simon 2017).
+#   - "fixed_phrase": multi-word expression conventionalised for NK
+#       (Simmerling & Janich 2015).
+#   - "shared_feature": word that points to NK via a shared semantic feature
+#       when combined with a context marker (Müller & Stegmüller 2019).
+#
+# Polarity values:
+#   neutral | pejorative | valorising
+#   — not the model's label; a qualitative hint for RQ3 stance analysis.
+#
+# This seed is deliberately small (~30 entries). Expand after the first
+# descriptive pass reveals which SE-specific items actually recur.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "0.1"
+language: "en"
+curator: "TBD"
+last_modified: "2026-04-22"
+sources:
+  - "Janich & Simmerling (2013). Linguistic research on non-knowledge."
+  - "Janich & Simon (2017). Non-knowledge in risk communication."
+  - "Müller & Stegmüller (2019). Corpus-linguistic approaches to uncertainty."
+  - "Simmerling & Janich (2015). Rhetoric of non-knowledge."
+
+entries:
+  # ── prototype: epistemic state ─────────────────────────────────────────
+  - id: "uncertain"
+    lemma: "uncertain"
+    pos: "ADJ"
+    category: "prototype"
+    subcategory: "epistemic_state"
+    polarity: "neutral"
+    source: "Janich & Simon 2017"
+
+  - id: "unclear"
+    lemma: "unclear"
+    pos: "ADJ"
+    category: "prototype"
+    subcategory: "epistemic_state"
+    polarity: "neutral"
+    source: "Janich & Simon 2017"
+
+  - id: "doubt_n"
+    lemma: "doubt"
+    pos: "NOUN"
+    category: "prototype"
+    subcategory: "epistemic_state"
+    polarity: "neutral"
+    source: "Janich & Simon 2017"
+
+  - id: "doubt_v"
+    lemma: "doubt"
+    pos: "VERB"
+    category: "prototype"
+    subcategory: "epistemic_state"
+    polarity: "neutral"
+    source: "Janich & Simon 2017"
+
+  - id: "ignorance"
+    lemma: "ignorance"
+    pos: "NOUN"
+    category: "prototype"
+    subcategory: "epistemic_state"
+    polarity: "pejorative"
+    source: "Roberts 2013; Janich & Simmerling 2013"
+
+  - id: "unknown"
+    lemma: "unknown"
+    pos: "ADJ"
+    category: "prototype"
+    subcategory: "epistemic_state"
+    polarity: "neutral"
+    source: "Janich & Simmerling 2013"
+
+  # ── prototype: error / failure ─────────────────────────────────────────
+  # These are SE-candidates beyond Janich's original list; flag for scrutiny.
+  - id: "error_n"
+    lemma: "error"
+    pos: "NOUN"
+    category: "prototype"
+    subcategory: "error_or_failure"
+    polarity: "pejorative"
+    source: "SE pilot extension — verify in first pass"
+    notes: "In SE contexts this overlaps heavily with technical 'exception' semantics. Expect noise."
+
+  - id: "bug"
+    lemma: "bug"
+    pos: "NOUN"
+    category: "prototype"
+    subcategory: "error_or_failure"
+    polarity: "pejorative"
+    source: "SE pilot extension — verify in first pass"
+    notes: "Domain term; evaluate whether it genuinely signals NK or just defect."
+
+  # ── prototype: controversy / risk ──────────────────────────────────────
+  - id: "controversy"
+    lemma: "controversy"
+    pos: "NOUN"
+    category: "prototype"
+    subcategory: "controversy"
+    polarity: "neutral"
+    source: "Janich & Simmerling 2013"
+
+  - id: "risk"
+    lemma: "risk"
+    pos: "NOUN"
+    category: "prototype"
+    subcategory: "risk"
+    polarity: "neutral"
+    source: "Janich & Simon 2017"
+
+  # ── shared_feature: lack-of / gap ──────────────────────────────────────
+  - id: "lack_of"
+    lemma: "lack of"
+    pos: "PHRASE"
+    category: "shared_feature"
+    subcategory: "absence_of_X"
+    polarity: "pejorative"
+    source: "Müller & Stegmüller 2019"
+
+  - id: "missing"
+    lemma: "missing"
+    pos: "ADJ"
+    category: "shared_feature"
+    subcategory: "absence_of_X"
+    polarity: "neutral"
+    source: "Müller & Stegmüller 2019"
+
+  - id: "unresolved"
+    lemma: "unresolved"
+    pos: "ADJ"
+    category: "shared_feature"
+    subcategory: "pending_resolution"
+    polarity: "neutral"
+    source: "Müller & Stegmüller 2019"
+
+  # ── fixed_phrase: visibility metaphors ─────────────────────────────────
+  # Duplicated in patterns/rhetorical.yml as metaphor patterns. The lexical
+  # annotator catches the surface form; the rhetorical annotator catches the
+  # figurative function. Two Signals are emitted — this is intentional.
+  - id: "blind_spot"
+    lemma: "blind spot"
+    pos: "PHRASE"
+    category: "fixed_phrase"
+    subcategory: "visibility_metaphor"
+    polarity: "pejorative"
+    source: "Simmerling & Janich 2015"
+
+  - id: "knowledge_gap"
+    lemma: "knowledge gap"
+    pos: "PHRASE"
+    category: "fixed_phrase"
+    subcategory: "gap_phrase"
+    polarity: "pejorative"
+    source: "Simmerling & Janich 2015"
+
+  # ── prototype: approximation / imprecision ────────────────────────────
+  - id: "vague"
+    lemma: "vague"
+    pos: "ADJ"
+    category: "prototype"
+    subcategory: "imprecision"
+    polarity: "pejorative"
+    source: "Janich & Simmerling 2013"
+
+  - id: "ambiguous"
+    lemma: "ambiguous"
+    pos: "ADJ"
+    category: "prototype"
+    subcategory: "imprecision"
+    polarity: "neutral"
+    source: "Janich & Simmerling 2013"
+
+  # ── shared_feature: SE-specific candidates (v0 — flag for validation) ─
+  - id: "flaky"
+    lemma: "flaky"
+    pos: "ADJ"
+    category: "shared_feature"
+    subcategory: "non_deterministic_behaviour"
+    polarity: "pejorative"
+    source: "SE pilot extension — candidate, verify empirically"
+    notes: "Typical of test-suite discourse. Probably SE-specific NK — document if confirmed."
+
+  - id: "undefined_behaviour"
+    lemma: "undefined behaviour"
+    pos: "PHRASE"
+    category: "shared_feature"
+    subcategory: "spec_gap"
+    polarity: "pejorative"
+    source: "SE pilot extension — candidate, verify empirically"
+    notes: "Strong SE-specific NK marker. May need its own subcategory after first pass."
+
+  - id: "undocumented"
+    lemma: "undocumented"
+    pos: "ADJ"
+    category: "shared_feature"
+    subcategory: "doc_gap"
+    polarity: "neutral"
+    source: "SE pilot extension — candidate, verify empirically"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CHANGE LOG
+# ─────────────────────────────────────────────────────────────────────────────
+# 0.1 — initial seed. Core prototypes from Janich & Simmerling, plus a
+#       small set of SE-specific candidates flagged for empirical scrutiny.
+#       Expect: ~30% of SE-specific candidates to be reclassified or dropped
+#       after the first descriptive pass.
