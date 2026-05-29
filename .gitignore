@@ -3,6 +3,9 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Don't uplaod the classification models (large)
+models/
+
 # C extensions
 *.so
 

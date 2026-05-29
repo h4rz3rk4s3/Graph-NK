@@ -31,7 +31,7 @@ class GraphProjector:
     async def create(cls) -> "GraphProjector":
         driver = AsyncGraphDatabase.driver(
             settings.neo4j_uri,
-            auth=(settings.neo4j_user, settings.neo4j_password),
+            #auth=(settings.neo4j_user, settings.neo4j_password),
         )
         return cls(driver)
 

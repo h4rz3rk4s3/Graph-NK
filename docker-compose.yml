@@ -1,46 +1,60 @@
+x-app-build: &app-build
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: graph-nk:latest
+
+# Shared runtime environment for all Python services.
+x-app-env: &app-env
+  env_file: .env
+  environment:
+    MONGO_URI:   mongodb://mongodb:27017
+    REDIS_URL:   redis://redis:6379/0
+    NEO4J_URI:   bolt://neo4j:7687
+    QDRANT_HOST: qdrant
+  restart: unless-stopped
+
+
 services:
   neo4j:
-    image: neo4j:5
+    image: neo4j:2026.02.2
+    container_name: graph_nk_neo4j
+    restart: unless-stopped
     environment:
-      NEO4J_AUTH: "neo4j/${NEO4J_PASSWORD:-researchpw}"
+      NEO4J_AUTH: none #neo4j/${NEO4J_PASSWORD:-changeme}
       NEO4J_PLUGINS: '["apoc"]'
-      NEO4J_server_memory_heap_initial__size: "512m"
-      NEO4J_server_memory_heap_max__size: "2g"
+      NEO4J_dbms_memory_heap_initial__size: 512m
+      NEO4J_dbms_memory_heap_max__size: 2g
+      NEO4J_dbms_memory_pagecache_size: 512m
     ports:
       - "7474:7474"
       - "7687:7687"
     volumes:
-      - neo4j_data:/data
-    healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "${NEO4J_PASSWORD:-researchpw}", "RETURN 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+      - /Volumes/Samsung SSD 990 PRO 4TB/NK-Neo4J:/data
+      - /Volumes/Samsung SSD 990 PRO 4TB/NK-Neo4J:/logs
 
-  mongo:
-    image: mongo:7
+  mongodb:
+    image: mongo:8.2
+    container_name: graph_nk_mongodb
+    restart: unless-stopped
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - /Volumes/Samsung SSD 990 PRO 4TB/NK-MongoDB:/data/db
 
   redis:
-    image: redis:7
+    image: redis:latest
+    container_name: graph_nk_redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --maxmemory 512mb
+      --maxmemory-policy noeviction
+      --appendonly yes
     ports:
       - "6379:6379"
-    command: redis-server --save 60 1
     volumes:
       - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
 
 volumes:
   neo4j_data:
