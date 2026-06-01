@@ -129,10 +129,6 @@ CREATE INDEX pr_state IF NOT EXISTS           FOR (p:PullRequest)      ON (p.sta
 // MERGE (parent)-[:HAS_TEXT {role: $role}]->(u);
 
 // -- 3.8 Batch Signal write ------------------------------------------------
-// NOTE: Neo4j property values must be primitives or arrays of primitives.
-// A Signal's `payload` is a nested map, so it is JSON-serialised by the
-// projector and stored as the string property `payload_json`.
-// In analysis, parse it back with apoc.convert.fromJsonMap(sig.payload_json).
 // UNWIND $signals AS s
 // MATCH (u:TextUnit {id: s.text_unit_id})
 // MERGE (sig:Signal {id: s.id})
@@ -145,7 +141,7 @@ CREATE INDEX pr_state IF NOT EXISTS           FOR (p:PullRequest)      ON (p.sta
 //                 sig.rule_id       = s.rule_id,
 //                 sig.rule_version  = s.rule_version,
 //                 sig.confidence    = s.confidence,
-//                 sig.payload_json  = s.payload_json,
+//                 sig.payload       = s.payload,
 //                 sig.created_at    = datetime()
 // MERGE (u)-[:HAS_SIGNAL]->(sig);
 

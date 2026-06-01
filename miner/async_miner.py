@@ -31,7 +31,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from broker import get_broker
 from settings import settings
 
-logger = logging.getLogger("graphrag_nk.miner")
+logger = logging.getLogger("graph_nk.miner")
 
 BASE_URL = "https://api.github.com"
 GRAPHQL_URL = "https://api.github.com/graphql"

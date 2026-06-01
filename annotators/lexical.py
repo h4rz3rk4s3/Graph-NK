@@ -96,7 +96,7 @@ class LexiconAnnotator:
 
         for entry in self._lexicon.get("entries", []):
             entry_id = entry["id"]
-            pattern_doc = self._nlp.make_doc(entry["lemma"])
+            pattern_doc = self._nlp(entry["lemma"]) #make_doc
             key = f"LEX_{entry_id}"
             matcher.add(key, [pattern_doc])
             id_map[self._nlp.vocab.strings[key]] = entry_id

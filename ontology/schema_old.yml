@@ -137,7 +137,7 @@ nk_analytical_layer:
         rule_id:      {type: string}
         rule_version: {type: string}
         confidence:   {type: float, nullable: true}
-        payload_json: {type: string, description: "JSON-serialised supplementary provenance. Neo4j cannot store nested maps as properties, so payload is serialised. Parse in analysis with apoc.convert.fromJsonMap(sig.payload_json)."}
+        payload:      {type: map}
 
     LexicalMarker:
       natural_key: [lemma, lexicon_version]

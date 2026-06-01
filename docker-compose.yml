@@ -11,7 +11,6 @@ x-app-env: &app-env
     MONGO_URI:   mongodb://mongodb:27017
     REDIS_URL:   redis://redis:6379/0
     NEO4J_URI:   bolt://neo4j:7687
-    QDRANT_HOST: qdrant
   restart: unless-stopped
 
 

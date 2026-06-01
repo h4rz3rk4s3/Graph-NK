@@ -8,6 +8,54 @@ it closes or advances.*
 
 ---
 
+## 2026-04-24 — Bugfix: Signal.payload cannot be a Neo4j Map property
+
+### Symptom
+`Neo.ClientError.Statement.TypeError: Property values can only be of primitive
+types or arrays thereof. Encountered: Map{...}` raised during
+`upsert_signals_batch` (Phase 2), once per batch, the whole 100-signal batch
+aborting.
+
+### Root cause
+`projector/graph_projector.py` line ~267 wrote `sig.payload = s.payload`, where
+`s.payload` is a nested dict. Neo4j property graphs cannot store nested maps as
+property values. Because **every** Signal (lexical, morpho, affix, rhetorical,
+and the classifier's non-verdict Signal) carries a `payload` dict, every batch
+failed. The error message surfaced whichever map Neo4j happened to be evaluating
+when the type check fired — in the reported case the classifier payload — but it
+was never specific to `upsert_classifier_verdict` (which writes only primitives
+and was always correct).
+
+### Fix
+- `projector/graph_projector.py`:
+  - Added `import json`.
+  - In `upsert_signals_batch`, the payload is now JSON-serialised (with internal
+    `__`-prefixed sentinel keys stripped) and stored as the string property
+    `sig.payload_json`, replacing `sig.payload`.
+- `ontology/schema.yml`: `Signal.payload {type: map}` → `Signal.payload_json {type: string}`.
+- `ontology/ontology.cypher`: §3.8 template updated to `sig.payload_json` with a
+  note explaining the constraint.
+- `notebooks/01_descriptive.ipynb`: added a markdown note on parsing payloads with
+  `apoc.convert.fromJsonMap(sig.payload_json)`.
+
+### Effect on the framework
+- **No data is lost.** All provenance previously in `payload` is preserved
+  verbatim inside `payload_json`.
+- **Querying payload fields now requires parsing.** Use
+  `apoc.convert.fromJsonMap(sig.payload_json).<key>` in Cypher, or
+  `json.loads(row['payload_json'])` in pandas. The notebooks do not query payload
+  fields, so they are unaffected.
+- **The promoted provenance is unchanged.** The fields that matter most for
+  analysis — `lemma`/`source_citation` (LexicalMarker), `figure_id`/`family`
+  (RhetoricalFigure), `label`/`confidence`/`model_id` (ClassifierVerdict) — were
+  always stored as first-class primitive properties on dedicated nodes, not in
+  `payload`. So RQ1–RQ5 queries in the notebooks need no changes.
+- **Re-ingestion:** if you already have a partial graph from a failed run, the
+  Signal MERGEs are idempotent on `signal_id`, so simply re-running
+  `python scripts/run_pipeline.py --stage 2` will complete the signal layer.
+
+---
+
 ## 2026-04-23 — v0 implementation complete (all 10 milestones)
 
 ### ✅ Implemented

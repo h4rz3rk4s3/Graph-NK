@@ -11,7 +11,6 @@ See FRAMEWORK_DESIGN.md §5 Module 4; BUILD_SPEC.md §6 M3.
 """
 from __future__ import annotations
 
-import json
 import logging
 from typing import Any
 
@@ -32,7 +31,7 @@ class GraphProjector:
     async def create(cls) -> "GraphProjector":
         driver = AsyncGraphDatabase.driver(
             settings.neo4j_uri,
-            auth=(settings.neo4j_user, settings.neo4j_password),
+            #auth=(settings.neo4j_user, settings.neo4j_password),
         )
         return cls(driver)
 
@@ -265,7 +264,7 @@ class GraphProjector:
                             sig.rule_id      = s.rule_id,
                             sig.rule_version = s.rule_version,
                             sig.confidence   = s.confidence,
-                            sig.payload_json = s.payload_json,
+                            sig.payload      = s.payload,
                             sig.created_at   = datetime()
             MERGE (u)-[:HAS_SIGNAL]->(sig)
             """,
@@ -281,14 +280,8 @@ class GraphProjector:
                 "rule_id":      s.get("rule_id"),
                 "rule_version": s.get("rule_version"),
                 "confidence":   s.get("confidence"),
-                # Neo4j cannot store a nested Map as a property — serialise to JSON.
-                # Strip internal sentinel keys (prefixed with __) before serialising.
-                # Parse in analysis with apoc.convert.fromJsonMap(sig.payload_json).
-                "payload_json": json.dumps(
-                    {k: v for k, v in (s.get("payload") or {}).items()
-                     if not k.startswith("__")},
-                    default=str,
-                ),
+                "payload":      {k: v for k, v in (s.get("payload") or {}).items()
+                                 if not k.startswith("__")},
             } for s in plain_signals],
         )
 
@@ -305,6 +298,16 @@ class GraphProjector:
         Cypher template: ontology.cypher §3.11.
         """
         p = signal.get("payload", {})
+        text_unit_id  = signal.get("text_unit_id"),
+        model_id      = p.get("model_id", ""),
+        model_version = p.get("model_version", ""),
+        label         = p.get("label", -1),
+        confidence    = signal.get("confidence"),
+        print(f"TEXT_UNIT_ID: {text_unit_id}")
+        print(f"MODEL_ID: {model_id}")
+        print(f"MODEL_V: {model_version}")
+        print(f"LABEL: {label}")
+        print(f"COINCIDENCE: {confidence}")
         await self._run(
             """
             MATCH (u:TextUnit {id: $text_unit_id})
