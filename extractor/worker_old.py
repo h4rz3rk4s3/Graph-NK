@@ -14,6 +14,8 @@ import dataclasses
 import logging
 from typing import Any
 
+from motor.motor_asyncio import AsyncIOMotorClient
+
 from broker import get_broker
 from extractor.text_unit_extractor import (
     TextUnit,
@@ -22,7 +24,6 @@ from extractor.text_unit_extractor import (
     extract_from_pull_request,
 )
 from settings import settings
-from storage import gather_bounded, make_mongo_client
 
 logger = logging.getLogger(__name__)
 
@@ -34,16 +35,14 @@ async def run_extractor() -> None:
     Called from scripts/run_pipeline.py.
     """
     broker = await get_broker()
-    mongo = make_mongo_client()
+    mongo = AsyncIOMotorClient(settings.mongo_uri)
     db = mongo[settings.mongo_db_name]
 
     logger.info("Extractor worker started. Consuming %s", settings.stream_raw)
 
     async for batch in broker.read_all(settings.stream_raw):
-        results = await gather_bounded(
-            (_process_event(event, db, broker) for event in batch),
-            settings.mongo_fetch_concurrency,
-        )
+        tasks = [_process_event(event, db, broker) for event in batch]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
         for r in results:
             if isinstance(r, Exception):
                 logger.error("Event processing failed: %s", r)

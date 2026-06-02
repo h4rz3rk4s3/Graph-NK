@@ -45,11 +45,15 @@ services:
     image: redis:latest
     container_name: graph_nk_redis
     restart: unless-stopped
+    # maxmemory: tune to your machine / repo size. The pipeline now trims streams
+    #   as they are consumed (see broker.read_all trim=), so memory is reclaimed
+    #   during the run; this ceiling only needs to hold the in-flight backlog.
+    # noeviction: never silently drop queued work — fail loudly instead. If you
+    #   hit OOM, raise REDIS_MAXMEMORY or process the repo in smaller chunks.
     command: >
-      redis-server
-      --maxmemory 512mb
+      redis-server --save 60 1
+      --maxmemory ${REDIS_MAXMEMORY:-6gb}
       --maxmemory-policy noeviction
-      --appendonly yes
     ports:
       - "6379:6379"
     volumes:

@@ -41,38 +41,23 @@ class RedisBroker:
         stream: str,
         batch_size: int = 100,
         block_ms: int = 2000,
-        trim: bool = False,
     ) -> AsyncIterator[list[dict[str, Any]]]:
         """
         Yield batches of events from `stream` from the beginning.
         Blocks at the tail until no new messages arrive for `block_ms` ms,
         then stops — designed for run-to-completion research runs.
 
-        If `trim=True`, each batch's messages are deleted (XDEL) once the
-        consumer has finished processing them — i.e. on the next iteration.
-        This reclaims Redis memory as the stream is drained. Only enable trim
-        for SINGLE-consumer streams; deleting entries another consumer still
-        needs would lose data.
-
         Yields lists of parsed event dicts.
         """
         last_id = "0"
         idle_rounds = 0
-        pending_trim: list[bytes] = []  # ids yielded but not yet processed
 
         while True:
-            # The consumer has finished the previously-yielded batch by now —
-            # safe to delete those entries and free their memory.
-            if trim and pending_trim:
-                await self._client.xdel(stream, *pending_trim)
-                pending_trim = []
-
             entries = await self._client.xread({stream: last_id}, count=batch_size, block=block_ms)
             if not entries:
+                # No messages for block_ms — treat as end of stream for this run
                 idle_rounds += 1
                 if idle_rounds >= 2:
-                    if trim and pending_trim:
-                        await self._client.xdel(stream, *pending_trim)
                     logger.info("Stream %s appears exhausted. Stopping consumer.", stream)
                     return
                 continue
@@ -80,17 +65,13 @@ class RedisBroker:
             idle_rounds = 0
             for _stream_name, messages in entries:
                 batch = []
-                ids: list[bytes] = []
                 for msg_id, fields in messages:
                     last_id = msg_id
-                    ids.append(msg_id)
                     try:
                         batch.append(json.loads(fields[b"payload"]))
                     except (KeyError, json.JSONDecodeError) as exc:
                         logger.warning("Skipping malformed message %s: %s", msg_id, exc)
                 if batch:
-                    if trim:
-                        pending_trim = ids
                     yield batch
 
     async def stream_length(self, stream: str) -> int:

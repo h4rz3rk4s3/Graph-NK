@@ -92,7 +92,6 @@ async def _phase0_seed_artefacts(projector: GraphProjector, db: Any) -> None:
             if isinstance(r, Exception):
                 logger.error("Phase 0 error: %s", r)
         count += len(batch)
-        logger.info(f"[Phase 0] Processed {count} raw events.")
     logger.info("Phase 0 complete: %d raw events processed.", count)
 
 
@@ -125,7 +124,7 @@ async def _phase1_project_units(projector: GraphProjector) -> None:
     broker = await get_broker()
     logger.info("Phase 1: writing TextUnit nodes from %s", settings.stream_units)
     count = 0
-    async for batch in broker.read_all(settings.stream_units, trim=True):
+    async for batch in broker.read_all(settings.stream_units):
         for event in batch:
             try:
                 if login := event.get("author_login"):
@@ -152,7 +151,7 @@ async def _phase2_project_signals(projector: GraphProjector) -> None:
     last_flush = asyncio.get_event_loop().time()
     total = 0
 
-    async for batch in broker.read_all(settings.stream_signals, trim=True):
+    async for batch in broker.read_all(settings.stream_signals):
         buffer.extend(batch)
         now = asyncio.get_event_loop().time()
         if len(buffer) >= SIGNAL_BATCH_SIZE or (now - last_flush) >= SIGNAL_FLUSH_SEC:

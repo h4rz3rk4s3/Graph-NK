@@ -26,11 +26,11 @@ import logging
 from typing import Any
 
 from bson import ObjectId
+from motor.motor_asyncio import AsyncIOMotorClient
 
 from broker import get_broker
 from projector.graph_projector import GraphProjector
 from settings import settings
-from storage import gather_bounded, make_mongo_client
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,7 @@ async def run_projector_stage1() -> None:
     Phase 1 (write TextUnit nodes from stream_units). Sequential.
     """
     projector = await GraphProjector.create()
-    mongo     = make_mongo_client()
+    mongo     = AsyncIOMotorClient(settings.mongo_uri)
     db        = mongo[settings.mongo_db_name]
     try:
         logger.info("Projector Stage 1 started.")
@@ -84,15 +84,14 @@ async def _phase0_seed_artefacts(projector: GraphProjector, db: Any) -> None:
     logger.info("Phase 0: seeding artefact nodes from %s", settings.stream_raw)
     count = 0
     async for batch in broker.read_all(settings.stream_raw):
-        results = await gather_bounded(
-            (_seed_one(projector, db, e) for e in batch),
-            settings.mongo_fetch_concurrency,
+        results = await asyncio.gather(
+            *[_seed_one(projector, db, e) for e in batch],
+            return_exceptions=True,
         )
         for r in results:
             if isinstance(r, Exception):
                 logger.error("Phase 0 error: %s", r)
         count += len(batch)
-        logger.info(f"[Phase 0] Processed {count} raw events.")
     logger.info("Phase 0 complete: %d raw events processed.", count)
 
 
@@ -125,7 +124,7 @@ async def _phase1_project_units(projector: GraphProjector) -> None:
     broker = await get_broker()
     logger.info("Phase 1: writing TextUnit nodes from %s", settings.stream_units)
     count = 0
-    async for batch in broker.read_all(settings.stream_units, trim=True):
+    async for batch in broker.read_all(settings.stream_units):
         for event in batch:
             try:
                 if login := event.get("author_login"):
@@ -152,7 +151,7 @@ async def _phase2_project_signals(projector: GraphProjector) -> None:
     last_flush = asyncio.get_event_loop().time()
     total = 0
 
-    async for batch in broker.read_all(settings.stream_signals, trim=True):
+    async for batch in broker.read_all(settings.stream_signals):
         buffer.extend(batch)
         now = asyncio.get_event_loop().time()
         if len(buffer) >= SIGNAL_BATCH_SIZE or (now - last_flush) >= SIGNAL_FLUSH_SEC:
