@@ -219,7 +219,7 @@ class AsyncGitHubMiner:
 
     # ── public mining methods ─────────────────────────────────────────────────
 
-    async def mine_repository(self, repo_full_name: str, include_commits: bool = True) -> None:
+    async def mine_repository(self, repo_full_name: str, include_commits: bool = False) -> None:
         """Entry point: mine one repository end-to-end."""
         logger.info("▶ Mining: %s", repo_full_name)
 

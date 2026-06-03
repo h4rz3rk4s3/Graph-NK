@@ -23,6 +23,7 @@ from extractor.text_unit_extractor import (
 )
 from settings import settings
 from storage import gather_bounded, make_mongo_client
+from progress import Progress
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,8 @@ async def run_extractor() -> None:
     mongo = make_mongo_client()
     db = mongo[settings.mongo_db_name]
 
+    total_raw = await broker.stream_length(settings.stream_raw)
+    prog = Progress("Extract", total=total_raw)
     logger.info("Extractor worker started. Consuming %s", settings.stream_raw)
 
     async for batch in broker.read_all(settings.stream_raw):
@@ -47,7 +50,10 @@ async def run_extractor() -> None:
         for r in results:
             if isinstance(r, Exception):
                 logger.error("Event processing failed: %s", r)
+        prog.add(len(batch))
+        prog.maybe_log()
 
+    prog.finish()
     mongo.close()
     logger.info("Extractor worker finished.")
 

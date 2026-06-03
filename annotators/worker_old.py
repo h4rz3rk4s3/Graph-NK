@@ -80,58 +80,99 @@ def _load_annotators() -> list[Any]:
 async def run_annotator_worker() -> None:
     """
     Main entry point for the annotator worker.
-    Reads stream_units to exhaustion, annotates each TextUnit with all
-    annotators, publishes Signals to stream_signals.
+
+    Reads TextUnits from Neo4j (where the projector persisted them in stage 1),
+    annotates each with all annotators, and publishes Signals to stream_signals.
+
+    Why Neo4j and not stream_units: stream_units is now drained and trimmed by
+    the projector in stage 1, so it is empty by stage 2. Reading TextUnits from
+    Neo4j makes stream_units a single-consumer stream that can be safely trimmed,
+    which is what keeps Redis memory bounded on large backlogs.
+    See CHANGELOG 2026-06-02. Annotators only use `text` and `text_unit_id`.
     """
+    from neo4j import AsyncGraphDatabase
+
     broker = await get_broker()
     annotators = _load_annotators()
 
-    # Separate the classifier for batch processing
     from annotators.classifier import ClassifierAnnotator
     clf_annotators = [a for a in annotators if isinstance(a, ClassifierAnnotator)]
     rule_annotators = [a for a in annotators if not isinstance(a, ClassifierAnnotator)]
 
-    logger.info("Annotator worker started. Consuming %s", settings.stream_units)
+    driver = AsyncGraphDatabase.driver(
+        settings.neo4j_uri, auth=(settings.neo4j_user, settings.neo4j_password)
+    )
+    logger.info("Annotator worker started. Reading TextUnits from Neo4j.")
 
-    # Buffer for classifier batching
     unit_buffer: list[TextUnit] = []
 
     async def flush_classifier_buffer() -> None:
         if not unit_buffer or not clf_annotators:
+            unit_buffer.clear()
             return
         for clf in clf_annotators:
             try:
-                signals = clf.batch_annotate(unit_buffer)
-                for sig in signals:
+                for sig in clf.batch_annotate(unit_buffer):
                     await _publish_signal(broker, sig)
             except Exception as exc:
                 logger.error("ClassifierAnnotator batch failed: %s", exc)
         unit_buffer.clear()
 
-    async for batch in broker.read_all(settings.stream_units):
-        for event in batch:
-            unit = _event_to_text_unit(event)
-            if unit is None:
-                continue
-
+    total = 0
+    try:
+        async for unit in _iter_text_units(driver, page_size=settings.annotator_batch_size * 10):
             # Rule-based annotators — synchronous, one unit at a time
             for ann in rule_annotators:
                 try:
                     for sig in ann.annotate(unit):
                         await _publish_signal(broker, sig)
                 except Exception as exc:
-                    logger.error(
-                        "Annotator %s failed on %s: %s", ann.name, unit.text_unit_id, exc
-                    )
+                    logger.error("Annotator %s failed on %s: %s", ann.name, unit.text_unit_id, exc)
 
-            # Buffer for classifier batch
             unit_buffer.append(unit)
             if len(unit_buffer) >= settings.annotator_batch_size:
                 await flush_classifier_buffer()
+            total += 1
 
-    # Flush any remaining buffered units
-    await flush_classifier_buffer()
-    logger.info("Annotator worker finished.")
+        await flush_classifier_buffer()
+    finally:
+        await driver.close()
+
+    logger.info("Annotator worker finished. Annotated %d TextUnits.", total)
+
+
+async def _iter_text_units(driver: Any, page_size: int = 500):
+    """
+    Stream all TextUnits from Neo4j using keyset pagination on the unique `id`.
+    Keyset (WHERE id > last) is O(log n) per page, unlike SKIP which is O(n).
+    Yields minimal TextUnit objects — only `text` and `text_unit_id` are used by
+    annotators, so the other fields are filled with harmless placeholders.
+    """
+    last_id = ""
+    while True:
+        async with driver.session() as session:
+            result = await session.run(
+                """
+                MATCH (u:TextUnit)
+                WHERE u.id > $last_id
+                RETURN u.id AS id, u.text AS text
+                ORDER BY u.id
+                LIMIT $limit
+                """,
+                last_id=last_id, limit=page_size,
+            )
+            rows = [(r["id"], r["text"]) async for r in result]
+
+        if not rows:
+            return
+
+        for tu_id, text in rows:
+            yield TextUnit(
+                text_unit_id=tu_id, parent_id="", parent_type="", repo="",
+                parent_number=None, role="", position=0, text=text or "",
+                lang=None, token_count=0, sha256="", author_login=None, created_at=None,
+            )
+        last_id = rows[-1][0]
 
 
 async def _publish_signal(broker: Any, sig: Signal) -> None:
