@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
     neo4j_password: str = "none" #"researchpw"
+    apply_schema_on_startup: bool = True
 
     # ── Miner ─────────────────────────────────────────────────────────────────
     rate_limit_margin: int = 10
@@ -53,14 +54,24 @@ class Settings(BaseSettings):
     classifier_model_path: str = "models/roberta-non-knowledge-v8-base"
     # "mps" for Apple Silicon, "cuda" for NVIDIA, "cpu" as fallback
     classifier_device: str = "mps"
-    classifier_batch_size: int = 16
+    classifier_batch_size: int = 64
 
     # ── Annotator worker ──────────────────────────────────────────────────────
     # How many units to batch before flushing signals to the projector
-    annotator_batch_size: int = 32
+    annotator_batch_size: int = 64       # units per spaCy.pipe + classifier batch
+    spacy_model: str = "en_core_web_sm"  # sm: no vectors, faster; lg also works
+    spacy_n_process: int = 1             # >1 → multi-process spaCy.pipe (more CPU)
 
-    # ── spaCy ─────────────────────────────────────────────────────────────────
-    spacy_model: str = "en_core_web_sm"
+    # ── Annotation scope (what to annotate) ───────────────────────────────────
+    # These narrow the set of TextUnits the annotator processes. lang/min-tokens
+    # work on existing data; role/parent-type/bot/referenced-PR filters require
+    # a stage-1 re-run to backfill the fields on TextUnit nodes (idempotent).
+    annotate_languages: list[str] = ["en"]   # only these langs; [] = all
+    annotate_min_tokens: int = 2              # skip units shorter than this
+    annotate_roles: list[str] = []            # e.g. ["body","comment_body"]; [] = all
+    annotate_parent_types: list[str] = []     # e.g. ["issue","pull_request"]; [] = all
+    annotate_skip_bots: bool = True           # skip *[bot] authors (templated text)
+    annotate_only_referenced_prs: bool = False  # PR units only if PR <-> Issue ref
 
 
 settings = Settings()

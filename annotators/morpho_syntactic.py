@@ -44,9 +44,8 @@ class SpacyMorphoAnnotator:
     """
     name = "SpacyMorphoAnnotator"
 
-    def __init__(self, pattern_path: Path = _PATTERN_PATH) -> None:
-        # disable=["ner"] — we don't need NER; keep parser for dep-based work later
-        self._nlp = spacy.load(settings.spacy_model, disable=["ner"])
+    def __init__(self, nlp, pattern_path: Path = _PATTERN_PATH) -> None:
+        self._nlp = nlp #spacy.load(settings.spacy_model, disable=["ner"])
         self._pattern_data = self._load_patterns(pattern_path)
         self._matcher, self._meta = self._build_matcher()
         self.version = self._pattern_data["version"]
@@ -55,11 +54,11 @@ class SpacyMorphoAnnotator:
             len(self._pattern_data["patterns"]), self.version,
         )
 
-    def annotate(self, unit: TextUnit) -> list[Signal]:
+    def annotate(self, unit: TextUnit, doc) -> list[Signal]:
         if not unit.text:
             return []
-
-        doc = self._nlp(unit.text)
+        if doc is None:
+            doc = self._nlp(unit.text)
         signals: list[Signal] = []
 
         # --- Matcher-based patterns ---

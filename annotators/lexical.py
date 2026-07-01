@@ -36,8 +36,8 @@ class LexiconAnnotator:
     """
     name = "LexiconAnnotator"
 
-    def __init__(self, lexicon_path: Path = _LEXICON_PATH) -> None:
-        self._nlp = spacy.load(settings.spacy_model, disable=["ner", "parser"])
+    def __init__(self, nlp, lexicon_path: Path = _LEXICON_PATH) -> None:
+        self._nlp = nlp #spacy.load(settings.spacy_model, disable=["ner", "parser"])
         self._lexicon = self._load_lexicon(lexicon_path)
         self._matcher, self._id_map = self._build_matcher()
         self.version = self._lexicon["version"]
@@ -46,11 +46,12 @@ class LexiconAnnotator:
             len(self._lexicon["entries"]), lexicon_path.name, self.version
         )
 
-    def annotate(self, unit: TextUnit) -> list[Signal]:
+    def annotate(self, unit: TextUnit, doc) -> list[Signal]:
         if not unit.text:
             return []
 
-        doc = self._nlp(unit.text)
+        if doc is None:
+            doc = self._nlp(unit.text)
         matches = self._matcher(doc)
         signals: list[Signal] = []
 

@@ -23,6 +23,7 @@ from typing import Any
 from annotators.base import Signal, TextUnit
 from broker import get_broker
 from settings import settings
+from progress import Progress
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +103,14 @@ async def run_annotator_worker() -> None:
     driver = AsyncGraphDatabase.driver(
         settings.neo4j_uri, auth=(settings.neo4j_user, settings.neo4j_password)
     )
-    logger.info("Annotator worker started. Reading TextUnits from Neo4j.")
+
+    # Exact total for an accurate ETA: stage 1 already created every TextUnit.
+    async with driver.session() as session:
+        res = await session.run("MATCH (u:TextUnit) RETURN count(u) AS n")
+        rec = await res.single()
+        total_units = rec["n"] if rec else 0
+    prog = Progress("Annotate", total=total_units)
+    logger.info("Annotator worker started. Reading %d TextUnits from Neo4j.", total_units)
 
     unit_buffer: list[TextUnit] = []
 
@@ -133,11 +141,14 @@ async def run_annotator_worker() -> None:
             if len(unit_buffer) >= settings.annotator_batch_size:
                 await flush_classifier_buffer()
             total += 1
+            prog.add(1)
+            prog.maybe_log()
 
         await flush_classifier_buffer()
     finally:
         await driver.close()
 
+    prog.finish()
     logger.info("Annotator worker finished. Annotated %d TextUnits.", total)
 
 

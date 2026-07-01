@@ -41,8 +41,8 @@ class AffixAnnotator:
     """
     name = "AffixAnnotator"
 
-    def __init__(self, pattern_path: Path = _PATTERN_PATH) -> None:
-        self._nlp = spacy.load(settings.spacy_model, disable=["ner", "parser"])
+    def __init__(self, nlp, pattern_path: Path = _PATTERN_PATH) -> None:
+        self._nlp = nlp #spacy.load(settings.spacy_model, disable=["ner", "parser"])
         self._config = self._load_config(pattern_path)
         self.version = self._config["version"]
         # Pre-build lookup structures from YAML for O(1) token checks
@@ -53,11 +53,12 @@ class AffixAnnotator:
             len(self._prefix_specs), len(self._suffix_specs), self.version,
         )
 
-    def annotate(self, unit: TextUnit) -> list[Signal]:
+    def annotate(self, unit: TextUnit, doc) -> list[Signal]:
         if not unit.text:
             return []
 
-        doc = self._nlp(unit.text)
+        if doc is None:
+            doc = self._nlp(unit.text)
         signals: list[Signal] = []
 
         for token in doc:

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "graphrag-nk"
-version = "0.1.0"
+version = "0.5.0"
 description = "Research pipeline for studying Non-Knowledge in GitHub repositories"
 requires-python = ">=3.12"
 dependencies = [

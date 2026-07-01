@@ -39,8 +39,8 @@ class RhetoricalAnnotator:
     """
     name = "RhetoricalAnnotator"
 
-    def __init__(self, pattern_path: Path = _PATTERN_PATH) -> None:
-        self._nlp = spacy.load(settings.spacy_model, disable=["ner"])
+    def __init__(self, nlp, pattern_path: Path = _PATTERN_PATH) -> None:
+        self._nlp = nlp #spacy.load(settings.spacy_model, disable=["ner"])
         self._figure_data = self._load_figures(pattern_path)
         self._matcher, self._meta = self._build_matcher()
         self.version = self._figure_data["version"]
@@ -49,11 +49,12 @@ class RhetoricalAnnotator:
             len(self._figure_data["figures"]), self.version,
         )
 
-    def annotate(self, unit: TextUnit) -> list[Signal]:
+    def annotate(self, unit: TextUnit, doc) -> list[Signal]:
         if not unit.text:
             return []
 
-        doc = self._nlp(unit.text)
+        if doc is None:
+            doc = self._nlp(unit.text)
         signals: list[Signal] = []
 
         for match_id, start, end in self._matcher(doc):

@@ -80,43 +80,14 @@ class Signal:
 @runtime_checkable
 class Annotator(Protocol):
     """
-    All rule-based annotators implement this protocol.
-
-    annotate() receives the TextUnit AND a pre-parsed spaCy Doc, so the text is
-    parsed exactly once per unit (by the worker, via nlp.pipe) and shared across
-    all annotators — instead of each annotator re-parsing. This is the main v0.5
-    speed change. See CHANGELOG 2026-06-04.
-
-    annotate() is synchronous — annotation is CPU-bound. Matchers are built at
-    construction time against the shared nlp.vocab.
+    All annotators implement this protocol.
+    annotate() is synchronous — annotation is CPU-bound.
+    I/O (model loading) happens at construction time, not per call.
+    See BUILD_SPEC.md §5.1.
     """
     name: str
     version: str
 
-    def annotate(self, unit: TextUnit, doc: Any) -> list[Signal]:
+    def annotate(self, unit: TextUnit) -> list[Signal]:
         """Return all Signals detected in unit. Never raise — return [] on failure."""
         ...
-
-
-def make_nlp(model: str | None = None):
-    """
-    Build the single shared spaCy pipeline used by all rule annotators.
-
-    Lean by design (v0.5): the dependency parser and NER are disabled (the
-    annotators only need POS/TAG, lemmas, and sentence boundaries), and a
-    fast rule-based `sentencizer` supplies sentence boundaries for the
-    morpho-syntactic question/answer check. Disabling the parser is the single
-    biggest per-document speed-up after sharing the parse.
-
-    `en_core_web_sm` is recommended over `lg` — we never use word vectors, and
-    sm loads faster and uses less memory with negligible POS/lemma quality loss.
-    """
-    import spacy
-
-    from settings import settings
-
-    model = model or settings.spacy_model
-    nlp = spacy.load(model, disable=["ner"])
-    if "senter" not in nlp.pipe_names and "sentencizer" not in nlp.pipe_names:
-        nlp.add_pipe("sentencizer")
-    return nlp

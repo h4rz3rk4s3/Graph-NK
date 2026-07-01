@@ -5,6 +5,7 @@ __pycache__/
 
 # Don't uplaod the classification models (large)
 models/
+learn/
 
 # C extensions
 *.so

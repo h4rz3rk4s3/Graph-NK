@@ -31,6 +31,7 @@ from broker import get_broker
 from projector.graph_projector import GraphProjector
 from settings import settings
 from storage import gather_bounded, make_mongo_client
+from progress import Progress
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +82,8 @@ async def _phase0_seed_artefacts(projector: GraphProjector, db: Any) -> None:
     Guarantees every parent node exists before Phase 1 writes TextUnits.
     """
     broker = await get_broker()
+    total_raw = await broker.stream_length(settings.stream_raw)
+    prog = Progress("Seed artefacts", total=total_raw)
     logger.info("Phase 0: seeding artefact nodes from %s", settings.stream_raw)
     count = 0
     async for batch in broker.read_all(settings.stream_raw):
@@ -92,7 +95,9 @@ async def _phase0_seed_artefacts(projector: GraphProjector, db: Any) -> None:
             if isinstance(r, Exception):
                 logger.error("Phase 0 error: %s", r)
         count += len(batch)
-        logger.info(f"[Phase 0] Processed {count} raw events.")
+        prog.add(len(batch))
+        prog.maybe_log()
+    prog.finish()
     logger.info("Phase 0 complete: %d raw events processed.", count)
 
 
@@ -123,9 +128,10 @@ async def _seed_one(projector: GraphProjector, db: Any, event: dict[str, Any]) -
 async def _phase1_project_units(projector: GraphProjector) -> None:
     """Consume stream_units → write TextUnit nodes."""
     broker = await get_broker()
+    prog = Progress("Project TextUnits")  # live-queue mode (stream still trimming)
     logger.info("Phase 1: writing TextUnit nodes from %s", settings.stream_units)
     count = 0
-    async for batch in broker.read_all(settings.stream_units, trim=False):
+    async for batch in broker.read_all(settings.stream_units, trim=True):
         for event in batch:
             try:
                 if login := event.get("author_login"):
@@ -137,7 +143,9 @@ async def _phase1_project_units(projector: GraphProjector) -> None:
                     "Phase 1: failed TextUnit %s: %s",
                     event.get("text_unit_id"), exc,
                 )
-        logger.info(f"[Phase 1] {count} TextUnit nodes written.")
+        prog.add(len(batch))
+        prog.maybe_log(remaining=await broker.stream_length(settings.stream_units))
+    prog.finish()
     logger.info("Phase 1 complete: %d TextUnit nodes written.", count)
 
 
@@ -148,21 +156,25 @@ async def _phase1_project_units(projector: GraphProjector) -> None:
 async def _phase2_project_signals(projector: GraphProjector) -> None:
     """Consume stream_signals → batch-write Signal nodes and related nodes."""
     broker = await get_broker()
+    prog = Progress("Project Signals")  # live-queue mode (stream still trimming)
     logger.info("Phase 2: writing Signal nodes from %s", settings.stream_signals)
     buffer: list[dict[str, Any]] = []
     last_flush = asyncio.get_event_loop().time()
     total = 0
 
-    async for batch in broker.read_all(settings.stream_signals, trim=False):
+    async for batch in broker.read_all(settings.stream_signals, trim=True):
         buffer.extend(batch)
+        prog.add(len(batch))
         now = asyncio.get_event_loop().time()
         if len(buffer) >= SIGNAL_BATCH_SIZE or (now - last_flush) >= SIGNAL_FLUSH_SEC:
             total += await _flush(projector, buffer)
             buffer = []
             last_flush = now
+        prog.maybe_log(remaining=await broker.stream_length(settings.stream_signals))
 
     if buffer:
         total += await _flush(projector, buffer)
+    prog.finish()
     logger.info("Phase 2 complete: %d signals written.", total)
 
 

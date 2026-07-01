@@ -16,7 +16,7 @@ fixes CHANGELOG.md ⚠️ limitation 2 (signals arriving before TextUnits).
            ─ These run concurrently: annotator produces while projector consumes.
 
 Typical research workflow:
-  1. python scripts/mine_one.py --repo python/cpython
+  1. python scripts/mine_one.py --repo python/cpython OpenVoxProject/ezbake
   2. python scripts/run_pipeline.py
   3. python scripts/run_pipeline.py --enrich   (adds REFERENCES edges)
   4. jupyter lab notebooks/

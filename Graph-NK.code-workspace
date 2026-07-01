@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Downloads/graphrag_nk 4/learn"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#83e9dd",
+			"activityBar.background": "#83e9dd",
+			"activityBar.foreground": "#15202b",
+			"activityBar.inactiveForeground": "#15202b99",
+			"activityBarBadge.background": "#d25de2",
+			"activityBarBadge.foreground": "#15202b",
+			"commandCenter.border": "#15202b99",
+			"sash.hoverBorder": "#83e9dd",
+			"statusBar.background": "#58e1d1",
+			"statusBar.foreground": "#15202b",
+			"statusBarItem.hoverBackground": "#2dd9c5",
+			"statusBarItem.remoteBackground": "#58e1d1",
+			"statusBarItem.remoteForeground": "#15202b",
+			"titleBar.activeBackground": "#58e1d1",
+			"titleBar.activeForeground": "#15202b",
+			"titleBar.inactiveBackground": "#58e1d199",
+			"titleBar.inactiveForeground": "#15202b99"
+		},
+		"peacock.color": "#58e1d1"
+	}
+}

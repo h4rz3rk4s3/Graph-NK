@@ -34,7 +34,44 @@ class GraphProjector:
             settings.neo4j_uri,
             auth=(settings.neo4j_user, settings.neo4j_password),
         )
-        return cls(driver)
+        proj = cls(driver)
+        if settings.apply_schema_on_startup:
+            await proj.ensure_schema()
+        return proj
+
+    async def ensure_schema(self) -> None:
+        """
+        Apply the constraints + indexes from ontology/ontology.cypher.
+
+        Extracts only the CREATE CONSTRAINT / CREATE INDEX statements (the
+        parameterized MERGE templates in that file are skipped), so the schema
+        has a single source of truth. Every statement is idempotent
+        (IF NOT EXISTS), so this is safe to run on every startup — and it means
+        the indexes are guaranteed present no matter how Neo4j was launched.
+        Without these, MERGE/MATCH degrade to full label scans (the cause of the
+        catastrophically slow Phase 1). See CHANGELOG 2026-06-04.
+        """
+        from pathlib import Path
+
+        ddl_file = Path(__file__).resolve().parent.parent / "ontology" / "ontology.cypher"
+        if not ddl_file.exists():
+            logger.warning("Schema file %s not found; skipping ensure_schema.", ddl_file)
+            return
+
+        statements = []
+        for raw in ddl_file.read_text().split(";"):
+            lines = [ln for ln in raw.splitlines() if not ln.strip().startswith("//")]
+            stmt = "\n".join(lines).strip()
+            upper = stmt.upper()
+            if upper.startswith("CREATE CONSTRAINT") or upper.startswith("CREATE INDEX"):
+                statements.append(stmt)
+
+        for stmt in statements:
+            try:
+                await self._run(stmt)
+            except Exception as exc:
+                logger.error("ensure_schema failed on: %s ... (%s)", stmt[:60], exc)
+        logger.info("Schema ensured: %d constraints/indexes applied (idempotent).", len(statements))
 
     async def close(self) -> None:
         await self._driver.close()
@@ -215,7 +252,11 @@ class GraphProjector:
             MERGE (u:TextUnit {{id: $tu_id}})
               ON CREATE SET u.text = $text, u.lang = $lang,
                             u.token_count = $token_count, u.sha256 = $sha256,
-                            u.created_at = $created_at, u.position = $position
+                            u.created_at = $created_at, u.position = $position,
+                            u.role = $role, u.parent_type = $parent_type,
+                            u.author_login = $author_login
+              ON MATCH  SET u.role = $role, u.parent_type = $parent_type,
+                            u.author_login = $author_login
             MERGE (parent)-[:HAS_TEXT {{role: $role}}]->(u)
             """,
             tu_id      = tu_id,
@@ -226,6 +267,8 @@ class GraphProjector:
             created_at = unit_event.get("created_at"),
             position   = unit_event.get("position", 0),
             role       = role,
+            parent_type= parent_type,
+            author_login = unit_event.get("author_login"),
             repo       = repo,
             number     = number,
             sha        = sha,
