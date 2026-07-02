@@ -30,10 +30,10 @@ language: "en"
 curator: "TBD"
 last_modified: "2026-04-22"
 sources:
-  - "Janich & Simmerling (2013). Linguistic research on non-knowledge."
-  - "Janich & Simon (2017). Non-knowledge in risk communication."
+  - "Janich & Simmerling (2013). Do I know what I don’t know? The Communication of Non-Knowledge and Uncertain Knowledge in Science"
+  - "Janich & Simon (2017). Nichtwissen und Unsicherheit in Naturwissenschaften und Mathematik"
   - "Müller & Stegmüller (2019). Corpus-linguistic approaches to uncertainty."
-  - "Simmerling & Janich (2015). Rhetoric of non-knowledge."
+  - "Simmerling & Janich (2015). Rhetorical functions of a ‘language of uncertainty’ in the mass media."
 
 entries:
   # ── prototype: epistemic state ─────────────────────────────────────────
