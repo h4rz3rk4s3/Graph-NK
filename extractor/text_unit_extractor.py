@@ -20,9 +20,13 @@ Stripping rules (FRAMEWORK_DESIGN.md §5 Module 2):
 """
 from __future__ import annotations
 
+import dataclasses
 import hashlib
+import logging
 import re
 from dataclasses import dataclass
+
+logger = logging.getLogger(__name__)
 
 # ── stripping regexes ────────────────────────────────────────────────────────
 
@@ -277,3 +281,84 @@ def _commit_author(doc: dict) -> str | None:
             return login
     commit_author = (doc.get("commit") or {}).get("author") or {}
     return commit_author.get("name")
+
+
+def extract_from_email(doc: dict, repo: str) -> list[TextUnit]:
+    """
+    Extract TextUnits from a Webis Gmane email document (v0.6).
+
+    Granularity (amends locked decision v0-1 for emails — see CHANGELOG
+    2026-06-04 v0.6): one TextUnit PER SELECTED SEGMENT, using the corpus's
+    pre-computed segment spans, plus the subject as its own unit at position 0.
+    role = segment label; position = 1 + segment ordinal (in span order).
+
+    Only segments whose label is in settings.email_segment_labels (default:
+    paragraph, section_heading) become TextUnits. Excluding `quotation` is a
+    methodological requirement, not an optimisation: quoted text repeats the
+    PREVIOUS author's words, so NK signals inside quotes would be duplicated
+    across every reply in a thread and attributed to the wrong author.
+    Signatures, patches, logs, and raw code are not authored epistemic
+    discourse and are likewise excluded by default.
+
+    The email's own `lang` field (corpus-provided) is used for all units —
+    it feeds the annotator's language scope filter directly.
+    """
+    urn = doc.get("urn") or ""
+    if not urn:
+        return []
+    from settings import settings
+
+    parent_id = f"email:{urn}"
+    headers = doc.get("headers") or {}
+    author = (headers.get("from") or "").strip() or None
+    created_at = headers.get("date")
+    lang = doc.get("lang")
+
+    units: list[TextUnit] = []
+
+    # Subject (position 0)
+    if subject := headers.get("subject"):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="email", repo=repo,
+            parent_number=None, role="subject", position=0,
+            raw_text=subject, author_login=author, created_at=created_at,
+        )
+        if u:
+            # Corpus lang is authoritative for the message; subject inherits it.
+            u = dataclasses.replace(u, lang=lang or u.lang)
+            units.append(u)
+
+    # Segments (positions 1..n, in span order)
+    text_plain = doc.get("text_plain") or ""
+    allowed = set(settings.email_segment_labels)
+    segments = sorted(
+        (s for s in (doc.get("segments") or []) if isinstance(s, dict)),
+        key=lambda s: (s.get("begin", 0), s.get("end", 0)),
+    )
+    pos = 1
+    for seg in segments:
+        label = seg.get("label", "")
+        if label not in allowed:
+            continue
+        begin, end = seg.get("begin"), seg.get("end")
+        if not (isinstance(begin, int) and isinstance(end, int) and 0 <= begin < end <= len(text_plain)):
+            logger.warning("email %s: segment span out of bounds (%s..%s); skipping", urn, begin, end)
+            continue
+        u = _make_unit(
+            parent_id=parent_id, parent_type="email", repo=repo,
+            parent_number=None, role=label, position=pos,
+            raw_text=text_plain[begin:end],
+            author_login=author, created_at=created_at,
+        )
+        if u:
+            # Deterministic positional id for segment units (multiple segments
+            # share a role, so the id must always carry the position).
+            u = dataclasses.replace(
+                u,
+                text_unit_id=f"{parent_id}:{label}:{pos}",
+                lang=lang or u.lang,
+            )
+            units.append(u)
+            pos += 1
+
+    return units

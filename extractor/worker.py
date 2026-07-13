@@ -18,6 +18,7 @@ from broker import get_broker
 from extractor.text_unit_extractor import (
     TextUnit,
     extract_from_commit,
+    extract_from_email,
     extract_from_issue,
     extract_from_pull_request,
 )
@@ -85,6 +86,8 @@ async def _process_event(
         units = extract_from_issue(doc, repo)
     elif item_type == "commit":
         units = extract_from_commit(doc, repo)
+    elif item_type == "email":
+        units = extract_from_email(doc, repo)
     else:
         logger.debug("Skipping item_type=%s (no extractor)", item_type)
         return
@@ -105,4 +108,5 @@ def _collection_for(item_type: str) -> str:
         "issue":        "raw_issues",
         "pull_request": "raw_pull_requests",
         "commit":       "raw_commits",
+        "email":        "raw_emails",
     }.get(item_type, "raw_misc")

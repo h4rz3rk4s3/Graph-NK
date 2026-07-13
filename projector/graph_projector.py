@@ -89,6 +89,12 @@ class GraphProjector:
 
         Fix for CHANGELOG.md ⚠️ limitation 1.
         """
+        # Emails have their own seeding path (MailingList instead of Repository,
+        # anonymized `from` header instead of a GitHub user object).
+        if item_type == "email":
+            await self.upsert_email_message(doc)
+            return
+
         # Seed the Actor for the artefact author
         author_obj = doc.get("user") or {}
         if login := author_obj.get("login"):
@@ -240,11 +246,15 @@ class GraphProjector:
             parent_match = "MATCH (parent:PullRequest {repo: $repo, number: $number})"
         elif parent_type == "commit":
             parent_match = "MATCH (parent:Commit {sha: $sha})"
+        elif parent_type == "email":
+            parent_match = "MATCH (parent:EmailMessage {urn: $urn})"
         else:
             logger.warning("Unknown parent_type '%s' for TextUnit %s", parent_type, tu_id)
             return
 
         sha = parent_id.split(":")[-1] if parent_type == "commit" else None
+        # parent_id convention for emails: "email:<urn>" (urn contains ':').
+        urn = parent_id.split(":", 1)[1] if parent_type == "email" else None
 
         await self._run(
             f"""
@@ -272,7 +282,79 @@ class GraphProjector:
             repo       = repo,
             number     = number,
             sha        = sha,
+            urn        = urn,
         )
+
+    # ── Mailing-list layer (Webis Gmane) — v0.6 ───────────────────────────────
+
+    async def upsert_email_message(self, doc: dict[str, Any]) -> None:
+        """
+        Seed MailingList, Actor, and EmailMessage nodes from a raw Gmane doc.
+        Cypher template: ontology.cypher §3.13.
+
+        Threading headers (in_reply_to, references) are stored as node
+        properties; REPLIES_TO edges are created later by the enrichment pass
+        (enrichment/email_threading.py) once both ends exist — same pattern as
+        GitHub REFERENCES edges. The `from` value is anonymized by Webis; we
+        store it verbatim as the Actor login. Cross-platform identity
+        resolution (email actor ↔ GitHub actor) is explicitly out of scope.
+        """
+        urn = doc.get("urn") or ""
+        if not urn:
+            logger.warning("Email doc without urn; skipping.")
+            return
+        headers = doc.get("headers") or {}
+        group = doc.get("group") or ""
+        sender = (headers.get("from") or "").strip()
+
+        if group:
+            await self._run(
+                "MERGE (m:MailingList {name: $name})",
+                name=group,
+            )
+        if sender:
+            await self.upsert_actor(sender)
+
+        await self._run(
+            """
+            MERGE (e:EmailMessage {urn: $urn})
+              ON CREATE SET e.message_id = $message_id,
+                            e.subject = $subject,
+                            e.date = $date,
+                            e.group = $group,
+                            e.list_id = $list_id,
+                            e.in_reply_to = $in_reply_to,
+                            e.references = $references,
+                            e.lang = $lang
+            """,
+            urn=urn,
+            message_id=headers.get("message_id"),
+            subject=headers.get("subject"),
+            date=headers.get("date"),
+            group=group,
+            list_id=headers.get("list_id"),
+            in_reply_to=headers.get("in_reply_to"),
+            references=headers.get("references"),
+            lang=doc.get("lang"),
+        )
+        if group:
+            await self._run(
+                """
+                MATCH (m:MailingList {name: $group})
+                MATCH (e:EmailMessage {urn: $urn})
+                MERGE (m)-[:CONTAINS]->(e)
+                """,
+                group=group, urn=urn,
+            )
+        if sender:
+            await self._run(
+                """
+                MATCH (a:Actor {login: $sender})
+                MATCH (e:EmailMessage {urn: $urn})
+                MERGE (a)-[:AUTHORED]->(e)
+                """,
+                sender=sender, urn=urn,
+            )
 
     # ── NK-analytical layer ───────────────────────────────────────────────────
 

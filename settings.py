@@ -73,5 +73,13 @@ class Settings(BaseSettings):
     annotate_skip_bots: bool = True           # skip *[bot] authors (templated text)
     annotate_only_referenced_prs: bool = False  # PR units only if PR <-> Issue ref
 
+    # ── Mailing lists (Webis Gmane Email Corpus 2019) — v0.6 ──────────────────
+    # Which corpus segment classes become TextUnits. `quotation` MUST stay
+    # excluded by default: quoted text repeats the previous author's words, so
+    # NK signals in quotes would be duplicated across every reply of a thread
+    # and attributed to the wrong author. Signatures / patches / logs / code are
+    # not authored epistemic discourse. See CHANGELOG 2026-06-04 (v0.6).
+    email_segment_labels: list[str] = ["paragraph", "section_heading"]
+
 
 settings = Settings()

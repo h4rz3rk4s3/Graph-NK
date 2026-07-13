@@ -16,7 +16,7 @@ fixes CHANGELOG.md ⚠️ limitation 2 (signals arriving before TextUnits).
            ─ These run concurrently: annotator produces while projector consumes.
 
 Typical research workflow:
-  1. python scripts/mine_one.py --repo python/cpython OpenVoxProject/ezbake
+  1. python scripts/mine_one.py --repo python/cpython
   2. python scripts/run_pipeline.py
   3. python scripts/run_pipeline.py --enrich   (adds REFERENCES edges)
   4. jupyter lab notebooks/
@@ -98,6 +98,11 @@ async def main() -> None:
         from enrichment.reference_extractor import run_reference_enrichment
         await run_reference_enrichment()
         logger.info("=== Reference enrichment complete ===")
+
+        logger.info("=== Email threading enrichment start ===")
+        from enrichment.email_threading import run_email_threading_enrichment
+        await run_email_threading_enrichment()
+        logger.info("=== Email threading enrichment complete ===")
 
     logger.info("Pipeline done.")
 

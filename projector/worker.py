@@ -198,4 +198,5 @@ def _collection_for(item_type: str) -> str:
         "issue":        "raw_issues",
         "pull_request": "raw_pull_requests",
         "commit":       "raw_commits",
+        "email":        "raw_emails",
     }.get(item_type, "raw_misc")

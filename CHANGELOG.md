@@ -8,7 +8,74 @@ it closes or advances.*
 
 ---
 
-## 2026-06-04 — Fix: auto-apply schema (the real cause of slow Phase 1)
+## 2026-06-04 — v0.6: Mailing-list integration (Webis Gmane Email Corpus 2019)
+
+Scope expansion: NK analysis now covers mailing-list discourse alongside GitHub.
+Emails are a third artefact family in the SAME pipeline — annotators, signal
+model, projector phases, and scope filters all apply unchanged. Version 0.6.0.
+Full design rationale: FRAMEWORK_DESIGN.md §11.
+
+### Ontology
+- New nodes `MailingList {name}` (≅ Repository) and `EmailMessage {urn}`
+  (≅ Issue) with headers stored as properties; new edge `REPLIES_TO`
+  (threading). Constraints on `MailingList.name`, `EmailMessage.urn`; indexes
+  on `message_id`, `group`, `in_reply_to` (message_id is deliberately NOT
+  unique — crawled archives contain missing/duplicate ids). ontology.cypher
+  gained §3.13 templates; schema auto-applies on startup as before.
+- Actors: the anonymized `from` value is the Actor login verbatim.
+  Cross-platform identity resolution is explicitly out of scope.
+
+### TextUnit granularity for emails (amends locked decision v0-1)
+One TextUnit PER SELECTED SEGMENT using the corpus's pre-computed spans
+(role = segment label, position = span order; subject at position 0).
+Default allowlist `settings.email_segment_labels = ["paragraph",
+"section_heading"]`. **`quotation` excluded as a methodological requirement:**
+quoted text repeats the previous author's words → duplicate signals attributed
+to the wrong author across whole threads. Signatures/patches/logs/code are not
+authored epistemic discourse. Corpus `lang` is authoritative per message and
+feeds the annotation language filter directly.
+
+### New / changed code
+- `miner/gmane_ingester.py` (new): reads Gzip ES-bulk line pairs, tolerant of
+  malformed lines (logs + resyncs), filters at ingest (`--groups`, `--lang`,
+  `--max` — MANDATORY practice at 153M-email corpus scale), upserts to Mongo
+  `raw_emails` keyed on urn, publishes pointer events with `item_type="email"`,
+  `repo_name="gmane:<group>"` — the exact miner contract.
+- `extractor/text_unit_extractor.py`: `extract_from_email` (segment slicing,
+  bounds-checked; ids `email:<urn>:<label>:<pos>`); worker routes `email`.
+- `projector/graph_projector.py`: `upsert_email_message` (MailingList + Actor +
+  EmailMessage + CONTAINS/AUTHORED); Phase 0 routes emails; `upsert_text_unit`
+  gained the `EmailMessage {urn}` parent branch.
+- `enrichment/email_threading.py` (new): single batched Cypher creates
+  REPLIES_TO edges via the message_id index; reports dangling replies (parent
+  outside ingested scope). Hooked into `run_pipeline.py --enrich`.
+- `settings.email_segment_labels`.
+
+### Tests (pure-Python, run green here)
+`tests/test_email_integration.py` — 11 tests: bulk-format round-trip, malformed
+-line resync, scope filters, subject+segment extraction, **quotation-exclusion
+invariant**, id/parent conventions, out-of-bounds span tolerance, allowlist
+configurability.
+
+### ⚠️ Assumptions to verify on first contact with real data (no sample was
+available when this was built):
+- A1: records are strict line pairs (action, then source). Parser resyncs if not.
+- A2: `_id` is the URN, possibly angle-bracketed. We strip brackets.
+- A3: header names arrive lowercased as documented.
+When you get access: run the ingester with `--max 1000` on one file, check the
+counts log, run `pytest tests/test_email_integration.py`, and add ONE real
+record to the test file as a golden sample.
+
+### Usage
+```bash
+python -m miner.gmane_ingester --files data/gmane/*.gz \
+    --groups gmane.comp.python.devel --lang en --max 50000
+python scripts/run_pipeline.py --enrich
+```
+
+---
+
+
 
 ### Cause
 Phase 1 took ~40 h for 80k nodes because the Neo4j **constraints/indexes were

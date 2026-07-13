@@ -659,3 +659,74 @@ architecture. That is the design's promise.
 ---
 
 *End of design document.*
+
+---
+
+## 11. Addendum (v0.6): Mailing lists — Webis Gmane Email Corpus 2019
+
+The study scope now includes NK in mailing-list discourse, using the Webis
+Gmane Email Corpus 2019 (153M parsed & segmented emails, 14,699 lists).
+Design principle: emails are a **third artefact family inside the same
+pipeline**, not a parallel system — every downstream component (annotators,
+signals, projector phases, scope filters) applies unchanged.
+
+### 11.1 Ontology extension
+
+```
+(MailingList {name})─[:CONTAINS]──▶(EmailMessage {urn, message_id, subject,
+                                    date, group, list_id, in_reply_to,
+                                    references, lang})
+(Actor)─[:AUTHORED]──▶(EmailMessage)
+(EmailMessage)─[:HAS_TEXT {role}]──▶(TextUnit)      // role = segment label | "subject"
+(EmailMessage)─[:REPLIES_TO]──▶(EmailMessage)        // threading (enrichment)
+```
+
+- `MailingList` ≅ `Repository`; `EmailMessage` ≅ `Issue`. Keys: `name`
+  (Gmane group), `urn` (corpus UUID — unique by construction; `message_id` is
+  only indexed, since crawled archives contain missing/duplicated ids).
+- **Actors:** the anonymized `from` value becomes the `Actor.login` verbatim.
+  Cross-platform identity resolution (email actor ↔ GitHub actor) is
+  impossible on anonymized data and explicitly out of scope; per-platform
+  actor-level analyses remain valid.
+- **Threading:** `in_reply_to`/`references` are stored on the node; the
+  enrichment pass draws `REPLIES_TO` edges (parents outside the ingested scope
+  simply get none, and are countable). This is the substrate for thread-level
+  NK questions (e.g. does articulated uncertainty get resolved downthread?).
+
+### 11.2 TextUnit granularity for emails (amends locked decision v0-1)
+
+Emails use the corpus's pre-computed segments: **one TextUnit per selected
+segment** (role = segment label, position = span order; subject = position 0).
+Selected labels default to `paragraph`, `section_heading`
+(`settings.email_segment_labels`).
+
+**Excluding `quotation` is a methodological requirement, not an optimisation:**
+quoted text repeats the *previous* author's words, so any NK signal inside a
+quote would be (a) duplicated across every reply in a thread and (b) attributed
+to the wrong author. Signatures, patch bodies, logs, raw code, and other
+non-prose segments are not authored epistemic discourse and are excluded by
+default. The corpus `lang` field is authoritative for all of a message's units
+and feeds the annotator's language scope filter directly.
+
+### 11.3 Pipeline integration
+
+`miner/gmane_ingester.py` mirrors the GitHub miner's contract exactly
+(save to Mongo `raw_emails` → publish pointer event to `stream_raw` with
+`item_type="email"`, `repo_name="gmane:<group>"`). Extractor gains
+`extract_from_email`; projector Phase 0 seeds MailingList/Actor/EmailMessage;
+Phase 1's parent dispatch gains an `EmailMessage {urn}` branch; `--enrich`
+now also runs email threading.
+
+**Scale discipline:** the full corpus is ~4 orders of magnitude beyond the
+GitHub pilot. Ingest-time scoping (`--groups` allowlist, `--lang`, `--max`) is
+mandatory practice; filters run in the ingester so out-of-scope mail never
+enters MongoDB. Recommended first study: a handful of developer lists
+(e.g. one language community + one infrastructure project), English only.
+
+### 11.4 New comparative research question
+
+**RQ6 (cross-arena):** Do NK expression profiles (layer mix, marker
+distribution, classifier agreement) differ systematically between issue-tracker
+discourse and mailing-list discourse for comparable communities? The shared
+ontology makes this a single Cypher query family:
+`MATCH (u:TextUnit)<-[:HAS_TEXT]-(parent)` and group by `labels(parent)`.
