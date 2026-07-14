@@ -8,7 +8,178 @@ it closes or advances.*
 
 ---
 
-## 2026-06-04 — v0.6: Mailing-list integration (Webis Gmane Email Corpus 2019)
+## 2026-07-14 — v0.6.3: Fix diagnostic/extractor drift (the clamp wasn't visible)
+
+Re-running `scripts/diagnose_email_spans.py` after v0.6.2 showed **identical**
+numbers to before the trailing-overshoot clamp was added. Root cause: the
+clamp was written inline inside `extract_from_email`'s loop, but the
+diagnostic script computed segment validity independently via its own
+`_convert_span` + raw bounds check — it never called the clamp logic at all.
+Two code paths meant to agree had silently diverged.
+
+### Fix
+Extracted the clamp into one shared function, `_resolve_final_span(text,
+raw_begin, raw_end, convention)`, which does conversion + the
+`TRAILING_OVERSHOOT_TOLERANCE=2` clamp + the final bounds check in one place.
+`extract_from_email` and `scripts/diagnose_email_spans.py` now both call this
+exact function — they cannot drift out of sync again, because there is only
+one implementation of "is this segment valid" left to call.
+
+### Verified against the user's real report
+Reconstructed the exact 8 failing examples from the v0.6.2 diagnostic report
+(tabular/raw_code segments, each overshooting by exactly 1 character) and
+confirmed: under the OLD path (`_convert_span` + raw check) all 8 are
+invalid, matching what was reported; under the NEW shared path
+(`_resolve_final_span`) all 8/8 are now recovered, matching the fix's intent.
+
+### Files
+`extractor/text_unit_extractor.py` (`_resolve_final_span`,
+`TRAILING_OVERSHOOT_TOLERANCE`; `extract_from_email`'s loop simplified to call
+it), `scripts/diagnose_email_spans.py` (both call sites switched to the
+shared function). Tests unchanged and still 17/17 passing (behavior for
+`extract_from_email` is identical — only the diagnostic's reporting changes).
+
+### Next step
+Re-run `python scripts/diagnose_email_spans.py --sample 10000` — kept-label
+validity should now be measurably higher than 95.6%, and the "fails both
+conventions" example list should no longer show the tabular/raw_code 1-char
+cases (those are now recovered, not failing).
+
+---
+
+
+
+Ran `scripts/diagnose_email_spans.py --sample 10000` against real ingested
+Gmane data. Results and the fix they justified:
+
+### Findings
+- **Kept-label validity (paragraph + section_heading): 95.6%** (20,404/21,338)
+  — the number that actually determines research coverage, and it's good.
+  The document-level "83.9% partial" figure from the raw diagnostic output
+  was misleading exactly as expected: with ~9 segments/email, one bad
+  segment (often in a discarded label) marks a whole document "partial" even
+  when the content actually used is intact.
+- Mathematical proof (verified, not assumed): UTF-8 byte-length is never
+  shorter than char-length for any string, so `count_bytes >= count_char`
+  for every document. Consequence: a document that best-fits "char" but is
+  "partial" has segments failing **both** interpretations — i.e. NOT an
+  encoding-convention issue, contrary to what the v0.6.1 diagnostic's
+  wording implied.
+- The lowest-validity labels — `mua_signature` (50.2%), `personal_signature`
+  (74.9%), `closing` (79.0%) — are exactly the labels most likely to be the
+  LAST segment in an email. Combined with 8/8 sampled "fails-both"
+  examples showing an **exact, uniform 1-character overshoot**
+  (`end == len(text_plain) + 1`, confirmed arithmetically), this points at
+  one specific, narrow mechanism: a trailing newline present when
+  segmentation ran but stripped from the exported `text_plain` afterward.
+  Not encoding confusion, not large-scale truncation, not random
+  segmentation-model noise.
+
+### Fix
+`extract_from_email`: a segment whose converted span overshoots
+`len(text_plain)` by 1–2 characters is now clamped to the true length and
+kept, instead of being dropped entirely for one missing trailing character.
+Deliberately narrow (`_TRAILING_OVERSHOOT_TOLERANCE = 2`) so it cannot mask
+genuine truncation — a large overshoot is still rejected and logged exactly
+as before (see `test_large_overshoot_is_still_dropped_not_masked`).
+
+### Diagnostic script (`scripts/diagnose_email_spans.py`) extended
+Now reports segment-level validity (not just document-level), validity
+restricted to `email_segment_labels` (the only labels ever kept — corruption
+in discarded labels is irrelevant), a full per-label breakdown, and
+position-percentage samples of segments failing both conventions (clustering
+near 100% is the truncation/off-by-one signature this release found).
+
+### Tests
+`tests/test_email_integration.py`: 2 new tests — the confirmed 1-char
+overshoot is recovered; a 50-char overshoot is still dropped, not masked.
+17/17 passing.
+
+### Files
+`extractor/text_unit_extractor.py` (clamp in `extract_from_email`),
+`scripts/diagnose_email_spans.py` (segment/label-level reporting),
+`tests/test_email_integration.py`.
+
+---
+
+
+
+Two unrelated incidents on first contact with real ingested data (not synthetic
+test fixtures). Both are documented here in full because the debugging process
+itself surfaced a real design flaw worth remembering.
+
+### Incident 1 — "Document not found" across every collection (Mongo/Redis desync)
+**Not a code bug.** Diagnosed by decoding the ObjectId timestamps embedded in
+the failing `mongo_id`s: they were ~21–22 hours older than the read attempt,
+across every collection (issues, PRs, commits, AND emails) and both `stream_raw`
+consumers (extractor, projector Phase 0) simultaneously. Root cause: the
+person restarted docker-compose (a testing reset), which cleared MongoDB, while
+`stream_raw` — deliberately left untrimmed since the 2026-06-02 Redis-OOM fix,
+specifically because it has two consumers — kept its stale pointers into the
+now-empty Mongo. Save-before-publish contracts in both the GitHub miner and
+the Gmane ingester were re-verified intact; no code path deletes or expires
+documents. Resolution: re-mine/re-ingest so Mongo and the stream_raw backlog
+are consistent again. No code change — an operational/data-consistency
+incident, not a defect.
+
+### Incident 2 — Email segment spans out of bounds (real Gmane data)
+Webis documents Gmane segments as "character spans," but real corpus records
+produced `segment span out of bounds` on `extract_from_email`, including spans
+that were small AND early (ruling out simple cumulative drift over a long
+document as the sole explanation).
+
+**Design process (kept here because it matters):** the first fix attempted
+per-segment fallback (try char offsets, then UTF-8 byte offsets, then UTF-16
+code-unit offsets — the last covers JVM/JS segmentation runtimes where a
+codepoint outside the BMP is 2 "chars"). A test written to validate this
+caught a real flaw: on a long document, a byte-offset span with small drift
+can coincidentally still satisfy the naive char bounds check, so the
+per-segment resolver would silently return the WRONG substring with no error
+at all — worse than the visible bug it was meant to fix.
+
+**Fix:** offset convention is a property of the whole document (one
+segmentation pass produced it), not of an individual segment, so
+`_resolve_email_offset_convention` determines the best-fit convention by
+**majority vote across all of a document's segments** and applies it
+uniformly. An isolated segment that still fails under the document's winning
+convention is treated as a data-quality outlier and skipped individually — it
+does not override the vote. This was itself refined once more after a second
+test failure (an all-or-nothing "every segment must agree" version incorrectly
+let one corrupt segment take down an otherwise-valid document).
+
+**Known limitation, stated plainly:** detection is bounds-based, so it can
+only distinguish conventions when cumulative drift exceeds a segment's
+document length by the point some segment is checked. This is guaranteed true
+for every email currently producing a visible "out of bounds" warning (that
+visibility IS the proof drift was large enough) — so the fix is verified
+correct exactly where it's needed. It is NOT guaranteed for a hypothetical
+email where drift exists but stays small relative to a long document — such a
+case would produce no warning and could theoretically still misalign
+slightly, both before and after this fix (a pre-existing, bounds-checking-
+inherent blind spot, not something this change introduces or worsens).
+
+### New
+- `scripts/diagnose_email_spans.py` — run against already-ingested `raw_emails`
+  to get a real, quantified answer (not a guess) for which convention your
+  corpus actually needs, and how many documents have a "clean" vs. "partial"
+  majority fit. Usage: `python scripts/diagnose_email_spans.py --sample 500`.
+- `tests/test_email_integration.py`: 4 new tests, including the two regression
+  tests that caught the per-segment and all-or-nothing design flaws during
+  development (kept as permanent regression coverage, not just scratch tests).
+
+### Files
+`extractor/text_unit_extractor.py` (`_resolve_email_offset_convention`,
+`_convert_span`; segment loop in `extract_from_email` rewritten),
+`scripts/diagnose_email_spans.py` (new), `tests/test_email_integration.py`.
+
+### Recommended next step
+Run `python scripts/diagnose_email_spans.py --sample 1000` against your
+ingested corpus. It reuses the exact same detection function the extractor
+uses, so its report is ground truth for your data, not speculation.
+
+---
+
+
 
 Scope expansion: NK analysis now covers mailing-list discourse alongside GitHub.
 Emails are a third artefact family in the SAME pipeline — annotators, signal

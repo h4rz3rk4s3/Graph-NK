@@ -156,3 +156,135 @@ def test_segment_allowlist_is_configurable(monkeypatch):
     monkeypatch.setattr(s, "email_segment_labels", ["paragraph", "closing"])
     units = _extract()
     assert [u.role for u in units] == ["subject", "paragraph", "closing"]
+
+
+# ── Offset-convention detection (v0.6.1) ──────────────────────────────────────
+# Real Gmane data produced "segment span out of bounds" despite Webis
+# documenting these as character spans (see CHANGELOG 2026-07-14, v0.6.1).
+# extract_from_email detects, per EMAIL, which single offset convention makes
+# every one of that email's segments valid, and applies it uniformly — rather
+# than guessing per segment, which has a real silent-corruption failure mode
+# (see test_document_level_detection_avoids_silent_misalignment below).
+
+def _email_with_segments(text: str, spans: list[tuple[int, int, str]]) -> dict:
+    """Build a minimal email doc with given (begin, end, label) segments."""
+    return {
+        "urn": "urn:uuid:offset-test",
+        "headers": {"subject": "test", "from": "anon-1", "date": "2019-01-01"},
+        "text_plain": text,
+        "lang": "en",
+        "group": "gmane.test",
+        "segments": [{"begin": b, "end": e, "label": lbl} for b, e, lbl in spans],
+    }
+
+
+def test_char_offsets_used_as_is_when_valid():
+    text = "Hello world, this is a test."
+    doc = _email_with_segments(text, [(0, 5, "paragraph")])
+    from extractor.text_unit_extractor import extract_from_email
+    units = extract_from_email(doc, repo="gmane:x")
+    para = [u for u in units if u.role == "paragraph"][0]
+    assert para.text == "Hello"
+
+
+def test_utf8_byte_offset_convention_recovered_for_whole_email():
+    """All segments in a document encoded as UTF-8 byte offsets (e.g. a
+    byte-counting segmenter) must all be recovered correctly, including ones
+    early in the document with only small drift."""
+    words = ["alpha", "bravo", "charlie", "delta"]
+    text = " — ".join(words) + " end."  # em-dash: 3 UTF-8 bytes, 1 codepoint
+
+    def byte_span(word):
+        cb = text.index(word)
+        ce = cb + len(word)
+        return len(text[:cb].encode("utf-8")), len(text[:ce].encode("utf-8"))
+
+    doc = _email_with_segments(text, [(*byte_span(w), "paragraph") for w in words])
+    from extractor.text_unit_extractor import extract_from_email
+    units = extract_from_email(doc, repo="gmane:x")
+    recovered = [u.text for u in units if u.role == "paragraph"]
+    assert recovered == words, f"expected {words}, got {recovered}"
+
+
+def test_document_level_detection_avoids_silent_misalignment():
+    """
+    Regression test for a real design flaw caught during development: a
+    naive PER-SEGMENT resolver that tries 'char' first and accepts whatever
+    is in-bounds will, for an early segment with only small byte-offset
+    drift, silently accept the WRONG (misaligned) substring — because the
+    wrong interpretation still happens to fall within the document's length.
+    Document-level majority-vote detection avoids this: the early segment
+    alone can't be told apart from a truly char-offset one, but its later
+    siblings in the SAME document accumulate enough byte-offset drift to
+    exceed the document's length under naive char reading, which forces the
+    correct convention — and that convention is then applied uniformly,
+    correcting the early segment too even though it looked fine in isolation.
+
+    (Detection is bounds-based, so it necessarily needs cumulative drift to
+    exceed the document's own length by the time of some segment — exactly
+    the condition met by every email in the real corpus that is currently
+    producing "segment span out of bounds" warnings. See CHANGELOG
+    2026-07-14, v0.6.1, for the documented limitation this implies for
+    documents where drift never gets that large.)
+    """
+    # 20 repetitions of an em-dash (3 UTF-8 bytes, 1 codepoint) between
+    # "alpha" and the rest accumulate +40 bytes of drift — enough to push
+    # later byte-offset segments past this (short) document's char length.
+    noise = " — x" * 20
+    text = "alpha" + noise + " bravo charlie delta end."
+
+    def byte_span(word: str, occurrence: int = 0) -> tuple[int, int]:
+        idx = -1
+        for _ in range(occurrence + 1):
+            idx = text.index(word, idx + 1)
+        return len(text[:idx].encode("utf-8")), len(text[:idx + len(word)].encode("utf-8"))
+
+    early = byte_span("alpha")   # drift = 0 here; would "validate" under ANY convention
+    late = byte_span("delta")    # drift is large enough to force correct detection
+
+    doc = _email_with_segments(text, [(*early, "paragraph"), (*late, "paragraph")])
+    from extractor.text_unit_extractor import extract_from_email
+    units = extract_from_email(doc, repo="gmane:x")
+    paragraphs = [u.text for u in units if u.role == "paragraph"]
+    assert "alpha" in paragraphs, f"early segment was silently misaligned: got {paragraphs}"
+    assert "delta" in paragraphs, f"late segment failed to resolve: got {paragraphs}"
+
+
+def test_isolated_bad_segment_dropped_without_losing_valid_siblings():
+    """When most of a document's segments agree on one convention, a single
+    outlier segment that fits NO convention is dropped individually — it must
+    not take down the other, genuinely valid segments in the same document
+    (majority-vote design; see CHANGELOG 2026-07-14 v0.6.1)."""
+    text = "short"
+    doc = _email_with_segments(text, [(0, 3, "paragraph"), (9999, 10005, "paragraph")])
+    from extractor.text_unit_extractor import extract_from_email
+    units = extract_from_email(doc, repo="gmane:x")
+    roles_and_text = [(u.role, u.text) for u in units]
+    assert ("paragraph", "sho") in roles_and_text  # the valid segment survives
+    assert len(units) == 2  # subject + the one valid paragraph; bad one dropped
+
+
+def test_trailing_one_char_overshoot_is_recovered_not_dropped():
+    """Confirmed against real corpus data (v0.6.2): a segment ending exactly
+    1 character past text_plain's length — almost always a trailing newline
+    present when segmentation ran but stripped from the exported text — is
+    recovered by clamping to the true length, rather than discarding the
+    whole segment for one missing character."""
+    text = "Not sure if this is expected behavior or a bug."
+    doc = _email_with_segments(text, [(0, len(text) + 1, "paragraph")])  # off-by-one
+    from extractor.text_unit_extractor import extract_from_email
+    units = extract_from_email(doc, repo="gmane:x")
+    paragraphs = [u.text for u in units if u.role == "paragraph"]
+    assert paragraphs == [text], f"expected recovered full text, got {paragraphs}"
+
+
+def test_large_overshoot_is_still_dropped_not_masked():
+    """The trailing-overshoot clamp is deliberately narrow (<=2 chars) so it
+    cannot hide genuine truncation — a segment that's meaningfully cut off
+    must still be skipped and warned about, not silently accepted."""
+    text = "Short paragraph."
+    doc = _email_with_segments(text, [(0, len(text) + 50, "paragraph")])  # big overshoot
+    from extractor.text_unit_extractor import extract_from_email
+    units = extract_from_email(doc, repo="gmane:x")
+    assert [u.role for u in units] == ["subject"]  # paragraph correctly dropped
+

@@ -283,6 +283,113 @@ def _commit_author(doc: dict) -> str | None:
     return commit_author.get("name")
 
 
+def _resolve_email_offset_convention(text: str, segments: list[dict]) -> tuple[str, int, int]:
+    """
+    Determine which offset convention — "char", "utf8_bytes", or
+    "utf16_units" — is MOST CONSISTENT with this document's segments, and
+    return (convention, n_segments_valid_under_it, n_segments_total).
+
+    Uses MAJORITY agreement, not unanimous agreement: a single malformed or
+    corrupt segment (a genuine data-quality outlier) should not prevent the
+    OTHER, mutually-consistent segments in the same document from being
+    recovered correctly. The winning convention is applied uniformly to every
+    segment; any segment that still fails to validate under the winning
+    convention is treated as an isolated issue and skipped individually by
+    the caller — it is not evidence against the chosen convention.
+
+    Why per-document at all, rather than per-segment: the offset convention
+    is produced by one segmentation pass over one document, so it is
+    consistent across a document's segments. Picking a convention by
+    majority vote across ALL of a document's segments — rather than asking
+    "is THIS segment in bounds?" one at a time — is what avoids a real
+    failure mode: an early segment with only small byte-offset drift can
+    coincidentally still fall in-bounds under the WRONG convention on a long
+    document, silently returning misaligned text with no error at all. Vote
+    across every segment and that early segment's neighbours pull the
+    decision the right way. See CHANGELOG 2026-07-14 (v0.6.1) and the
+    regression test test_document_level_detection_avoids_silent_misalignment.
+
+    Ties favour "char" (Webis's documented convention) over "utf8_bytes"
+    (the next most common real-world cause) over "utf16_units" (rarer
+    surrogate-pair drift, e.g. from a JVM/JS segmentation runtime).
+    """
+    spans = [
+        (s.get("begin"), s.get("end")) for s in segments
+        if isinstance(s.get("begin"), int) and isinstance(s.get("end"), int)
+           and s.get("end") > s.get("begin") >= 0
+    ]
+    if not spans:
+        return "char", 0, 0
+
+    candidates = [
+        ("char", len(text)),
+        ("utf8_bytes", len(text.encode("utf-8"))),
+        ("utf16_units", len(text.encode("utf-16-le")) // 2),
+    ]
+    best_name, best_count = "char", -1
+    for name, limit in candidates:
+        count = sum(1 for _begin, end in spans if end <= limit)
+        if count > best_count:
+            best_name, best_count = name, count
+    return best_name, best_count, len(spans)
+
+
+def _convert_span(text: str, begin: int, end: int, convention: str) -> tuple[int, int]:
+    """Convert a (begin, end) span expressed in `convention` units to Python
+    codepoint indices into `text`. `convention == "char"` is the identity."""
+    if convention == "char":
+        return begin, end
+    if convention == "utf8_bytes":
+        encoded = text.encode("utf-8")
+        return (
+            len(encoded[:begin].decode("utf-8", errors="ignore")),
+            len(encoded[:end].decode("utf-8", errors="ignore")),
+        )
+    if convention == "utf16_units":
+        encoded16 = text.encode("utf-16-le")
+        return (
+            len(encoded16[: begin * 2].decode("utf-16-le", errors="ignore")),
+            len(encoded16[: end * 2].decode("utf-16-le", errors="ignore")),
+        )
+    raise ValueError(f"Unknown offset convention: {convention}")
+
+
+# Tolerance for the trailing-overshoot clamp below. Confirmed against real
+# corpus data (scripts/diagnose_email_spans.py, CHANGELOG 2026-07-14 v0.6.2):
+# a segment reaching the very end of a document sometimes overshoots
+# len(text_plain) by exactly 1-2 characters — a trailing newline present when
+# segmentation ran but stripped from the exported text_plain afterward, not
+# truncation. Kept small and deliberate so it can't mask genuine truncation.
+TRAILING_OVERSHOOT_TOLERANCE = 2
+
+
+def _resolve_final_span(
+    text: str, raw_begin: Any, raw_end: Any, convention: str
+) -> tuple[int, int] | None:
+    """
+    Convert a raw segment span under `convention` and apply the trailing-
+    overshoot clamp, returning Python codepoint indices ready for
+    `text[begin:end]`, or None if the segment is invalid even after
+    conversion and clamping.
+
+    SINGLE SOURCE OF TRUTH: extract_from_email and
+    scripts/diagnose_email_spans.py both call this exact function, so the
+    diagnostic's report is always guaranteed to match what extraction
+    actually does — no risk of the two drifting out of sync (as happened in
+    v0.6.2, where the clamp was only added inline in extract_from_email and
+    the diagnostic kept reporting pre-clamp numbers).
+    """
+    if not (isinstance(raw_begin, int) and isinstance(raw_end, int) and raw_end > raw_begin >= 0):
+        return None
+    begin, end = _convert_span(text, raw_begin, raw_end, convention)
+    n = len(text)
+    if 0 <= begin < n < end <= n + TRAILING_OVERSHOOT_TOLERANCE:
+        end = n
+    if not (0 <= begin < end <= n):
+        return None
+    return begin, end
+
+
 def extract_from_email(doc: dict, repo: str) -> list[TextUnit]:
     """
     Extract TextUnits from a Webis Gmane email document (v0.6).
@@ -336,14 +443,31 @@ def extract_from_email(doc: dict, repo: str) -> list[TextUnit]:
         key=lambda s: (s.get("begin", 0), s.get("end", 0)),
     )
     pos = 1
+    convention, n_valid, n_total = _resolve_email_offset_convention(text_plain, list(segments))
+    if n_total and n_valid < n_total:
+        level = logger.warning if n_valid / n_total < 0.5 else logger.debug
+        level(
+            "email %s: best-fit offset convention '%s' validates %d/%d segments "
+            "(the rest are treated as isolated data-quality issues and skipped "
+            "individually below). Run scripts/diagnose_email_spans.py if this "
+            "recurs often.", urn, convention, n_valid, n_total,
+        )
+    elif convention != "char":
+        logger.debug("email %s: segments use %s offsets (converted uniformly)", urn, convention)
+
     for seg in segments:
         label = seg.get("label", "")
         if label not in allowed:
             continue
-        begin, end = seg.get("begin"), seg.get("end")
-        if not (isinstance(begin, int) and isinstance(end, int) and 0 <= begin < end <= len(text_plain)):
-            logger.warning("email %s: segment span out of bounds (%s..%s); skipping", urn, begin, end)
+        raw_begin, raw_end = seg.get("begin"), seg.get("end")
+        resolved = _resolve_final_span(text_plain, raw_begin, raw_end, convention)
+        if resolved is None:
+            logger.warning(
+                "email %s: segment (%s..%s) invalid even under best-fit "
+                "convention '%s'; skipping.", urn, raw_begin, raw_end, convention,
+            )
             continue
+        begin, end = resolved
         u = _make_unit(
             parent_id=parent_id, parent_type="email", repo=repo,
             parent_number=None, role=label, position=pos,
