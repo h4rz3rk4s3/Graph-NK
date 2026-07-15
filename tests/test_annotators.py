@@ -7,13 +7,28 @@ Rules (AGENTS.md §4):
   - No external services (Neo4j, Redis, Mongo) required.
   - These tests do NOT cover infrastructure; they cover linguistic correctness.
 
+⚠️ v0.2 STATUS (MARKER_REVIEW.md upgrade — see CHANGELOG): the two assertions
+that were PROVABLY stale against v0.2's rule changes (seem/appear moved
+modality→evidential per C-6; rhetor.comparison.kind_of removed per C-5) have
+been corrected below, verified by direct inspection of the v0.2 YAML pattern
+text. The remaining assertions are believed still correct by the same kind of
+manual tracing, but this file was NOT re-run against real spaCy while making
+these changes (spaCy is unavailable in the dev sandbox — same constraint as
+the v0.5 speed pass). In particular, the NEW DependencyMatcher-scoped rules
+(morph.epi.*, morph.hedge.shield_*, morph.neg.scoped_epistemic,
+morph.tense.past_nk_notyet) and the lexical POS-disambiguation fix have zero
+automated coverage here yet — run `pytest tests/test_annotators.py -v` with
+spaCy installed before trusting this file, and add golden examples for the
+DependencyMatcher rules (none exist yet; see tests/test_word_formation_rules.py
+for what pure-Python coverage looks like for the parts that don't need spaCy).
+
 Run:  pytest tests/test_annotators.py -v
 """
 from __future__ import annotations
 
 import pytest
 
-from tests.conftest import make_unit
+from tests.conftest import make_unit, run
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -21,9 +36,9 @@ from tests.conftest import make_unit
 # ─────────────────────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="module")
-def lexicon_ann():
+def lexicon_ann(nlp):
     from annotators.lexical import LexiconAnnotator
-    return LexiconAnnotator()
+    return LexiconAnnotator(nlp)
 
 
 @pytest.mark.parametrize("text, expected_rule_ids", [
@@ -43,17 +58,17 @@ def lexicon_ann():
     ("The implementation works correctly.",              []),
     ("All tests pass on the main branch.",               []),
 ])
-def test_lexicon_annotator(lexicon_ann, text, expected_rule_ids):
-    signals = lexicon_ann.annotate(make_unit(text))
+def test_lexicon_annotator(nlp, lexicon_ann, text, expected_rule_ids):
+    signals = run(lexicon_ann, nlp, text)
     result_ids = sorted(s.rule_id for s in signals)
     assert result_ids == sorted(expected_rule_ids), (
         f"Text: {text!r}\nExpected: {sorted(expected_rule_ids)}\nGot: {result_ids}"
     )
 
 
-def test_lexicon_signal_has_provenance(lexicon_ann):
+def test_lexicon_signal_has_provenance(nlp, lexicon_ann):
     """Every Signal must carry rule_id, rule_version, and non-empty payload."""
-    signals = lexicon_ann.annotate(make_unit("I'm unsure about the root cause."))
+    signals = run(lexicon_ann, nlp, "I'm unsure about the root cause.")
     assert signals, "Expected at least one signal"
     for sig in signals:
         assert sig.rule_id.startswith("lex."), f"Bad rule_id: {sig.rule_id}"
@@ -67,9 +82,9 @@ def test_lexicon_signal_has_provenance(lexicon_ann):
 # ─────────────────────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="module")
-def morpho_ann():
+def morpho_ann(nlp):
     from annotators.morpho_syntactic import SpacyMorphoAnnotator
-    return SpacyMorphoAnnotator()
+    return SpacyMorphoAnnotator(nlp)
 
 
 def _categories(signals):
@@ -86,7 +101,8 @@ def _rule_ids(signals):
     # modality
     ("This might be a race condition.",                 {"modality"}),
     ("We should fix the root cause, not the symptom.",  {"modality"}),
-    ("It seems to only happen under load.",              {"modality"}),
+    # evidential (v0.2 C-6: seem/appear moved OUT of modality — was mislabelled quasi_modal in v0.1)
+    ("It seems to only happen under load.",              {"evidential"}),
     # hedging
     ("Perhaps the timeout is too short.",               {"hedging"}),
     ("This is kind of hard to reproduce.",              {"hedging"}),
@@ -95,8 +111,8 @@ def _rule_ids(signals):
     # no signal expected
     ("Everything is working as expected.",              set()),
 ])
-def test_morpho_annotator_categories(morpho_ann, text, expected_categories):
-    signals = morpho_ann.annotate(make_unit(text))
+def test_morpho_annotator_categories(nlp, morpho_ann, text, expected_categories):
+    signals = run(morpho_ann, nlp, text)
     result_cats = _categories(signals)
     for cat in expected_categories:
         assert cat in result_cats, (
@@ -104,18 +120,18 @@ def test_morpho_annotator_categories(morpho_ann, text, expected_categories):
         )
 
 
-def test_morpho_question_answer_detection(morpho_ann):
+def test_morpho_question_answer_detection(nlp, morpho_ann):
     """A TextUnit with both a question and a declarative triggers question_answer."""
     text = "Why does this only happen on Linux? It seems related to the kernel version."
-    signals = morpho_ann.annotate(make_unit(text))
+    signals = run(morpho_ann, nlp, text)
     rule_ids = _rule_ids(signals)
     assert "morph.syn.question_answer" in rule_ids, (
         f"Expected question_answer signal. Got: {rule_ids}"
     )
 
 
-def test_morpho_signal_provenance(morpho_ann):
-    signals = morpho_ann.annotate(make_unit("This might not work correctly."))
+def test_morpho_signal_provenance(nlp, morpho_ann):
+    signals = run(morpho_ann, nlp, "This might not work correctly.")
     for sig in signals:
         assert sig.rule_id.startswith("morph."), f"Bad rule_id prefix: {sig.rule_id}"
         assert sig.rule_version
@@ -127,9 +143,9 @@ def test_morpho_signal_provenance(morpho_ann):
 # ─────────────────────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="module")
-def affix_ann():
+def affix_ann(nlp):
     from annotators.word_formation import AffixAnnotator
-    return AffixAnnotator()
+    return AffixAnnotator(nlp)
 
 
 @pytest.mark.parametrize("text, expected_rule_ids_subset", [
@@ -146,8 +162,8 @@ def affix_ann():
     # blocklist: 'interface' must NOT fire
     ("The interface is stable.",                        []),
 ])
-def test_affix_annotator(affix_ann, text, expected_rule_ids_subset):
-    signals = affix_ann.annotate(make_unit(text))
+def test_affix_annotator(nlp, affix_ann, text, expected_rule_ids_subset):
+    signals = run(affix_ann, nlp, text)
     result_ids = [s.rule_id for s in signals]
     for expected in expected_rule_ids_subset:
         assert expected in result_ids, (
@@ -155,10 +171,10 @@ def test_affix_annotator(affix_ann, text, expected_rule_ids_subset):
         )
 
 
-def test_affix_blocklist_works(affix_ann):
+def test_affix_blocklist_works(nlp, affix_ann):
     """Common SE terms that start with a blocked prefix must not produce signals."""
     for word in ["interface", "internal", "input", "index"]:
-        signals = affix_ann.annotate(make_unit(f"The {word} is fine."))
+        signals = run(affix_ann, nlp, f"The {word} is fine.")
         rule_ids = [s.rule_id for s in signals]
         assert "affix.prefix.in" not in rule_ids, (
             f"'{word}' should be blocklisted but fired affix.prefix.in"
@@ -170,9 +186,9 @@ def test_affix_blocklist_works(affix_ann):
 # ─────────────────────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="module")
-def rhetor_ann():
+def rhetor_ann(nlp):
     from annotators.rhetorical import RhetoricalAnnotator
-    return RhetoricalAnnotator()
+    return RhetoricalAnnotator(nlp)
 
 
 @pytest.mark.parametrize("text, expected_figure_ids", [
@@ -182,13 +198,15 @@ def rhetor_ann():
     ("Concurrency bugs are a classic blind spot.",        ["rhetor.metaphor.visibility.blind_spot"]),
     # gap metaphor
     ("There is a knowledge gap in the test coverage.",   ["rhetor.metaphor.gap.knowledge_gap"]),
-    # comparison approximator
-    ("This feels like a kind of race condition.",        ["rhetor.comparison.kind_of"]),
+    # comparison approximator (v0.2 C-5: rhetor.comparison.kind_of REMOVED —
+    # "kind of" lives in morpho hedging only now. This sentence still fires
+    # rhetor.comparison.something_like via "feels like".)
+    ("This feels like a kind of race condition.",        ["rhetor.comparison.something_like"]),
     # no rhetorical signal
     ("The fix was merged into main yesterday.",          []),
 ])
-def test_rhetorical_annotator(rhetor_ann, text, expected_figure_ids):
-    signals = rhetor_ann.annotate(make_unit(text))
+def test_rhetorical_annotator(nlp, rhetor_ann, text, expected_figure_ids):
+    signals = run(rhetor_ann, nlp, text)
     result_figure_ids = [s.payload.get("figure_id") for s in signals]
     for fid in expected_figure_ids:
         assert fid in result_figure_ids, (
@@ -196,9 +214,9 @@ def test_rhetorical_annotator(rhetor_ann, text, expected_figure_ids):
         )
 
 
-def test_rhetorical_signal_has_figure_payload(rhetor_ann):
+def test_rhetorical_signal_has_figure_payload(nlp, rhetor_ann):
     """Rhetorical signals must carry figure_id and family in payload for INSTANTIATES edge."""
-    signals = rhetor_ann.annotate(make_unit("This is a real blind spot for the team."))
+    signals = run(rhetor_ann, nlp, "This is a real blind spot for the team.")
     assert signals
     for sig in signals:
         assert sig.payload.get("figure_id"), "Missing figure_id in payload"
@@ -207,15 +225,15 @@ def test_rhetorical_signal_has_figure_payload(rhetor_ann):
         assert sig.layer == "rhetorical"
 
 
-def test_intentional_double_count(lexicon_ann, rhetor_ann):
+def test_intentional_double_count(nlp, lexicon_ann, rhetor_ann):
     """
     'blind spot' must produce BOTH a lexical and a rhetorical signal.
     This is intentional — the two signals have different categorical meanings.
     See AGENTS.md §3.3 and FRAMEWORK_DESIGN.md §5 Module 3d.
     """
     text = "This is a serious blind spot in the architecture."
-    lex_signals    = lexicon_ann.annotate(make_unit(text))
-    rhetor_signals = rhetor_ann.annotate(make_unit(text))
+    lex_signals    = run(lexicon_ann, nlp, text)
+    rhetor_signals = run(rhetor_ann, nlp, text)
     lex_ids    = [s.rule_id for s in lex_signals]
     rhetor_ids = [s.rule_id for s in rhetor_signals]
     assert "lex.blind_spot" in lex_ids, "Lexical blind_spot signal missing"

@@ -1,0 +1,246 @@
+# patterns/rhetorical_v0.2.yml
+#
+# Successor to rhetorical_v0.1.yml. See MARKER_REVIEW.md.
+# Grounded in: Simmerling & Janich 2015; Smithson 2008. SE-metaphor additions
+# grounded in the same conceptual-metaphor framing (NK as unseen / unexplored /
+# hidden space), extended to idioms attested in SE discourse.
+#
+# CHANGES vs v0.1:
+#   - C-5: removed rhetor.comparison.kind_of (it is redundant with the hedging
+#     layer's approximator; kept ONLY in morpho_syntactic_v0.2). rhetor.comparison.
+#     something_like stays (a distinct explicit-comparison figure).
+#   - ADDED opacity (black box / magic / voodoo), fog/obscurity, depth (tip of the
+#     iceberg / rabbit hole / down the rabbit hole), and can-of-worms families —
+#     SE-frequent and requested under task (3) 'extend'.
+#   - Added optional weight/status fields (loader may ignore).
+#
+# Note: 'blind spot' is intentionally ALSO in the lexicon (fixed_phrase). The two
+# Signals carry different categorical meaning and distinct rule_ids — do not dedupe
+# (BUILD_SPEC M8). That double-count is by design; the kind_of one (C-5) was not.
+
+version: "0.2"
+
+figures:
+
+  # ── Spatial / journey metaphors (retained from v0.1) ───────────────────────
+  - figure_id: "rhetor.metaphor.spatial.uncharted"
+    family: "metaphor"
+    subtype: "spatial_journey"
+    description: "Uncharted / unmapped — spatial journey framing of NK"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.spatial.uncharted"
+    weight: 0.75
+    status: "active"
+    patterns:
+      - [{LOWER: "uncharted"}]
+      - [{LOWER: "unmapped"}]
+      - [{LOWER: "terra"}, {LOWER: "incognita"}]
+
+  - figure_id: "rhetor.metaphor.spatial.new_territory"
+    family: "metaphor"
+    subtype: "spatial_journey"
+    description: "Stepping into / entering new/unknown territory"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.spatial.new_territory"
+    weight: 0.65
+    status: "active"
+    patterns:
+      - [{LOWER: {IN: ["stepping", "venturing", "moving"]}}, {LOWER: "into"}, {LOWER: {IN: ["unknown", "new", "uncharted"]}}]
+      - [{LOWER: "new"}, {LOWER: {IN: ["territory", "terrain", "ground"]}}]
+      - [{LOWER: "unknown"}, {LOWER: {IN: ["territory", "terrain", "ground"]}}]
+
+  # ── Visibility metaphors (retained from v0.1) ──────────────────────────────
+  - figure_id: "rhetor.metaphor.visibility.blind_spot"
+    family: "metaphor"
+    subtype: "visibility"
+    description: "Blind spot — canonical visibility metaphor for NK"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.visibility.blind_spot"
+    weight: 0.8
+    status: "active"
+    patterns:
+      - [{LOWER: "blind"}, {LOWER: "spot"}]
+      - [{LOWER: "blind"}, {LOWER: "spots"}]
+
+  - figure_id: "rhetor.metaphor.visibility.dark"
+    family: "metaphor"
+    subtype: "visibility"
+    description: "In the dark / shot in the dark — inability to see the situation"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.visibility.dark"
+    weight: 0.7
+    status: "active"
+    patterns:
+      - [{LOWER: "in"}, {LOWER: "the"}, {LOWER: "dark"}]
+      - [{LOWER: "shot"}, {LOWER: "in"}, {LOWER: "the"}, {LOWER: "dark"}]
+      - [{LOWER: "dark"}, {LOWER: {IN: ["area", "zone", "corner"]}}]
+
+  - figure_id: "rhetor.metaphor.visibility.overlook"
+    family: "metaphor"
+    subtype: "visibility"
+    description: "Overlook / miss — failure-of-sight framing"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.visibility.overlook"
+    weight: 0.55
+    status: "candidate"
+    patterns:
+      - [{LEMMA: "overlook", POS: "VERB"}]
+      - [{LOWER: "easy"}, {LOWER: "to"}, {LOWER: "miss"}]
+
+  # ── Gap / container metaphors (retained from v0.1) ─────────────────────────
+  - figure_id: "rhetor.metaphor.gap.knowledge_gap"
+    family: "metaphor"
+    subtype: "container"
+    description: "Knowledge gap / research gap — NK as a void in a container"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.gap.knowledge_gap"
+    weight: 0.8
+    status: "active"
+    patterns:
+      - [{LOWER: "knowledge"}, {LOWER: {IN: ["gap", "gaps", "hole", "holes"]}}]
+      - [{LOWER: "research"}, {LOWER: {IN: ["gap", "gaps"]}}]
+      - [{LOWER: "information"}, {LOWER: {IN: ["gap", "gaps"]}}]
+
+  - figure_id: "rhetor.metaphor.gap.missing_piece"
+    family: "metaphor"
+    subtype: "container"
+    description: "Missing piece / part — container fragment metaphor"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.metaphor.gap.missing_piece"
+    weight: 0.65
+    status: "active"
+    patterns:
+      - [{LOWER: "missing"}, {LOWER: {IN: ["piece", "part", "link", "step"]}}]
+
+  # ── Comparison / approximator (C-5: kind_of REMOVED; something_like kept) ───
+  - figure_id: "rhetor.comparison.something_like"
+    family: "comparison"
+    subtype: "approximator"
+    description: "Something like / looks like / acts like — approximative framing"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.comparison.something_like"
+    weight: 0.5
+    status: "active"
+    patterns:
+      - [{LOWER: "something"}, {LOWER: "like"}]
+      - [{LOWER: "looks"}, {LOWER: "like"}]
+      - [{LOWER: "feels"}, {LOWER: "like"}]
+      - [{LOWER: "acts"}, {LOWER: "like"}]
+  # NOTE: rhetor.comparison.kind_of (v0.1) intentionally deleted — see MARKER_REVIEW C-5.
+  # "kind of / sort of / type of" is now scored ONLY as morph.hedge.approximator_kind_of.
+
+  # ── Personification figures (retained from v0.1) ───────────────────────────
+  - figure_id: "rhetor.personification.poor_cousin"
+    family: "personification"
+    subtype: "poor_cousin"
+    description: "'Poor cousin of X' — personification expressing relative neglect"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.personification.poor_cousin"
+    weight: 0.5
+    status: "candidate"
+    patterns:
+      - [{LOWER: "poor"}, {LOWER: "cousin"}]
+      - [{LOWER: "poor"}, {LOWER: {IN: ["relative", "sibling", "relation"]}}]
+
+  - figure_id: "rhetor.personification.elephant_room"
+    family: "personification"
+    subtype: "avoidance"
+    description: "Elephant in the room — acknowledged but unaddressed NK"
+    source: "Simmerling & Janich 2015"
+    rule_id: "rhetor.personification.elephant_room"
+    weight: 0.7
+    status: "active"
+    patterns:
+      - [{LOWER: "elephant"}, {LOWER: "in"}, {LOWER: "the"}, {LOWER: "room"}]
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NEW — Opacity metaphors (NK as inability to see INSIDE). SE-frequent.
+  # ═══════════════════════════════════════════════════════════════════════════
+  - figure_id: "rhetor.metaphor.opacity.black_box"
+    family: "metaphor"
+    subtype: "opacity"
+    description: "Black box — internal workings unknown/opaque"
+    source: "Simmerling & Janich 2015 (container); SE idiom"
+    rule_id: "rhetor.metaphor.opacity.black_box"
+    weight: 0.7
+    status: "active"
+    patterns:
+      - [{LOWER: "black"}, {LOWER: {IN: ["box", "boxes"]}}]
+      - [{LOWER: "opaque"}]
+
+  - figure_id: "rhetor.metaphor.opacity.magic"
+    family: "metaphor"
+    subtype: "opacity"
+    description: "Magic / voodoo / black art — mechanism not understood"
+    source: "SE idiom (opacity framing)"
+    rule_id: "rhetor.metaphor.opacity.magic"
+    weight: 0.55
+    status: "candidate"
+    patterns:
+      - [{LOWER: "some"}, {LOWER: "magic"}]
+      - [{LOWER: {IN: ["voodoo", "witchcraft", "wizardry"]}}]
+      - [{LOWER: "black"}, {LOWER: {IN: ["art", "magic", "arts"]}}]
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NEW — Fog / obscurity (NK as clouded perception).
+  # ═══════════════════════════════════════════════════════════════════════════
+  - figure_id: "rhetor.metaphor.obscurity.fog"
+    family: "metaphor"
+    subtype: "obscurity"
+    description: "Foggy / murky / hazy / cloudy — perception clouded"
+    source: "Simmerling & Janich 2015 (visibility family, extended)"
+    rule_id: "rhetor.metaphor.obscurity.fog"
+    weight: 0.6
+    status: "candidate"
+    patterns:
+      - [{LOWER: {IN: ["foggy", "murky", "hazy", "cloudy", "fuzzy", "nebulous"]}}]
+      - [{LOWER: "a"}, {LOWER: "bit"}, {LOWER: {IN: ["fuzzy", "hazy"]}}]
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NEW — Depth / hidden-extent metaphors (unknown scale beneath the surface).
+  # ═══════════════════════════════════════════════════════════════════════════
+  - figure_id: "rhetor.metaphor.depth.iceberg"
+    family: "metaphor"
+    subtype: "hidden_extent"
+    description: "Tip of the iceberg — visible part hides an unknown larger whole"
+    source: "Smithson 2008; SE idiom"
+    rule_id: "rhetor.metaphor.depth.iceberg"
+    weight: 0.7
+    status: "active"
+    patterns:
+      - [{LOWER: "tip"}, {LOWER: "of"}, {LOWER: "the"}, {LOWER: "iceberg"}]
+
+  - figure_id: "rhetor.metaphor.depth.rabbit_hole"
+    family: "metaphor"
+    subtype: "hidden_extent"
+    description: "Rabbit hole — investigation into unknown depth"
+    source: "SE idiom (journey/depth framing)"
+    rule_id: "rhetor.metaphor.depth.rabbit_hole"
+    weight: 0.6
+    status: "candidate"
+    patterns:
+      - [{LOWER: "rabbit"}, {LOWER: "hole"}]
+      - [{LOWER: "down"}, {LOWER: "the"}, {LOWER: "rabbit"}, {LOWER: "hole"}]
+
+  - figure_id: "rhetor.metaphor.depth.can_of_worms"
+    family: "metaphor"
+    subtype: "hidden_extent"
+    description: "Can of worms — opening reveals unforeseen complications"
+    source: "SE idiom (unforeseen-consequences framing)"
+    rule_id: "rhetor.metaphor.depth.can_of_worms"
+    weight: 0.65
+    status: "candidate"
+    patterns:
+      - [{LOWER: "can"}, {LOWER: "of"}, {LOWER: "worms"}]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CHANGE LOG
+# ─────────────────────────────────────────────────────────────────────────────
+# 0.2 — Review pass (MARKER_REVIEW.md).
+#   ADDED    opacity (black_box, magic), obscurity (fog), depth (iceberg,
+#            rabbit_hole, can_of_worms).
+#   REMOVED  rhetor.comparison.kind_of (C-5 dedup — now hedging-layer only).
+#   CHANGED  added weight/status to all figures; low-precision figures
+#            (overlook, poor_cousin, magic, fog, rabbit_hole, can_of_worms)
+#            marked candidate pending empirical validation.
+# 0.1 — initial seed.

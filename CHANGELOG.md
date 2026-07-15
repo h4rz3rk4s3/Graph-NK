@@ -8,7 +8,170 @@ it closes or advances.*
 
 ---
 
-## 2026-07-14 — v0.6.3: Fix diagnostic/extractor drift (the clamp wasn't visible)
+## 2026-07-15 — v0.7.0: MARKER_REVIEW.md upgrade — scope, not just cues
+
+Integrates a literature-grounded review of all four pattern/lexicon files
+(MARKER_REVIEW.md, added to repo root). Central thesis: v0.1 detected NK
+**cues** (keywords) but not their **scope** (the grammatical relation that
+makes a cue actually mean NK) — the classic cue/scope distinction from
+BioScope (Vincze et al. 2008) and the CoNLL-2010 shared task. This release
+adds scope-aware matching (spaCy DependencyMatcher) alongside ~10 new marker
+classes (M-1–M-7) and 10 corrections to existing rules (C-1–C-10). Full
+rationale for every change is in MARKER_REVIEW.md; this entry covers what was
+implemented, verified, and what still needs the user's own verification.
+
+### Interpreting "optional context block" (flagged explicitly, not assumed silently)
+The task description's "context block... used to change between different
+versions of the patterns and lexica" was reconciled against MARKER_REVIEW.md
+§4 and the actual v0.2 files: there is no literal `context:` YAML key
+anywhere in any of the four files. The mechanism is `type: "DependencyMatcher"`
+(scope) vs. absent/`type: "Matcher"` (bare cue, v0.1 behaviour) — a rule can
+be "v0.1-style" or "v0.2-style" within the same file, which is the
+"different versions" the task description was paraphrasing. Implemented on
+that reading.
+
+### ⚠️ Architectural cost, not hidden: the parser is re-enabled
+v0.2's scope rules need `token.dep_`/`token.head`, which only the dependency
+parser populates. `annotators.base.make_nlp` now loads with
+`disable=["ner"]` only — parser is ON. This directly reverses v0.5's
+documented "biggest per-document speed-up" (disabling the parser). There is
+no way around this: DependencyMatcher cannot function without it. Expect
+annotation throughput to drop from the v0.5 numbers; re-benchmark after this
+upgrade the same way Phase 1/2 were benchmarked after the schema fix.
+`settings.pattern_set_version = "0.1"` still selects the old files (kept on
+disk, unmodified) if a pre-review comparison run is wanted, but does not
+auto-revert the parser — do that explicitly via `make_nlp(disable=[...])` if
+speed matters more than scope for a given run.
+
+### New: `Signal.weight` / `Signal.status` (first-class, not payload-stuffed)
+Every annotator now reads a rule's `weight` (float, analysis-time confidence
+hint, never filtered at ingest — signal pluralism holds) and `status`
+("active"|"candidate") and writes them to the Signal node
+(`sig.weight`/`sig.status`, `ON MATCH SET` so a later re-run after empirical
+calibration — MARKER_REVIEW §3.5, explicitly DEFERRED per the task — refreshes
+existing nodes). New index `signal_status`. **A real chain-of-custody bug was
+caught and fixed while wiring this up**: `annotators/worker.py`'s
+`_publish_signal` manually lists which Signal fields to put on the Redis
+event — weight/status were initially dropped there even though the Signal
+dataclass carried them, since that function isn't `dataclasses.asdict()`.
+Fixed and verified with an explicit end-to-end trace test.
+
+### `morpho_syntactic.py` — DependencyMatcher routing (the core mechanism)
+`SpacyMorphoAnnotator` now builds TWO matchers: a `Matcher` for rules with no
+`type` (or `type: "Matcher"`, v0.1 behaviour unchanged) and a
+`DependencyMatcher` for `type: "DependencyMatcher"` rules. The YAML pattern
+shape (`RIGHT_ID`/`RIGHT_ATTRS`/`LEFT_ID`/`REL_OP`) is spaCy's own
+DependencyMatcher format verbatim — no translation layer. A malformed
+pattern is logged and skipped per-rule, not fatal to annotator startup.
+Span for a DependencyMatcher match is the bounding range over every matched
+node (captures the whole scoped construction, e.g. subject+negation+verb).
+5 new families this enables: `epistemic_verb/not_knowing` (M-1 — "I don't
+know" with zero keywords), `hedging/plausibility_shield` (M-2 — "I think/
+believe/guess..."), `negation/scoped_epistemic` (C-3 — negation only counts
+attached to an epistemic head), `tense/past_nk` (C-4 — fixes the v0.1
+double-'yet' bug via dependency scope instead of a broken token pattern).
+**Structurally verified** (all 5 DependencyMatcher patterns in the shipped
+YAML have well-formed RIGHT_ID/LEFT_ID reference chains — checked
+programmatically, zero dangling references) but **NOT empirically verified
+against real spaCy parses** (unavailable in the dev sandbox) — run
+`pytest tests/test_annotators.py` and add golden examples for the new
+DependencyMatcher rules before trusting them in a production run.
+
+### `lexical.py` — POS-aware matching (MARKER_REVIEW §3 point 2)
+`PhraseMatcher(attr="LEMMA")` matches lemma text only — it could not tell
+"doubt" the noun from "doubt" the verb, so `lex.doubt_n` and `lex.doubt_v`
+both fired on every occurrence regardless of actual use. Every match is now
+post-filtered against the entry's declared `pos` (checked on `span.root.
+pos_`); skipped for `PHRASE`/`X` entries where a single POS label doesn't
+apply. `requires_context` (new field, e.g. on "guess"/"suppose") is advisory
+only here, per the lexicon file's own header — enforced by the morpho_syntactic
+DependencyMatcher rule that scopes the same cue instead; the two layers
+firing in parallel is intentional (mirrors the existing 'blind spot'
+double-count, AGENTS.md §3.3), not a bug to fix.
+
+### `word_formation.py` — C-8 and C-2, with a bug caught mid-implementation
+- **C-8** (under- blocklist): blocklist matching is now length-aware. A
+  blocklist entry LONGER than the prefix (e.g. "under" vs. the "un" prefix)
+  is matched via `startswith` — correctly excluding "underspecified" etc.
+  from the "un" rule so the new dedicated `affix.prefix.under` rule catches
+  them once, not twice. **A first implementation used blanket `startswith`
+  for every blocklist entry regardless of length, and a stress test caught
+  a real, serious bug before it shipped**: the "in" prefix's own blocklist
+  contains "in" itself (same length as the prefix) — every in- candidate
+  starts with "in" by definition, so blanket startswith would have silently
+  blocked the ENTIRE in- rule, correctly working only by coincidence for the
+  handful of words that happen to be separately allowlisted. Fixed via
+  `_blocked_by_prefix`: startswith only for entries strictly longer than the
+  prefix, exact equality otherwise. Both cases now covered by permanent
+  regression tests (`tests/test_word_formation_rules.py`).
+- **C-2** (-able suffix): new `mode: "allowlist_only"` skips the blanket
+  suffix scan entirely — only explicit allowlist entries
+  (questionable/unknowable/...) match, so reproducible/testable/configurable
+  (capability, not NK) are excluded without a giant blocklist.
+- **NEW**: allowlist-overrides-blocklist for prefixes (and suffixes, for
+  consistency) — an allowlisted word always matches regardless of blocklist.
+  `polarity` now flows into the payload (used by the new "-free" suffix, a
+  deliberate NON-NK contrastive control for RQ5).
+- Removed the unused top-level `import spacy` — this file only operates on
+  pre-parsed tokens and never calls spaCy directly, so its core logic is now
+  testable without spaCy installed at all (see the new pure-Python test file).
+
+### `rhetorical.py` — weight/status pass-through only
+No DependencyMatcher usage in this layer (v0.2 rhetorical patterns are all
+still plain token `Matcher` patterns). C-5 (rhetor.comparison.kind_of
+removed — redundant with morpho hedging, unlike the intentional 'blind spot'
+double-count) required no code change, only the data file; verified present.
+
+### `settings.py`
+New `pattern_set_version` (default `"0.2"`) — each annotator resolves its
+file as `<name>_v<version>.yml`. Both v0.1 and v0.2 files are kept on disk
+unmodified, so setting this to `"0.1"` reproduces the pre-review baseline for
+comparison (a real, usable ablation lever, not just provenance-preservation).
+
+### `rules/categories.yml` — regenerated, not hand-edited
+Rewritten by walking the four actual v0.2 files programmatically and
+extracting every (rule_prefix, layer, category, subcategory) combination in
+use, rather than manually transcribed — verified to have zero coverage gaps
+against the real files (checked with a completeness script). This file is
+documentation only; nothing in the codebase currently loads or enforces it
+at runtime (verified — the header comment's claim to the contrary predates
+this check and was already stale).
+
+### Tests
+- `tests/test_word_formation_rules.py` (NEW, 11 tests, spaCy-free, all
+  passing): both bugs caught during development as permanent regressions,
+  the C-2/C-8 corrections, allowlist-override contract, and structural
+  integrity checks on the shipped YAML (duplicate-id detection,
+  DependencyMatcher reference-chain validation, C-5 dedup).
+- `tests/test_annotators.py`: 2 provably-stale assertions fixed by direct
+  inspection of the v0.2 pattern text (seem/appear moved modality→evidential
+  per C-6; rhetor.comparison.kind_of removed per C-5, replaced with the
+  something_like figure the same test sentence actually fires under v0.2).
+  Added an explicit staleness disclaimer — the remaining assertions were
+  checked by manual tracing, NOT by running real spaCy (unavailable here);
+  this file needs a supervised local run before being trusted, and has zero
+  coverage yet for the new DependencyMatcher rules specifically.
+
+### Deferred (explicitly, per task instructions)
+MARKER_REVIEW §3 point 5 (empirical calibration: hand-label a stratified
+sample, compute per-rule precision, promote/demote active↔candidate) is
+NOT implemented. The `weight`/`status` schema is in place and ready for it,
+but no filtering or promotion logic exists yet — `status` is currently just
+a label carried through to the graph.
+
+### Recommended next steps
+1. `pip install -e .` and `python -m spacy download en_core_web_sm` locally,
+   then `pytest tests/ -v` — confirm `test_annotators.py` passes and extend
+   it with golden examples for the 5 new DependencyMatcher rules.
+2. Re-benchmark annotation throughput now that the parser is back on;
+   compare against the v0.5 numbers to quantify the real cost.
+3. Consider a small ablation run: `pattern_set_version=0.1` vs `0.2` on the
+   same corpus slice, compare signal counts per layer — this is now a
+   one-line settings change, not a code change.
+
+---
+
+
 
 Re-running `scripts/diagnose_email_spans.py` after v0.6.2 showed **identical**
 numbers to before the trailing-overshoot clamp was added. Root cause: the

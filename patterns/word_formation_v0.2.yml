@@ -1,0 +1,279 @@
+# patterns/word_formation_v0.2.yml
+#
+# Successor to word_formation_v0.1.yml. See MARKER_REVIEW.md §2 (C-2, C-8).
+# Literature: Janich & Simmerling 2013.
+#
+# CHANGES vs v0.1:
+#   C-2  '-able' is dynamic/potential modality (capability), NOT non-knowledge.
+#        The blanket -able scan is a systematic false-positive generator
+#        (reproducible, testable, configurable, serializable are not NK).
+#        REPLACED with an ALLOWLIST of NK-relevant deverbal adjectives, and
+#        RELABELLED from affix_modality → epistemic_potentiality.
+#   C-8  'under' on the un-/prefix blocklist kills genuine NK forms
+#        (underspecified, underdocumented, underdetermined). The block matched
+#        whole surface strings, not stems. FIX: match on the STEM after prefix
+#        stripping; add an explicit allowlist of NK 'under-' compounds so they
+#        survive; keep blocking only true non-NK 'under*' words via stem check.
+#   ADDED  'mis-' prefix (misunderstand, misinterpret — process NK); '-free'
+#          privative suffix as candidate.
+#   Added optional weight/status fields.
+#
+# Design note (unchanged from v0.1 / BUILD_SPEC M7): this annotator is
+# intentionally noisy in v0; the research purpose is to discover which affixed
+# forms recur. Blocklists prevent the most obvious SE false positives only.
+# The empirical-calibration step (MARKER_REVIEW §3.5) is how noise is quantified.
+
+version: "0.2"
+
+# Matching contract for prefixes (clarified for v0.2):
+#   1. token.pos_ in target_pos
+#   2. token.lower_ startswith prefix AND len(stem) >= min_stem_length
+#   3. stem (== token minus prefix, or token minus hyphen-prefix) NOT in blocklist
+#   4. if an allowlist is present, a token whose stem is in it ALWAYS passes
+#      (overrides blocklist) — this is how NK 'under-'/'in-' compounds survive.
+prefixes:
+  - prefix: "un"
+    rule_id: "affix.prefix.un"
+    category: "affix_negation"
+    subcategory: "un_prefix"
+    min_stem_length: 4
+    target_pos: [ADJ, NOUN, VERB]
+    source: "Janich & Simmerling 2013"
+    weight: 0.5
+    status: "active"
+    # C-8: allowlist wins over blocklist so these NK forms are never dropped.
+    allowlist:
+      - unclear
+      - unknown
+      - uncertain
+      - undefined
+      - unspecified
+      - undocumented
+      - unresolved
+      - unpredictable
+      - unexplained
+      - unreliable
+      - unstable
+      - unexpected
+      - unfamiliar
+    blocklist:
+      - under        # NB now only blocks 'under' itself; NK 'under-' compounds
+      - until        # are recovered via the under- prefix rule below.
+      - unit
+      - union
+      - unique
+      - university
+      - unless
+      - update
+      - upload
+      - url
+      - use
+      - user
+      - utf
+
+  - prefix: "in"
+    rule_id: "affix.prefix.in"
+    category: "affix_negation"
+    subcategory: "in_prefix"
+    min_stem_length: 4
+    target_pos: [ADJ, NOUN]
+    source: "Janich & Simmerling 2013"
+    weight: 0.4
+    status: "active"
+    allowlist:
+      - incomplete
+      - inconsistent
+      - inconclusive
+      - indeterminate
+      - indefinite
+      - insufficient
+      - incorrect
+      - invalid
+    blocklist:
+      - income
+      - index
+      - initial
+      - input
+      - install
+      - integer
+      - interface
+      - interior
+      - internal
+      - issue
+      - info
+      - init
+      - inline
+      - into
+      - include
+      - instance
+      - int
+      - in
+
+  - prefix: "non"
+    rule_id: "affix.prefix.non"
+    category: "affix_negation"
+    subcategory: "non_prefix"
+    min_stem_length: 3
+    target_pos: [ADJ, NOUN]
+    source: "Janich & Simmerling 2013"
+    weight: 0.7
+    status: "active"
+    blocklist: []
+    # 'non' is a strong NK signal when attached to descriptors
+    # (non-deterministic, non-obvious, non-trivial, non-reproducible).
+
+  - prefix: "dis"
+    rule_id: "affix.prefix.dis"
+    category: "affix_negation"
+    subcategory: "dis_prefix"
+    min_stem_length: 4
+    target_pos: [ADJ, NOUN, VERB]
+    source: "Janich & Simmerling 2013"
+    weight: 0.4
+    status: "candidate"
+    blocklist:
+      - display
+      - distribute
+      - dispatch
+      - distance
+      - district
+      - discuss
+      - distinct
+
+  # NEW — 'under' as a genuine NK prefix (C-8): underspecified / underdocumented
+  # / underdetermined. Separated so it is scored, not blocked.
+  - prefix: "under"
+    rule_id: "affix.prefix.under"
+    category: "affix_negation"
+    subcategory: "under_prefix"
+    min_stem_length: 5
+    target_pos: [ADJ, VERB]
+    source: "Janich & Simmerling 2013 (extended, C-8)"
+    weight: 0.55
+    status: "active"
+    allowlist:
+      - underspecified
+      - underdocumented
+      - underdetermined
+      - underdefined
+      - understudied
+      - undertested
+    blocklist:
+      - understand   # 'understand' is KNOWING, the opposite — must be blocked
+      - understood
+      - underscore
+      - underlying
+      - undergo
+      - underneath
+
+  # NEW — 'mis-' process NK (misunderstanding / misinterpretation).
+  - prefix: "mis"
+    rule_id: "affix.prefix.mis"
+    category: "affix_negation"
+    subcategory: "mis_prefix"
+    min_stem_length: 4
+    target_pos: [VERB, NOUN, ADJ]
+    source: "Janich & Simmerling 2013 (extended)"
+    weight: 0.5
+    status: "candidate"
+    allowlist:
+      - misunderstand
+      - misunderstood
+      - misunderstanding
+      - misinterpret
+      - misinterpreted
+      - misread
+      - misleading
+      - misconception
+    blocklist:
+      - miss
+      - missing
+      - mission
+      - missile
+
+suffixes:
+  - suffix: "less"
+    rule_id: "affix.suffix.less"
+    category: "affix_negation"
+    subcategory: "less_suffix"
+    min_word_length: 6
+    target_pos: [ADJ]
+    source: "Janich & Simmerling 2013"
+    weight: 0.45
+    status: "active"
+    blocklist:
+      - unless
+      - less
+      - bless
+      - regardless   # discourse connective, not privative
+      - nonetheless
+    # NK-relevant examples: clueless, meaningless, pointless, baseless, groundless,
+    # senseless, aimless, directionless.
+
+  # C-2: '-able' relabelled and restricted to an allowlist of NK-relevant forms.
+  - suffix: "able"
+    rule_id: "affix.suffix.able"
+    category: "shared_feature"          # was: affix_modality (C-2)
+    subcategory: "epistemic_potentiality"
+    min_word_length: 6
+    target_pos: [ADJ]
+    source: "Janich & Simmerling 2013 (relabelled, C-2)"
+    weight: 0.5
+    status: "active"
+    mode: "allowlist_only"              # do NOT scan all -able adjectives.
+    allowlist:
+      - questionable
+      - debatable
+      - unpredictable
+      - undecidable
+      - unknowable
+      - unverifiable
+      - unfalsifiable
+      - unexplainable
+      - inexplicable
+      - unaccountable
+      - unprovable
+    blocklist:
+      - able
+      - table
+      - stable
+      - cable
+      - enable
+      - disable
+      - reproducible   # capability, NOT NK — the whole point of C-2
+      - testable
+      - configurable
+      - serializable
+      - readable
+      - available
+
+  # NEW — '-free' privative (bug-free, error-free) is a CERTAINTY/booster marker,
+  # not NK — added as a contrastive control (mirrors lexicon boosters, M-6).
+  - suffix: "free"
+    rule_id: "affix.suffix.free"
+    category: "shared_feature"
+    subcategory: "privative_certainty"
+    min_word_length: 6
+    target_pos: [ADJ]
+    source: "extended (contrastive control)"
+    weight: 0.0
+    status: "candidate"
+    polarity: "certainty"
+    blocklist:
+      - free
+      - freeze
+    # e.g. bug-free, error-free, hassle-free — asserted ABSENCE of a problem,
+    # i.e. a certainty claim; useful for RQ5 contrast, not counted as NK.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CHANGE LOG
+# ─────────────────────────────────────────────────────────────────────────────
+# 0.2 — Review pass (MARKER_REVIEW.md §2).
+#   C-2  '-able' → allowlist_only, relabelled affix_modality → shared_feature/
+#        epistemic_potentiality; capability adjectives explicitly blocked.
+#   C-8  'under-' NK compounds rescued via new under- prefix rule + allowlist-
+#        over-blocklist semantics; 'under' removed as a silent killer.
+#   ADDED under-, mis- prefixes; -free privative (contrastive, non-NK);
+#        allowlists for un-/in- so core NK forms are guaranteed to survive.
+#   SCHEMA added target_pos, allowlist, mode, weight, status, polarity.
+# 0.1 — initial seed.

@@ -50,6 +50,17 @@ CREATE CONSTRAINT verdict_key IF NOT EXISTS
 CREATE CONSTRAINT ignorancetype_id IF NOT EXISTS
   FOR (t:IgnoranceType) REQUIRE t.type_id IS UNIQUE;
 
+// Mailing-list layer (Webis Gmane Email Corpus 2019) — v0.6
+CREATE CONSTRAINT mailinglist_name IF NOT EXISTS
+  FOR (m:MailingList) REQUIRE m.name IS UNIQUE;
+// m.name is the Gmane group name, e.g. "gmane.comp.python.devel".
+
+CREATE CONSTRAINT email_urn IF NOT EXISTS
+  FOR (e:EmailMessage) REQUIRE e.urn IS UNIQUE;
+// e.urn is the corpus document UUID ("urn:uuid:..."), guaranteed unique.
+// message_id is NOT unique-constrained: it can be missing or duplicated in
+// crawled mail archives; it is indexed below for threading lookups.
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. INDEXES (query hot-paths)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -62,6 +73,9 @@ CREATE INDEX signal_subcat IF NOT EXISTS      FOR (s:Signal)           ON (s.sub
 CREATE INDEX verdict_label IF NOT EXISTS      FOR (v:ClassifierVerdict) ON (v.label);
 CREATE INDEX issue_state IF NOT EXISTS        FOR (i:Issue)            ON (i.state);
 CREATE INDEX pr_state IF NOT EXISTS           FOR (p:PullRequest)      ON (p.state);
+CREATE INDEX email_message_id IF NOT EXISTS   FOR (e:EmailMessage)     ON (e.message_id);
+CREATE INDEX email_group IF NOT EXISTS        FOR (e:EmailMessage)     ON (e.group);
+CREATE INDEX email_in_reply_to IF NOT EXISTS  FOR (e:EmailMessage)     ON (e.in_reply_to);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. MERGE TEMPLATES
@@ -184,6 +198,24 @@ CREATE INDEX pr_state IF NOT EXISTS           FOR (p:PullRequest)      ON (p.sta
 // MERGE (u)-[r:TYPED_AS]->(t)
 //   ON CREATE SET r.annotator = $annotator, r.confidence = $confidence,
 //                 r.rationale = $rationale, r.annotated_at = datetime();
+
+// -- 3.13 MailingList / EmailMessage (Webis Gmane, v0.6) --------------------
+// MERGE (m:MailingList {name: $group});
+// MERGE (e:EmailMessage {urn: $urn})
+//   ON CREATE SET e.message_id = $message_id, e.subject = $subject,
+//                 e.date = $date, e.group = $group, e.list_id = $list_id,
+//                 e.in_reply_to = $in_reply_to, e.references = $references,
+//                 e.lang = $lang;
+// MATCH (m:MailingList {name: $group}) MATCH (e:EmailMessage {urn: $urn})
+// MERGE (m)-[:CONTAINS]->(e);
+// MATCH (a:Actor {login: $sender}) MATCH (e:EmailMessage {urn: $urn})
+// MERGE (a)-[:AUTHORED]->(e);
+// TextUnits: MATCH (parent:EmailMessage {urn: $urn}) ... (same HAS_TEXT as §3.7;
+// role = corpus segment label | "subject"; id = "email:<urn>:<role>:<position>").
+// Threading (enrichment/email_threading.py, after ingest):
+// MATCH (reply:EmailMessage) WHERE reply.in_reply_to IS NOT NULL
+// MATCH (parent:EmailMessage {message_id: reply.in_reply_to})
+// MERGE (reply)-[:REPLIES_TO]->(parent);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. SANITY-CHECK QUERIES (run after a first ingest)

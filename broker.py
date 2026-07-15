@@ -3,6 +3,7 @@ Thin async wrapper around Redis Streams.
 
 Used by:
   - AsyncGitHubMiner  → publishes to stream_raw
+  - miner.gmane_ingester → publishes to stream_raw
   - extractor.worker  → publishes to stream_units
   - annotators.worker → publishes to stream_signals
   - projector.worker  → reads stream_units + stream_signals
@@ -35,6 +36,24 @@ class RedisBroker:
     async def publish(self, stream: str, event: dict[str, Any]) -> None:
         """Serialize event as JSON and append to stream."""
         await self._client.xadd(stream, {"payload": json.dumps(event, default=str)})
+
+    async def publish_many(self, stream: str, events: list[dict[str, Any]]) -> None:
+        """
+        Append many events to `stream` in a single round trip via a Redis
+        pipeline, instead of one XADD per event.
+
+        Ingest-time throughput matters here: at corpus scale, awaiting one
+        XADD per record serializes a full network round trip per email. A
+        pipeline batches N XADDs into one write/flush, which is the same
+        latency-hiding trick as the Mongo bulk_write below. Order is
+        preserved within the pipeline.
+        """
+        if not events:
+            return
+        pipe = self._client.pipeline(transaction=False)
+        for event in events:
+            pipe.xadd(stream, {"payload": json.dumps(event, default=str)})
+        await pipe.execute()
 
     async def read_all(
         self,
@@ -69,6 +88,7 @@ class RedisBroker:
 
             entries = await self._client.xread({stream: last_id}, count=batch_size, block=block_ms)
             if not entries:
+                # No messages for block_ms — treat as end of stream for this run
                 idle_rounds += 1
                 if idle_rounds >= 2:
                     if trim and pending_trim:

@@ -10,6 +10,10 @@ a RhetoricalFigure node. The projector handles the node MERGE.
 Known double-counting with LexiconAnnotator (e.g. 'blind spot' matches both
 lex.blind_spot and rhetor.metaphor.visibility.blind_spot) is INTENTIONAL —
 the two Signals carry different categorical meanings. See AGENTS.md §3.3.
+(v0.2, MARKER_REVIEW C-5: the SAME-function 'kind of'/'sort of' duplicate
+between this layer and morpho_syntactic hedging WAS redundant, unlike the
+blind-spot case, and is removed from rhetorical_v0.2.yml — hedging is now
+its sole home.)
 
 Literature: Simmerling & Janich 2015; Smithson 2008.
 See FRAMEWORK_DESIGN.md §5 Module 3d; BUILD_SPEC.md §6 Milestone 8.
@@ -29,7 +33,10 @@ from settings import settings
 
 logger = logging.getLogger(__name__)
 
-_PATTERN_PATH = Path(__file__).parent.parent / "patterns" / "rhetorical_v0.1.yml"
+
+def _default_pattern_path() -> Path:
+    v = settings.pattern_set_version
+    return Path(__file__).parent.parent / "patterns" / f"rhetorical_v{v}.yml"
 
 
 class RhetoricalAnnotator:
@@ -39,8 +46,9 @@ class RhetoricalAnnotator:
     """
     name = "RhetoricalAnnotator"
 
-    def __init__(self, nlp, pattern_path: Path = _PATTERN_PATH) -> None:
-        self._nlp = nlp #spacy.load(settings.spacy_model, disable=["ner"])
+    def __init__(self, nlp, pattern_path: Path | None = None) -> None:
+        self._nlp = nlp
+        pattern_path = pattern_path or _default_pattern_path()
         self._figure_data = self._load_figures(pattern_path)
         self._matcher, self._meta = self._build_matcher()
         self.version = self._figure_data["version"]
@@ -53,8 +61,6 @@ class RhetoricalAnnotator:
         if not unit.text:
             return []
 
-        if doc is None:
-            doc = self._nlp(unit.text)
         signals: list[Signal] = []
 
         for match_id, start, end in self._matcher(doc):
@@ -70,6 +76,8 @@ class RhetoricalAnnotator:
                 span_end=span.end_char,
                 rule_id=figure["rule_id"],
                 rule_version=self.version,
+                weight=figure.get("weight"),
+                status=figure.get("status", "active"),
                 payload={
                     # Projector reads these to MERGE the RhetoricalFigure node
                     "figure_id":       figure["figure_id"],

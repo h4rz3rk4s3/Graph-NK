@@ -390,8 +390,12 @@ class GraphProjector:
                             sig.rule_id      = s.rule_id,
                             sig.rule_version = s.rule_version,
                             sig.confidence   = s.confidence,
+                            sig.weight       = s.weight,
+                            sig.status       = s.status,
                             sig.payload_json = s.payload_json,
                             sig.created_at   = datetime()
+              ON MATCH  SET sig.weight       = s.weight,
+                            sig.status       = s.status
             MERGE (u)-[:HAS_SIGNAL]->(sig)
             """,
             signals=[{
@@ -406,6 +410,13 @@ class GraphProjector:
                 "rule_id":      s.get("rule_id"),
                 "rule_version": s.get("rule_version"),
                 "confidence":   s.get("confidence"),
+                # v0.2 (MARKER_REVIEW.md §3.5): analysis-time confidence hint
+                # and lifecycle label. ON MATCH SET above means a later
+                # re-run with an updated rule weight/status (e.g. empirical
+                # calibration promoting candidate -> active) refreshes
+                # existing Signal nodes rather than requiring a rebuild.
+                "weight":       s.get("weight"),
+                "status":       s.get("status", "active"),
                 # Neo4j cannot store a nested Map as a property — serialise to JSON.
                 # Strip internal sentinel keys (prefixed with __) before serialising.
                 # Parse in analysis with apoc.convert.fromJsonMap(sig.payload_json).

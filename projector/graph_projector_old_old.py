@@ -34,44 +34,7 @@ class GraphProjector:
             settings.neo4j_uri,
             auth=(settings.neo4j_user, settings.neo4j_password),
         )
-        proj = cls(driver)
-        if settings.apply_schema_on_startup:
-            await proj.ensure_schema()
-        return proj
-
-    async def ensure_schema(self) -> None:
-        """
-        Apply the constraints + indexes from ontology/ontology.cypher.
-
-        Extracts only the CREATE CONSTRAINT / CREATE INDEX statements (the
-        parameterized MERGE templates in that file are skipped), so the schema
-        has a single source of truth. Every statement is idempotent
-        (IF NOT EXISTS), so this is safe to run on every startup — and it means
-        the indexes are guaranteed present no matter how Neo4j was launched.
-        Without these, MERGE/MATCH degrade to full label scans (the cause of the
-        catastrophically slow Phase 1). See CHANGELOG 2026-06-04.
-        """
-        from pathlib import Path
-
-        ddl_file = Path(__file__).resolve().parent.parent / "ontology" / "ontology.cypher"
-        if not ddl_file.exists():
-            logger.warning("Schema file %s not found; skipping ensure_schema.", ddl_file)
-            return
-
-        statements = []
-        for raw in ddl_file.read_text().split(";"):
-            lines = [ln for ln in raw.splitlines() if not ln.strip().startswith("//")]
-            stmt = "\n".join(lines).strip()
-            upper = stmt.upper()
-            if upper.startswith("CREATE CONSTRAINT") or upper.startswith("CREATE INDEX"):
-                statements.append(stmt)
-
-        for stmt in statements:
-            try:
-                await self._run(stmt)
-            except Exception as exc:
-                logger.error("ensure_schema failed on: %s ... (%s)", stmt[:60], exc)
-        logger.info("Schema ensured: %d constraints/indexes applied (idempotent).", len(statements))
+        return cls(driver)
 
     async def close(self) -> None:
         await self._driver.close()
@@ -89,12 +52,6 @@ class GraphProjector:
 
         Fix for CHANGELOG.md ⚠️ limitation 1.
         """
-        # Emails have their own seeding path (MailingList instead of Repository,
-        # anonymized `from` header instead of a GitHub user object).
-        if item_type == "email":
-            await self.upsert_email_message(doc)
-            return
-
         # Seed the Actor for the artefact author
         author_obj = doc.get("user") or {}
         if login := author_obj.get("login"):
@@ -246,15 +203,11 @@ class GraphProjector:
             parent_match = "MATCH (parent:PullRequest {repo: $repo, number: $number})"
         elif parent_type == "commit":
             parent_match = "MATCH (parent:Commit {sha: $sha})"
-        elif parent_type == "email":
-            parent_match = "MATCH (parent:EmailMessage {urn: $urn})"
         else:
             logger.warning("Unknown parent_type '%s' for TextUnit %s", parent_type, tu_id)
             return
 
         sha = parent_id.split(":")[-1] if parent_type == "commit" else None
-        # parent_id convention for emails: "email:<urn>" (urn contains ':').
-        urn = parent_id.split(":", 1)[1] if parent_type == "email" else None
 
         await self._run(
             f"""
@@ -262,11 +215,7 @@ class GraphProjector:
             MERGE (u:TextUnit {{id: $tu_id}})
               ON CREATE SET u.text = $text, u.lang = $lang,
                             u.token_count = $token_count, u.sha256 = $sha256,
-                            u.created_at = $created_at, u.position = $position,
-                            u.role = $role, u.parent_type = $parent_type,
-                            u.author_login = $author_login
-              ON MATCH  SET u.role = $role, u.parent_type = $parent_type,
-                            u.author_login = $author_login
+                            u.created_at = $created_at, u.position = $position
             MERGE (parent)-[:HAS_TEXT {{role: $role}}]->(u)
             """,
             tu_id      = tu_id,
@@ -277,84 +226,10 @@ class GraphProjector:
             created_at = unit_event.get("created_at"),
             position   = unit_event.get("position", 0),
             role       = role,
-            parent_type= parent_type,
-            author_login = unit_event.get("author_login"),
             repo       = repo,
             number     = number,
             sha        = sha,
-            urn        = urn,
         )
-
-    # ── Mailing-list layer (Webis Gmane) — v0.6 ───────────────────────────────
-
-    async def upsert_email_message(self, doc: dict[str, Any]) -> None:
-        """
-        Seed MailingList, Actor, and EmailMessage nodes from a raw Gmane doc.
-        Cypher template: ontology.cypher §3.13.
-
-        Threading headers (in_reply_to, references) are stored as node
-        properties; REPLIES_TO edges are created later by the enrichment pass
-        (enrichment/email_threading.py) once both ends exist — same pattern as
-        GitHub REFERENCES edges. The `from` value is anonymized by Webis; we
-        store it verbatim as the Actor login. Cross-platform identity
-        resolution (email actor ↔ GitHub actor) is explicitly out of scope.
-        """
-        urn = doc.get("urn") or ""
-        if not urn:
-            logger.warning("Email doc without urn; skipping.")
-            return
-        headers = doc.get("headers") or {}
-        group = doc.get("group") or ""
-        sender = (headers.get("from") or "").strip()
-
-        if group:
-            await self._run(
-                "MERGE (m:MailingList {name: $name})",
-                name=group,
-            )
-        if sender:
-            await self.upsert_actor(sender)
-
-        await self._run(
-            """
-            MERGE (e:EmailMessage {urn: $urn})
-              ON CREATE SET e.message_id = $message_id,
-                            e.subject = $subject,
-                            e.date = $date,
-                            e.group = $group,
-                            e.list_id = $list_id,
-                            e.in_reply_to = $in_reply_to,
-                            e.references = $references,
-                            e.lang = $lang
-            """,
-            urn=urn,
-            message_id=headers.get("message_id"),
-            subject=headers.get("subject"),
-            date=headers.get("date"),
-            group=group,
-            list_id=headers.get("list_id"),
-            in_reply_to=headers.get("in_reply_to"),
-            references=headers.get("references"),
-            lang=doc.get("lang"),
-        )
-        if group:
-            await self._run(
-                """
-                MATCH (m:MailingList {name: $group})
-                MATCH (e:EmailMessage {urn: $urn})
-                MERGE (m)-[:CONTAINS]->(e)
-                """,
-                group=group, urn=urn,
-            )
-        if sender:
-            await self._run(
-                """
-                MATCH (a:Actor {login: $sender})
-                MATCH (e:EmailMessage {urn: $urn})
-                MERGE (a)-[:AUTHORED]->(e)
-                """,
-                sender=sender, urn=urn,
-            )
 
     # ── NK-analytical layer ───────────────────────────────────────────────────
 

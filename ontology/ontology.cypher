@@ -70,6 +70,7 @@ CREATE INDEX textunit_lang IF NOT EXISTS      FOR (t:TextUnit)         ON (t.lan
 CREATE INDEX signal_layer IF NOT EXISTS       FOR (s:Signal)           ON (s.layer);
 CREATE INDEX signal_cat IF NOT EXISTS         FOR (s:Signal)           ON (s.category);
 CREATE INDEX signal_subcat IF NOT EXISTS      FOR (s:Signal)           ON (s.subcategory);
+CREATE INDEX signal_status IF NOT EXISTS      FOR (s:Signal)           ON (s.status);
 CREATE INDEX verdict_label IF NOT EXISTS      FOR (v:ClassifierVerdict) ON (v.label);
 CREATE INDEX issue_state IF NOT EXISTS        FOR (i:Issue)            ON (i.state);
 CREATE INDEX pr_state IF NOT EXISTS           FOR (p:PullRequest)      ON (p.state);
@@ -147,6 +148,13 @@ CREATE INDEX email_in_reply_to IF NOT EXISTS  FOR (e:EmailMessage)     ON (e.in_
 // A Signal's `payload` is a nested map, so it is JSON-serialised by the
 // projector and stored as the string property `payload_json`.
 // In analysis, parse it back with apoc.convert.fromJsonMap(sig.payload_json).
+// v0.2 (MARKER_REVIEW.md §3.5): sig.weight (float, analysis-time confidence
+// hint, may be null — never filtered on at ingest) and sig.status
+// ("active" | "candidate" — candidate rules ARE ingested with full
+// provenance; excluding them from headline counts is an analysis-time
+// convention, not an ingest-time filter). ON MATCH SET refreshes weight/
+// status so a later re-run (e.g. after empirical calibration promotes a
+// rule) updates existing nodes without requiring a rebuild.
 // UNWIND $signals AS s
 // MATCH (u:TextUnit {id: s.text_unit_id})
 // MERGE (sig:Signal {id: s.id})
@@ -159,8 +167,12 @@ CREATE INDEX email_in_reply_to IF NOT EXISTS  FOR (e:EmailMessage)     ON (e.in_
 //                 sig.rule_id       = s.rule_id,
 //                 sig.rule_version  = s.rule_version,
 //                 sig.confidence    = s.confidence,
+//                 sig.weight        = s.weight,
+//                 sig.status        = s.status,
 //                 sig.payload_json  = s.payload_json,
 //                 sig.created_at    = datetime()
+//   ON MATCH  SET sig.weight        = s.weight,
+//                 sig.status        = s.status
 // MERGE (u)-[:HAS_SIGNAL]->(sig);
 
 // -- 3.9 Link Signal to LexicalMarker (when layer='lexical') --------------

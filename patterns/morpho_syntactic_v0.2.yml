@@ -1,0 +1,422 @@
+# patterns/morpho_syntactic_v0.2.yml
+#
+# Successor to morpho_syntactic_v0.1.yml. See MARKER_REVIEW.md §§2,4 for rationale.
+#
+# SCHEMA EXTENSION (backward-compatible):
+#   type: "Matcher"           → token pattern, as v0.1 (unchanged behaviour).
+#   type: "DependencyMatcher" → pattern is a list of node specs with RIGHT_ID/
+#                               REL_OP/LEFT_ID (spaCy DependencyMatcher). Encodes
+#                               SCOPE: the cue only fires in the right grammatical
+#                               relation. This is the fix for the cue≠scope problem.
+#   weight  : float [0,1]  — analysis-time confidence.
+#   status  : active | candidate.
+# A loader that predates this schema can skip DependencyMatcher rules and still
+# run every Matcher rule → nothing v0.1 did is lost.
+#
+# Literature grounding:
+#   Negation (scoped)  → Vincze et al. 2008; Morante & Sporleder 2012; Helmer 2016
+#   Modality           → Hyland 1998; Vold 2006; Morante & Sporleder 2012
+#   Hedging            → Lakoff 1973; Prince et al. 1982; Szarvas et al. 2012
+#   Evidentiality      → Aikhenvald 2004; San Roque et al. 2015
+#   Not-knowing verbs  → Bongelli & Zuczkowski (KUB); Rubin 2007
+#   Tense              → Janich 2020
+#   Syntactic/Q        → Bongelli et al. 2018; San Roque et al. 2015
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "0.2"
+
+patterns:
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NEW — EPISTEMIC VERBS OF NOT-KNOWING (M-1). Scoped: negation/interrogative
+  # over a cognition verb with 1st-person (or impersonal) subject. Captures
+  # "I don't know / we can't tell / I couldn't figure out" with NO keyword list.
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "morph.epi.neg_cognition"
+    layer: "morpho_syntactic"
+    category: "epistemic_verb"
+    subcategory: "not_knowing"
+    source: "Bongelli & Zuczkowski (KUB); Rubin 2007"
+    weight: 1.0
+    status: "active"
+    type: "DependencyMatcher"
+    pattern:
+      - {RIGHT_ID: "verb", RIGHT_ATTRS: {LEMMA: {IN: ["know", "understand", "tell", "figure", "grasp", "recall", "remember", "get", "follow", "comprehend"]}}}
+      - {LEFT_ID: "verb", REL_OP: ">", RIGHT_ID: "neg", RIGHT_ATTRS: {DEP: "neg"}}
+      - {LEFT_ID: "verb", REL_OP: ">", RIGHT_ID: "subj", RIGHT_ATTRS: {LOWER: {IN: ["i", "we"]}, DEP: "nsubj"}}
+
+  - id: "morph.epi.neg_cognition_modal"
+    layer: "morpho_syntactic"
+    category: "epistemic_verb"
+    subcategory: "not_knowing"
+    note: "'can't tell / couldn't figure out' — modal + negated cognition verb."
+    source: "KUB; Rubin 2007"
+    weight: 1.0
+    status: "active"
+    type: "DependencyMatcher"
+    pattern:
+      - {RIGHT_ID: "verb", RIGHT_ATTRS: {LEMMA: {IN: ["tell", "figure", "know", "say", "determine", "explain", "understand"]}}}
+      - {LEFT_ID: "verb", REL_OP: ">", RIGHT_ID: "aux", RIGHT_ATTRS: {LOWER: {IN: ["ca", "could", "can", "wo", "would"]}, TAG: "MD"}}
+      - {LEFT_ID: "verb", REL_OP: ">", RIGHT_ID: "neg", RIGHT_ATTRS: {DEP: "neg"}}
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NEW — PLAUSIBILITY SHIELDS (M-2). 1st-person epistemic verb governing a
+  # complement clause (the shielded proposition). Prince et al. 1982 'shields'.
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "morph.hedge.shield_think"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "plausibility_shield"
+    note: "'I think/believe/guess/suppose (that) …' — only when 1st-person and governing a clause."
+    source: "Prince et al. 1982; Hyland 1998; Lakoff 1973"
+    weight: 0.8
+    status: "active"
+    type: "DependencyMatcher"
+    pattern:
+      - {RIGHT_ID: "verb", RIGHT_ATTRS: {LEMMA: {IN: ["think", "believe", "guess", "suppose", "assume", "suspect", "reckon", "imagine"]}, POS: "VERB"}}
+      - {LEFT_ID: "verb", REL_OP: ">", RIGHT_ID: "subj", RIGHT_ATTRS: {LOWER: "i", DEP: "nsubj"}}
+      - {LEFT_ID: "verb", REL_OP: ">", RIGHT_ID: "comp", RIGHT_ATTRS: {DEP: {IN: ["ccomp", "xcomp", "acomp"]}}}
+
+  - id: "morph.hedge.shield_asfaras"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "attribution_shield"
+    note: "'as far as I know/can tell/am aware' — fixed shield frame."
+    source: "Prince et al. 1982"
+    weight: 0.85
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: "as"}
+      - {LOWER: "far"}
+      - {LOWER: "as"}
+      - {LOWER: {IN: ["i", "we"]}}
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NEW — EVIDENTIALS (M-3 / C-6 / C-7). Moved seem/appear (C-6) and
+  # suggest/indicate (C-7) here from 'modality'. Aikhenvald 2004.
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "morph.evid.inferential_seem"
+    layer: "morpho_syntactic"
+    category: "evidential"
+    subcategory: "inferential"
+    note: "seem/appear/look/sound = inference from appearance (was mislabelled quasi_modal in v0.1)."
+    source: "Aikhenvald 2004; Vold 2006"
+    weight: 0.75
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LEMMA: {IN: ["seem", "appear", "look", "sound"]}, POS: "VERB"}
+
+  - id: "morph.evid.inferential_suggest"
+    layer: "morpho_syntactic"
+    category: "evidential"
+    subcategory: "inferential"
+    note: "suggest/indicate/imply = reporting an inference (was quasi_modal in v0.1). 'tend' dropped (C-7)."
+    source: "Aikhenvald 2004; Hyland 1998"
+    weight: 0.6
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LEMMA: {IN: ["suggest", "indicate", "imply"]}, POS: "VERB"}
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # MODALITY — C-1 CORRECTION. No sense-by-lemma. may/might stay epistemic;
+  # can/could/would move to underspecified (low weight); epistemic 'must'/'will' added.
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "morph.mod.epistemic_maymight"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "epistemic"
+    note: "may/might: clearest epistemic possibility modals."
+    source: "Hyland 1998; Vold 2006"
+    weight: 0.8
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {TAG: "MD", LOWER: {IN: ["may", "might"]}}
+
+  - id: "morph.mod.epistemic_must_be"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "epistemic"
+    note: "Epistemic 'must' (inferential certainty): 'that must be why' — must + be/have. Distinct from deontic must."
+    source: "Hyland 1998; Morante & Sporleder 2012"
+    weight: 0.7
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {TAG: "MD", LOWER: "must"}
+      - {LEMMA: {IN: ["be", "have"]}}
+
+  - id: "morph.mod.epistemic_will_predict"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "epistemic_prediction"
+    note: "Predictive will/'ll — epistemic projection into the future. Missing in v0.1."
+    source: "Hyland 1998"
+    weight: 0.5
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {TAG: "MD", LOWER: {IN: ["will", "'ll", "ll"]}}
+
+  - id: "morph.mod.underspecified_cancould"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "underspecified"
+    note: >
+      can/could/would: polysemous (ability/root-possibility/conditional dominate
+      over epistemic). Kept as LOW-WEIGHT underspecified per C-1, not asserted epistemic.
+    source: "Hyland 1998; Vold 2006 (see MARKER_REVIEW C-1)"
+    weight: 0.2
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {TAG: "MD", LOWER: {IN: ["can", "could", "would"]}}
+
+  - id: "morph.mod.deontic"
+    layer: "morpho_syntactic"
+    category: "modality"
+    subcategory: "deontic"
+    note: "Obligation/necessity — often flags an acknowledged gap. 'must' handled separately for epistemic reading."
+    source: "Hyland 1998; Marshman 2008"
+    weight: 0.4
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {TAG: "MD", LOWER: {IN: ["should", "shall", "ought", "must"]}}
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # HEDGING — adverbials & approximators (retained from v0.1, weighted).
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "morph.hedge.adverbial_perhaps"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "adverbial"
+    source: "Lakoff 1973; Szarvas et al. 2012"
+    weight: 0.7
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["perhaps", "possibly", "probably", "presumably", "arguably", "conceivably"]}}
+
+  - id: "morph.hedge.adverbial_maybe"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "adverbial"
+    source: "Szarvas et al. 2012"
+    weight: 0.7
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["maybe", "likely", "unlikely"]}}
+
+  - id: "morph.hedge.approximator_kind_of"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "approximator"
+    note: "Approximator (Prince). This is the ONLY home for kind/sort of now (C-5 dedup)."
+    source: "Prince et al. 1982; Szarvas et al. 2012"
+    weight: 0.6
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["kind", "sort"]}}
+      - {LOWER: "of"}
+
+  - id: "morph.hedge.approximator_somehow"
+    layer: "morpho_syntactic"
+    category: "hedging"
+    subcategory: "approximator"
+    source: "Szarvas et al. 2012"
+    weight: 0.5
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["somehow", "somewhat", "roughly", "approximately"]}}
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # NEGATION — C-3 CORRECTION. Scoped: NK only when negation governs an epistemic
+  # target. Bare negation kept as a separate LOW-WEIGHT modifier, not standalone NK.
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "morph.neg.scoped_epistemic"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "scoped_epistemic"
+    note: "Negation attached to an epistemic head: 'no idea/clue/evidence/reason', 'not sure/clear'."
+    source: "Vincze et al. 2008; Morante & Sporleder 2012"
+    weight: 0.9
+    status: "active"
+    type: "DependencyMatcher"
+    pattern:
+      - {RIGHT_ID: "head", RIGHT_ATTRS: {LEMMA: {IN: ["idea", "clue", "evidence", "reason", "explanation", "way", "knowledge", "sure", "clear", "certain", "obvious"]}}}
+      - {LEFT_ID: "head", REL_OP: ">", RIGHT_ID: "neg", RIGHT_ATTRS: {LOWER: {IN: ["no", "not", "n't", "never"]}}}
+
+  - id: "morph.neg.bare_modifier"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "bare_negation"
+    note: >
+      Bare not/n't/never/no(DET). LOW WEIGHT: not NK on its own (C-3). Retained as a
+      modifier that upgrades a co-occurring epistemic cue in analysis-time scoring.
+    source: "Vincze et al. 2008 (negation layer, separate from speculation)"
+    weight: 0.15
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["not", "n't", "never"]}}
+
+  - id: "morph.neg.quantifier_no_det"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "quantifier_no"
+    note: "'no' as determiner only (retained from v0.1; POS filter essential)."
+    source: "Vincze et al. 2008"
+    weight: 0.3
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {LOWER: "no", POS: "DET"}
+
+  - id: "morph.neg.nobody_nothing"
+    layer: "morpho_syntactic"
+    category: "negation"
+    subcategory: "quantifier_no"
+    source: "Vincze et al. 2008"
+    weight: 0.3
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["nobody", "nothing", "nowhere", "neither"]}}
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # TENSE — C-4 CORRECTION. Fixed the buggy double-'yet'; dependency-scoped.
+  # ═══════════════════════════════════════════════════════════════════════════
+  - id: "morph.tense.past_nk_notyet"
+    layer: "morpho_syntactic"
+    category: "tense"
+    subcategory: "past_nk"
+    note: "Negated verb with 'yet' as advmod: 'we haven't fixed this yet'. Replaces broken v0.1 rule."
+    source: "Janich 2020"
+    weight: 0.6
+    status: "active"
+    type: "DependencyMatcher"
+    pattern:
+      - {RIGHT_ID: "verb", RIGHT_ATTRS: {POS: {IN: ["VERB", "AUX"]}}}
+      - {LEFT_ID: "verb", REL_OP: ">", RIGHT_ID: "neg", RIGHT_ATTRS: {DEP: "neg"}}
+      - {LEFT_ID: "verb", REL_OP: ">>", RIGHT_ID: "yet", RIGHT_ATTRS: {LOWER: "yet"}}
+
+  - id: "morph.tense.future_nk_will_never"
+    layer: "morpho_syntactic"
+    category: "tense"
+    subcategory: "future_nk"
+    source: "Janich 2020"
+    weight: 0.6
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["will", "'ll"]}}
+      - {LOWER: "never", OP: "?"}
+      - {LOWER: {IN: ["know", "tell", "find"]}, OP: "?"}
+      - {LOWER: "never"}
+
+  - id: "morph.tense.future_nk_wont_know"
+    layer: "morpho_syntactic"
+    category: "tense"
+    subcategory: "future_nk"
+    source: "Janich 2020"
+    weight: 0.7
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["wo", "won't", "wont", "cannot", "ca", "can't"]}}
+      - {LOWER: "n't", OP: "?"}
+      - {LOWER: {IN: ["know", "tell", "say", "determine"]}}
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # SYNTACTIC PATTERNS
+  # ═══════════════════════════════════════════════════════════════════════════
+  # C-9: adversative demoted to low-weight co-occurrence modifier; 'yet' removed
+  # (it belongs to tense, C-4). 'but' kept but very low weight.
+  - id: "morph.syn.adversative"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "adversative"
+    note: "Low weight (C-9): NK-relevant only in an assertion+hedge contrast; scored as modifier."
+    source: "Simon 2020"
+    weight: 0.2
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["but", "however", "although", "though", "nevertheless", "nonetheless"]}}
+
+  # NEW — M-4: embedded / indirect questions are the reliable interrogative NK
+  # signal (a bare '?' is not). San Roque et al. 2015; Bongelli et al. 2018.
+  - id: "morph.syn.embedded_question"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "embedded_question"
+    note: "'I wonder whether/why…', 'not sure how…', 'no idea what…' — wh/if complement under an epistemic head."
+    source: "San Roque et al. 2015; Bongelli et al. 2018"
+    weight: 0.8
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["wonder", "unsure", "unclear"]}, OP: "?"}
+      - {LOWER: {IN: ["whether", "if", "why", "how", "what", "which", "where", "when"]}}
+
+  - id: "morph.syn.i_wonder"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "embedded_question"
+    source: "San Roque et al. 2015"
+    weight: 0.85
+    status: "active"
+    type: "Matcher"
+    pattern:
+      - {LOWER: {IN: ["i", "we"]}}
+      - {LOWER: "wonder"}
+
+  - id: "morph.syn.tag_question"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "tag_question"
+    note: "Confirmation-seeking tags: '…, right?', '…, no?', '…, correct?'."
+    source: "San Roque et al. 2015"
+    weight: 0.6
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {IS_PUNCT: true, LOWER: ","}
+      - {LOWER: {IN: ["right", "no", "correct", "yeah"]}}
+      - {LOWER: "?"}
+
+  # Bare '?' — DEMOTED per M-4 to a low-weight feature, not a standalone NK signal.
+  - id: "morph.syn.question_mark"
+    layer: "morpho_syntactic"
+    category: "syntactic_pattern"
+    subcategory: "question_mark"
+    note: "Retained but LOW WEIGHT (M-4): cannot distinguish info-seeking from rhetorical/code."
+    source: "Bongelli et al. 2018 (demoted)"
+    weight: 0.1
+    status: "candidate"
+    type: "Matcher"
+    pattern:
+      - {IS_PUNCT: true, LOWER: "?"}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CHANGE LOG
+# ─────────────────────────────────────────────────────────────────────────────
+# 0.2 — Review pass (MARKER_REVIEW.md §§2,4).
+#   ADDED    epistemic_verb (not-knowing, scoped DependencyMatcher) M-1;
+#            plausibility/attribution shields M-2; evidential family M-3;
+#            embedded_question / tag_question M-4; epistemic must/will.
+#   CHANGED  C-1 modal split reworked (may/might epistemic; can/could/would
+#            underspecified low-weight; deontic separated); C-3 negation scoped
+#            (bare negation → low-weight modifier); C-4 fixed broken not…yet;
+#            C-6 seem/appear → evidential; C-7 suggest/indicate → evidential,
+#            'tend' dropped; C-9 adversative demoted; bare '?' demoted (M-4).
+#   SCHEMA   added DependencyMatcher support + weight/status. All v0.1 Matcher
+#            rules still present (re-weighted); nothing silently removed.
+# 0.1 — initial seed.

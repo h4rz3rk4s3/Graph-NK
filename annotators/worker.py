@@ -128,8 +128,6 @@ async def run_annotator_worker() -> None:
         for unit, doc in zip(units, docs):
             for ann in rule_annotators:
                 try:
-                    #logger.info(f"TextUnit: {unit}")
-                    #logger.info(f"Docs: {doc}")
                     for sig in ann.annotate(unit, doc):
                         await _publish_signal(broker, sig)
                 except Exception as exc:
@@ -243,6 +241,11 @@ async def _publish_signal(broker: Any, sig: Signal) -> None:
         "rule_id":       sig.rule_id,
         "rule_version":  sig.rule_version,
         "confidence":    sig.confidence,
+        # v0.2 (MARKER_REVIEW.md §3.5) — must be forwarded here or they never
+        # reach the projector; the Signal dataclass carries them but this
+        # dict is a manual field list, not dataclasses.asdict().
+        "weight":        sig.weight,
+        "status":        sig.status,
         "payload":       sig.payload,
     }
     await broker.publish(settings.stream_signals, payload)
