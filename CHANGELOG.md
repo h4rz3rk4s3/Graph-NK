@@ -8,7 +8,128 @@ it closes or advances.*
 
 ---
 
-## 2026-07-15 — v0.7.0: MARKER_REVIEW.md upgrade — scope, not just cues
+## 2026-07-16 — v0.7.2: Sandbox guard made conditional (fixes 01N52 warning noise)
+
+**Shipped-artefact bug:** the v0.7.1 zip contained a notebook that hardcoded
+`WHERE coalesce(u.sandbox, false) = false` in 18 queries. On a database that
+never received the Cypher-course seed, Neo4j 5.x emits
+`01N52 property key does not exist` for every one of them. Results were
+never wrong (`coalesce(null, false) = false` → true, so all rows pass), but
+the warnings are noise — and worse, they train the reader to ignore an
+`UNRECOGNIZED`-class notification that also reports genuine property-name
+typos (`u.parnet_type` would warn identically and silently return null).
+
+**Why the guard exists at all:** `learn/00_seed_sandbox.cypher` tags every node
+it creates with `sandbox: true`, TextUnits included, and its toy issues contain
+real NK phrasing ("I'm not sure why this crashes…"). Installed via the seed's
+option B (into an existing instance), those nodes would silently pollute every
+count in the notebook. Installed via option A (a separate throwaway instance on
+port 7688, which the seed itself recommends), they never touch the research
+graph — and then the property key doesn't exist, which is what triggers the
+warning.
+
+**Fix:** the guard is now resolved once at notebook startup instead of being
+hardcoded. `CALL db.propertyKeys()` is checked for `sandbox`; queries write
+`@sandbox(u)`, and `q()` expands it to the real predicate when the key exists
+or to `true` (a constant the planner folds away) when it doesn't. This is
+exactly the warning's own condition — the planner raises 01N52 by consulting
+the same token store — so omitting the predicate is provably safe: key absent
+⟺ warning fires ⟺ no node can carry the property ⟺ the predicate is a no-op.
+The converse is deliberately conservative: property keys are not removed from
+the token store when nodes are deleted, so a torn-down sandbox leaves the key
+behind and keeps the guard on — harmless, never wrong.
+
+**Deliberately NOT done:** silencing this via the driver's
+`notifications_disabled_classifications=["UNRECOGNIZED"]`. One line, but it
+would also suppress genuine property-typo warnings for the whole session.
+Fixing the cause beats muting the symptom.
+
+**Verified:** all 19 sandbox-guarded queries render structurally valid Cypher
+under both branches (no dangling `WHERE`/`AND`, no unexpanded tokens, no
+property reference leaking through when disabled); every `@sandbox(var)`
+refers to a variable actually bound in its own query; generator compiles
+without escape-sequence warnings; notebook nbformat-validated (44 cells).
+
+### Files
+`notebooks/02_rq_analysis.ipynb`.
+
+---
+
+
+
+New `notebooks/02_rq_analysis.ipynb` (44 cells) implementing the refined
+research questions from REFINED_RQS.md (added to repo root). One section per
+RQ, each headed by the question + operationalisation from the refinement doc,
+so the notebook is self-documenting. Highlights of the operationalisation
+choices, and what was verified:
+
+### Design decisions (the ones worth knowing about)
+- **Rule metadata is loaded from the same YAML files the annotators load**
+  (scoped rule ids for RQ2, non-NK booster subcategories, SE-native
+  subcategory lists) — single source of truth, resolved via
+  `settings.pattern_set_version`, so the notebook follows pattern-set changes
+  automatically instead of hardcoding rule lists that would drift.
+- **Non-NK contrastive signals (boosters M-6, `-free` privative) are excluded
+  from every NK-positive definition** — extracted from the YAML by
+  `polarity == "certainty"`, not hardcoded. They exist for RQ5 stance
+  contrast only; counting them as NK would corrupt every rate.
+- **Headline numbers use `status='active'` only**; candidates are shown in
+  separate tables (RQ1) or both-ways (RQ3, where most SE-native metaphors
+  ship as candidates — the honest comparison shows the ratio both ways).
+- **RQ2's cue-vs-scope gap** is a 2×2 on classifier-positive units:
+  scoped-only / cue-only / both / neither, with "scoped" = the 5
+  DependencyMatcher rule ids. The scoped-only share is the direct quantified
+  answer to "unknown false negatives from keyword lists."
+- **RQ4 keeps the taxonomy mapping manual by design**: the notebook clusters
+  (KMeans over log1p unit×category vectors, k by silhouette), exports
+  exemplars to CSV for qualitative audit, and provides a `TAXONOMY_MAP` dict
+  to fill in; coverage table + residual set are computed from that. Post-hoc
+  labels are a human judgement per the framework's own design — automating
+  them would fake the paper's core evidence.
+- **RQ5 produces the labelling workflow end-to-end**: 2×2 contingency, three
+  hand-labelling CSV exports (both disagreement cells + stratified ≈50/rule
+  precision sample), re-import cells computing the per-rule reliability table
+  against τ=0.7 and a marker-recall estimate. **Writing promotions back to
+  the graph is gated behind `APPLY_PROMOTIONS = False`** — calibration
+  remains deferred (MARKER_REVIEW §3.5); the notebook computes evidence, it
+  does not act on it.
+- **RQ6** tests the two register predictions stated in REFINED_RQS (hedging/
+  rhetorical ↑ mailing lists; repro_gap/spec_gap ↑ issues), reports χ² with
+  Cramér's V (effect size, since large n makes everything "significant"),
+  clusters community NK signatures (dendrogram, gated on ≥4 sources), and
+  adds a thread-position analysis (openers vs replies via REPLIES_TO).
+- Every query excludes sandbox nodes; §0 sanity-asserts the RQ6 quotation-
+  exclusion control (zero `role='quotation'` units) and warns loudly on
+  silent annotator layers or mixed rule_versions in the graph.
+
+### Verified (without a live Neo4j — what could and couldn't be checked)
+- All graph shapes used by the queries checked against the projector's actual
+  write paths (TextUnit.parent_type/role/text on-node; CLASSIFIED_AS →
+  ClassifierVerdict.label; Repository.full_name / MailingList.name both via
+  CONTAINS): all match.
+- Parameter hygiene (every `$param` passed), no deprecated `exists()`, all 35
+  code cells parse, nbformat-validated.
+- All 8 pandas/sklearn/scipy analysis paths smoke-tested on synthetic data
+  shaped like real query results (incl. absent-contingency-cell handling,
+  zero-division guards, full clustering path, recall arithmetic).
+- **One real Cypher bug caught by review before shipping**: in the RQ5.2
+  sample queries, `rand()` placed alongside `collect()` in a single `WITH`
+  becomes part of the grouping key (evaluated per row), silently breaking the
+  aggregation and duplicating units in the sample. Fixed by attaching
+  `rand()` in a second `WITH` after the aggregation; the rest of the notebook
+  swept for the same bug class (clean — remaining `rand()` uses have no
+  aggregation and are intentionally per-row).
+- **Not verified**: actual execution against a populated Neo4j (none in this
+  environment). Run top-to-bottom on the pilot corpus; §0's sanity cells are
+  designed to fail loudly first if anything is off.
+
+### Files
+`notebooks/02_rq_analysis.ipynb` (new), `REFINED_RQS.md` (new, repo root),
+`CHANGELOG.md`, `AGENTS.md` (tree).
+
+---
+
+
 
 Integrates a literature-grounded review of all four pattern/lexicon files
 (MARKER_REVIEW.md, added to repo root). Central thesis: v0.1 detected NK

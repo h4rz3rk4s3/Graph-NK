@@ -1,0 +1,535 @@
+unit,text,rules,is_genuine_nk,error_type,notes
+commit:15e4aa558008d489069c5ba3c7ee0ea1be23dc0c:commit_message,"(PE-3516) Remove unnecessary debian templates
+
+Having a postinst with just DEBHELPER in it is accomplished by not having the
+file at all. Similarly, the prerm file is functionally the same file that
+debhelper will generate once it is installing the init scripts for the debian
+package. This commit removes those files.",['affix.prefix.un'],,,
+commit:35de5abcf65d21846645284322be3d6cbead3516:commit_message,(PE-37713) Remove useless copy of additional directory to resources dir,['affix.suffix.less'],,,
+commit:1d3ea2547c8c7bde052cc0611620eda132112da2:commit_message,"(SERVER-1412) Allow build scripts to be included in staging tarball
+
+This commit adds support for creating an  dir
+in a project's jar.  If found, ezbake will copy all of the files
+found in this directory into the staging directory, so that they
+will be included in the tarball that is sent up to the packaging
+system.
+
+These files will *not* be included in the final packages, but they
+can be referen",['morph.syn.embedded_question'],,,
+commit:bd3773483cc4d2832facc07a63ec480fa91f5f27:commit_message,"(EZ-97) Output fail log message for Debian when start fails
+
+This commit changes the logic for interpreting the result of a start
+operation to log an exit code of 1 as a ""failure"" instead of as a
+""success"".  Previously, the logic would erroneously log ""OK"" to output
+even though the start command had actually failed.",['morph.syn.embedded_question'],,,
+commit:19743503674b4ec177787811a02ad4399a18be4b:commit_message,"(EZ-39) Update ezbake to use java 8 when available on debian
+
+Ubuntu's vivid release will include a java 8 package, as will debian's
+release after jessie. This commit adds java8-runtime-headless as an
+option if java7 is not available.",['morph.syn.embedded_question'],,,
+commit:709d584b9db93b2cb05246e7bfb8b3ed8afbded3:commit_message,"(EZ-34) Allow ezbake to set apt/yum repo_name for packaging
+
+In order to ship projects such as puppetserver 2.0 to a repo other than
+main/products, ezbake needs to be wired up to do so. This commit adds an
+ezbake key called repo-target which will set the correct keys in
+project_data.yaml to ensure this can happen.",['morph.syn.embedded_question'],,,
+pr:OpenVoxProject/ezbake:61:comment_body:6,"I raised https://github.com/OpenVoxProject/ezbake/pull/103, which makes testing easier",['morph.syn.embedded_question'],,,
+commit:435c705cb32c85a2d782d3182b1f40a145d719c6:commit_message,(maint) Remove unneccesary PATH comments from debian/rules,['affix.prefix.un'],,,
+commit:202807206051f9895e64e77384e98ba7d6385b71:commit_message,"Merge pull request #545 from underscorgan/maint/master/publish-container-readme
+
+(maint) Publish container readme when new container is pushed",['morph.syn.embedded_question'],,,
+commit:f697d678b490e8aa0a08c77f577c612923998c2e:commit_message,"(maint) Use pushd/popd instead of -c for sles init scripts
+
+-c did not behave as expected. Sles used the directory specified as a
+chroot and then tried to find the daemon (/opt/puppet/bin/java) within
+the directory, where it wouldn't exist. This commit updates the proc
+calls to remove the -c, and replaces the one in the start function with
+a pushd/popd. The use of pushd means that the shell has to",['morph.syn.embedded_question'],,,
+commit:23c5ec11ff154e9c30779694225a13a7c9f7cc98:commit_message,"Merge pull request #52 from waynr/maint-nonzero-exit-status-on-fail
+
+(MAINT) Return nonzero exit status if parameters incorrect.","['morph.syn.embedded_question', 'affix.prefix.non', 'affix.prefix.in']",,,
+commit:91349fadb8068035b41819aeac90f39950835d74:commit_message,"(PDB-5622) Select Java 11+ on Platform 8
+
+Does not change PE package builds.
+
+Add a puppet-platform-version argument to EZBake defaulting to 7 (which
+maintains the current dependency list) when building for Puppet Platform
+8 select newer more appropriate JDK's for each platform. Fails for
+unrecognized Platform versions so that we remember to select appropriate
+JDKs.
+
+Selecting JDK 11 for SLES 12 m","['morph.syn.embedded_question', 'affix.prefix.un']",,,
+commit:d72c2314a1bfa901ff5c0dad49fee99f0c9a7455:commit_message,"Remove extra debian defaults file.
+
+Seems to be unnecessary. Also removes references to it in the project_data.yaml
+mustache.
+
+Signed-off-by: Wayne <wayne.com>","['morph.evid.inferential_seem', 'affix.prefix.un']",,,
+commit:e0581cc05c011eca84762e09d43354dd14b923c9:commit_message,"(EZ-100) Terminate java process if start script times out
+
+This commit adds logic to the start script to terminate the Java
+background process and purge the associated pidfile if the service
+has not been started by the time the start timeout has been reached.",['morph.syn.embedded_question'],,,
+commit:dcb5cfb6a0740331d78cf6bc784e167e38760635:commit_message,"Merge pull request #588 from jpartlow/issue/main/replats-150-skip-runas-when-service-user
+
+(REPLATS-150) Skip efforts to run as user when already service user",['morph.syn.embedded_question'],,,
+commit:66a24de64ef0fbe7850e5e41b0a21edc7702a8bb:commit_message,"(maint) Remove el5 from build list
+
+EL 5 does not have a sufficient version of java for puppet server or
+puppetdb. Because of this, we should not be building or shipping
+packages for this platform.",['morph.mod.deontic'],,,
+pr:OpenVoxProject/ezbake:36:body,"This fixes a regression from b2de7c7a2e7704491a08665a9f53ded8009aa109 where we removed the reload script. Now that we don't fork anymore, we can just rely on , which is a variable provided by systemd.
+
+see https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#ExecReload=",['morph.syn.embedded_question'],,,
+commit:11ad3c0277548b010690c2d61eda535aa96aa96c:commit_message,"(EZ-44) Set sudo HOME for foreground
+
+This commit changes executions of commands via sudo from the foreground
+subcommand to be done with a -H option.  The -H option causes the HOME
+environment variable for the process running in sudo to be set to that
+of the default home directory for the target user.  The -H overrides the
+default behavior on Ubuntu, which is to preserve the HOME variable value
+fo",['morph.syn.embedded_question'],,,
+commit:3c9337d15be2acac9af36b2567567067e1b41225:commit_message,"(EZ-99) Added procps as an explicit package dependency for pgrep
+
+This commit adds procps as an explicit package dependency.  procps
+provides pgrep, which is used by a number of the init scripts.",['morph.syn.embedded_question'],,,
+commit:7584bd6997f34afaa50520493cde55bdd320e699:commit_message,"(maint) Update PE packaging to lay out FS correctly
+
+Previously the confdir and datadir would be incorrect in ezbake PE
+installations. This commit updates them to use real_name for the confdir
+and datadir, so /etc/puppetlabs/pe-classifier becomes
+/etc/puppetlabs/classifier and /opt/puppet/share/pe-classifier becomes
+/opt/puppet/share/classifier, which is correct for PE.","['morph.syn.embedded_question', 'affix.prefix.in']",,,
+commit:ff03c310f1f6c985ba75774178e8be93164b0328:commit_message,"Merge pull request #403 from aperiodic/maint-nodeploy-env-variable
+
+(EZ-108) Don't deploy if  set",['morph.syn.embedded_question'],,,
+commit:9b02de50283144839ea90a9ef608f0f0f4235edd:commit_message,"(EZ-97) Add missing check for pid status after kill in aborted start
+
+This commit adds one extra  check to the logic in the
+start script which confirms whether an attempt to kill the Java process
+for an aborted start was successful.  Without this check, an erroneous
+""Java process not killed"" trace message might be written even if the
+process actually was killed.","['morph.syn.embedded_question', 'morph.mod.epistemic_maymight']",,,
+commit:1335712b5b2050f1348f0585d790bf3a7a59eda4:commit_message,"(SERVER-344) Choose best method to become puppet
+
+Previously, only the su command was used to switch to the puppet user
+and launch Puppet server in the foreground. This does not work on some
+systems using SELinux. This commit attempts to use the runuser command
+instead if it is installed and the user is running as root, otherwise
+sudo or su is used.",['morph.syn.embedded_question'],,,
+commit:773441fb2bc3393ca0246b3623fd57c6b0edad6a:commit_message,"(maint) Ensure terminus provides and obsoletes are valid rpm versions
+
+With the introduction of maven timestamps into the version string, the
+provides and obsoletes for the termini packages have invalid versions,
+which is generating warnings during the build. For example:
+
+This commit addresses that problem but subbing . for - in all of the
+terminus versions strings, which will ensure that it is a","['morph.syn.embedded_question', 'affix.prefix.in']",,,
+commit:04814a18426b1f4f6144998f0660b56942dc699b:commit_message,(MAINT) Clean up unnecessary action arguments,['affix.prefix.un'],,,
+commit:578d4ca3e0072bed1cf4285b3701ae224b4391fa:commit_message,"Fix error capturing return value in debian pe init script
+
+Somehow two lines got joined here. The assignment to RETVAL is supposed to be
+on its own line to capture the exit code of start-stop-daemon.",['morph.hedge.approximator_somehow'],,,
+pr:OpenVoxProject/ezbake:24:body,"In https://github.com/OpenVoxProject/ezbake/pull/2/commits/6b3ad939736bb8d0f0a22a715f398a49a678a8d3 we introduced a new configuration option for . To get this working, we need to add it to ezbake itself. Otherwise the variable won't exist and we cannot use it in templates:
+
+
+
+(see the whitespace after  where the java path should be.","['morph.syn.embedded_question', 'morph.mod.deontic']",,,
+pr:OpenVoxProject/ezbake:27:comment_body:8,"It's not required. But in case my hack here doesn't catch the java bin, or we are on a platform where we don't have an explicit java version, we end up with /usr/bin/java and that works for 80% of the situations.",['morph.syn.embedded_question'],,,
+commit:d2ad06508bed85d7d886678c3563948903659faf:commit_message,"(EZ-48) Add support for debian systemd
+
+This commit updates both the PE and foss build pipelines to correctly
+install systemd scripts for packages built with EZBake. It also cleans
+up some of the logic in the {pre,post}{inst,rm} debian scripts.
+
+This only upgrades Ububtu Xenial to systemd, even though it really
+should include Debian Jessie. We disable the service in the prerm, which
+prevents us fr","['morph.mod.deontic', 'morph.syn.embedded_question']",,,
+commit:f7b5fe8b407a1934a66ff9be5ef2394ac8f0b6fd:commit_message,"(EZ-97) Echo error message when process exits during reload or HUP fails
+
+This commit adds an echo statement if a process exits during a reload
+attempt or a HUP signal cannot be sent to the process.  The commit also
+replaces 'set -e' with 'set +e' to allow for the exit code for a 'kill
+-0 <pid>' to be inspected rather than having the script just exit for a
+non-zero value.",['morph.syn.embedded_question'],,,
+commit:c36a1dd86bb993543176ac547f606c762faa5ba8:commit_message,"(maint) Fix bad version check for sles/systemd
+
+The check for whether or not a sles system was systemd was checking for
+os_version <= 12, but sles 12 is systemd. This was resulting in sles 12
+packages missing init scripts.",['morph.syn.embedded_question'],,,
+commit:e59643f5dc6bce1cb5ba2f58c728b09736a026c4:commit_message,"(maint) fix postinst action for RedHat FOSS
+
+This is the companion commit to 570838b, but applied to the foss redhat
+spec template.  Matches an unbalanced if.","['morph.syn.embedded_question', 'affix.prefix.un']",,,
+commit:01f78204ea9af33f4f6d6da8e5e2fe900c748a4f:commit_message,"(CPR-515) Allow separate tasks for install vs upgrade
+
+Currently, the postinstall tasks from the packaged project
+are executed unconditionally, both on install as well as
+upgrades. This can cause issues, as in the case with puppetserver
+potentially overwriting config values if the user has changed them
+from the package defaults.
+
+This adds an addtional set of tasks that can be executed in the
+pack","['morph.syn.embedded_question', 'affix.prefix.un']",,,
+commit:bcb5026b7482077303a12d19385755fac3fda7fb:commit_message,"(EZ-21) Lay down logrotate for ezbake packages
+
+Ezbake packages can generate a lot of logs, so this commit adds
+automatic log rotation for anything in the /var/log/$project directory.
+Unfortunately, logrotate scripts are terrible because between certain
+versions a line is required in the configuration, without which errors
+are generated, but that is not recognized on earlier versions of
+logrotate.",['morph.syn.embedded_question'],,,
+commit:067b797fc20f453bd1334ce5a75e5d0b9ab18add:commit_message,"(maint) Fix release for final versions
+
+The method to determine the release number was correctly setting the
+release for SNAPSHOT builds but was errantly setting it to the version
+if this was not a SNAPSHOT build. This fixes that method to return 1 for
+non-SNAPSHOT builds, since we don't support custom release numbers.",['morph.syn.embedded_question'],,,
+pr:OpenVoxProject/ezbake:4:comment_body:2,Rebase should fix tests,['morph.mod.deontic'],,,
+commit:e234fec7ccefe7a8f188c48170653457d30e3a14:commit_message,"Merge remote-tracking branch 'upstream/master' into stable
+
+* upstream/master: (109 commits)
+  (SERVER-1723) Use /dev/urandom for foreground subcommand
+  (maint) Remove cprice404 as maintainer
+  (maint) Ticket number typo
+  Version 1.1.7-SNAPSHOT
+  Version 1.1.6
+  (maint) Update changelog for 1.1.6
+  (CPR-401) Require 'which'
+  Version 1.1.6-SNAPSHOT
+  Version 1.1.5
+  (maint) Update changelog for ",['morph.syn.embedded_question'],,,
+pr:OpenVoxProject/ezbake:122:body,"#### Pull Request (PR) description
+
+The v7 release of  introduced a major change where it will refuse to check out repository state that may be mutated by the pull request. This commit explicitly sets  on the checkout step of the workflow as  has logic for finding the pull request and cherry-picking commits out of it.
+
+
+#### This Pull Request (PR) fixes the following issues","['morph.syn.embedded_question', 'morph.mod.epistemic_maymight']",,,
+commit:90dcd5d502c19158ca4f13c154c16fcff02eeda3:commit_message,"Eliminate net-tools dependency
+
+ezbake-functions.sh.erb uses the deprecated netstat from the
+deprecated net-tools package. But I can't find any uses of the
+functions in ezbake-functions.sh.erb, so let's remove it. The
+functions were used in the wrappers which were eliminated in #5.
+
+Fixes #13.
+
+Signed-off-by: Tim Meusel <tim.de>",['morph.syn.embedded_question'],,,
+commit:068f06e5086e4fe0026abf8d33838076c4c8774c:commit_message,"(EZ-100) Use START_TIMEOUT var as default for start timeout if set
+
+This commit uses the START_TIMEOUT environment variable as the default
+for start timeout if set in the service's sysconfig/default file.",['morph.syn.embedded_question'],,,
+commit:8e0c3e5c4ba69022af32b32eac5634b79a86889a:commit_message,"(MAINT) Add explicit nrepl references
+
+There appears to be a bug in leiningen where it will exclude
+tools.nrepl from an uberjar if it is a transitive dependency of
+your project (as opposed to a first-class dependency listed in
+the project.clj file that you are building the uberjar from).
+
+See https://github.com/technomancy/leiningen/issues/1762 .
+
+This commit adds an explicit dependency to all of ","['morph.evid.inferential_seem', 'morph.syn.embedded_question']",,,
+commit:f9de8c42da74af5301260dd50e324c21e5dc7455:commit_message,"(EZ-132) Change Java runtime OOM and logfile behavior
+
+I think this should be all that's needed. I changed
+
+  -XX:OnOutOfMemoryError=""kill -9 %p""
+to
+  -XX:+CrashOnOutOfMemoryError
+
+CrashOnOutOfMemoryError has been around since Java 8, so this should work with all our products.
+
+I also added:
+
+    -XX:ErrorFile=""${app_logdir}/${real_name}_err_pid%p.log""","['morph.mod.deontic', 'morph.hedge.shield_think']",,,
+commit:2071979f08fabe87895012b0febc1ce6c2bd0676:commit_message,"Merge pull request #412 from melissa/ticket/master/RE-8726-allow-ship-to-nonfinal-repo
+
+(RE-8726) Allow nonfinal repo definition",['affix.prefix.non'],,,
+commit:6fefa17c9fce91537829e82173386ea1f49abe5e:commit_message,"(maint) Fail fast when unrecognized RHEL version
+
+Previously this was failing at the rpmbuild stage when it provided an
+empty java dependency to the package build command.","['morph.syn.embedded_question', 'affix.prefix.un']",,,
+commit:87dcc4da73a9607ba807246c2e53adc84628f416:commit_message,"Merge pull request #530 from mwaggett/ticket/master/re-12093-remove-dead-code
+
+(RE-12093) Remove unused files",['affix.prefix.un'],,,
+pr:OpenVoxProject/ezbake:2:body,"This is https://github.com/puppetlabs/ezbake/pull/627 opened against OpenVoxProject. I have only done an initial rebase without resolving all the issues.
+
+I'll add inline notes with where we need to have further discussion.",['morph.syn.embedded_question'],,,
+commit:de0e320700351bea48e018394a4eec69f753ae25:commit_message,"(maint) Fail early, fail often
+
+Set -ex for the controller script so we quit if anything fails.",['morph.syn.embedded_question'],,,
+commit:72523d322c6e2964ac553ba8bcaa1455b172a0be:commit_message,"Merge pull request #64 from cprice404/maint/master/PE-4762-change-ini-files-to-conf
+
+(PE-4762) Change ini files to conf, remove unneeded settings",['affix.prefix.un'],,,
+commit:10a4ed96076035ea2762b0c0994e142b7bad4dbb:commit_message,"(PE-11368) Use real_name in logrotate files
+
+In the new FS, both pe-puppet-server and puppet-server put their logs in
+/var/log/puppetlabs/puppet-server (or console-services or puppetdb).
+Previously the logrotate files referenced project in the directory
+instead of real name, which would lead to logrotate trying to rotate a
+non-existent directory such as /var/log/puppetlabs/pe-puppet-server.
+This c",['morph.syn.embedded_question'],,,
+commit:34f93bdda1301f1ff90a0e5e33e270b7837a33d0:commit_message,"(EZ-50) Update permissions on ezbake-functions.sh
+
+Currently this gets installed as '0774', which is a littl unusual
+and causes rpmlint to complain.
+
+This updates to 0750.","['morph.syn.embedded_question', 'affix.prefix.un']",,,
+commit:0f993fe5a8cd881908019e06a5b962e29013de68:commit_message,"(RE-5033) Remove obsoletes/provides for termini
+
+Due to an odd issue with PuppetDB, when PuppetDB 2.3.z and PuppetDB
+3.0.0 are in the same repository (e.g. PC1) you can not install
+PuppetDB 2.3.z because the terminus package is oboleted and therefore
+brings in the 3.0.0 version of temini. That means you can't really run
+2.3.5. This is bad since the tests for PuppetDB 2.3.z test against the
+AIO and",['morph.syn.embedded_question'],,,
+commit:99df400259e5570703554bc834bb366155f57c91:commit_message,"Revert ""(maint) Fix issue where postinst steps don't make it into packaging""
+
+This reverts commit af64cf32d828790c7057470a99ca4ddb64a7d4ef.",['morph.syn.embedded_question'],,,
+commit:af64cf32d828790c7057470a99ca4ddb64a7d4ef:commit_message,(maint) Fix issue where postinst steps don't make it into packaging,['morph.syn.embedded_question'],,,
+commit:4b2d3675a4788c4becd67020edfc38dc6cd07580:commit_message,"Update build.rake
+
+the 'build?token=' access method does not work in the latest jenkins core version.
+But using the other original case where JENKINS_USER_AUTH=<LDAP username>:<token>
+should work","['morph.syn.embedded_question', 'morph.mod.deontic', 'morph.syn.question_answer']",,,
+pr:OpenVoxProject/ezbake:5:comment_body:7,"This introduced a regression. The systemd units now have:
+
+
+
+Turns out: Variable interpolation isn't support for the first arg of . the unit will fail with:
+
+
+
+It doesn't matter if the variable is in quotes or not. from  on IRC:
+
+
+
+I will fix this in https://github.com/OpenVoxProject/ezbake/pull/2/",['morph.syn.embedded_question'],,,
+commit:1be11d7efafb4e5b46859f66d4a22ad70507d6d1:commit_message,"(PDB-1455) Fix pe/foss inconsistencies and bug with using ruby detection in spec/rules.erb
+
+This patch solves an initial bug with ruby detection, but also attempts to find
+other cases where PE and FOSS differ by removing as much variation as well.
+
+Lots of incosistencies and bugs were found in this exercise:
+
+* Users created using old FOSS based homedirs
+* Removal of log files for FOSS was removin","['morph.syn.embedded_question', 'morph.mod.deontic', 'affix.prefix.in', 'affix.prefix.un']",,,
+commit:39bd4e4e6d4e7096055835bfeb09f6ede1d34d41:commit_message,"(maint) Deploy snapshot & list deployed version
+
+When staging a SNAPSHOT version of a project, EZBake will deploy
+a snapshot artifact to the configured snapshots repository to ensure we
+have a maven artifact for the build, and the full snapshot version of
+the deployed artifacts will be listed as the version in EZBake's
+manifest and project_data.yaml.",['morph.syn.embedded_question'],,,
+commit:ec90b8ceacdf80453ef30c9735419c2beb33b21e:commit_message,"(PDB-1455) Correct termini install.sh rubylibdir fallback autodetection
+
+The autodetection routine for AIO pathed Puppet rubylibdir wasn't working.
+This showed up when we tried to point our PuppetDB source based tests at a
+the ezbake upgrade branch.
+
+This patch adds the Puppet 4/AIO path to PATH when trying to call ruby to
+figure out where the terminus belongs.
+
+Signed-off-by: Ken Barber <ken.sh>",['morph.syn.embedded_question'],,,
+pr:OpenVoxProject/ezbake:62:body,"This reverts commit e43660e2363c45d7a35d4ef36246f8866764f5d9.
+
+e43660e2363c45d7a35d4ef36246f8866764f5d9 added a denylist for needrestart to ignore openvoxdb/openvoxserver. Both services write files into /tmp/, which triggered service restarts, that were not required.
+
+Since
+https://github.com/puppetlabs/ezbake/pull/623/commits/bf1a75d757b0f5e6ed7db1ddde7dc13e4984649c, both services use the Pr",['morph.syn.embedded_question'],,,
+commit:0d03169b2ebc107bba914295a6297eaafad081a3:commit_message,"(SERVER-2602) Do not manage egd
+
+This setting is of little value in Java 8+ and we've seen no difference
+anecdotally between explicitly configuring /dev/urandom as a source vs
+using the JVMs defaults.
+
+We will be explicitly setting this to /dev/random for FIPS enabled
+builds, however we will do so via the JAVA_ARGS variable. FOSS users who
+would like to manage their egd source should use JAVA_ARGS",['morph.mod.deontic'],,,
+commit:aa6861dc16562d13fa5888c070a636d2ac6e14a2:commit_message,"(SERVER-3) Update EL init scripts to invoke the daemon from INSTALL_DIR
+
+On el systems, if the service is invoked using init.d directly, while in
+a root owned directory, it will fail to run several external commands
+during startup. This isn't a problem for debian because we pass in a
+directory to run from that will be accessible to the service user. This
+commit implements the same behavior for EL ","['morph.syn.embedded_question', 'morph.mod.deontic', 'morph.mod.epistemic_must_be']",,,
+commit:3c613d3002c4a1d5ea1afef0bd812f016acef422:commit_message,"(QENG-903) Fix preinsts and install-deb-sysv-init
+
+Previously  was installing the redhat init script.
+
+Also,  and  were simply concatenating
+the strings in the  which I never noticed until attempting
+to install from ezbake on a debian machine.
+
+Signed-off-by: Wayne <wayne.com>",['morph.syn.embedded_question'],,,
+commit:653385eb3ff0eabe34c25924e1ffc4f78c428961:commit_message,"(EZ-110) Retain qualifying coordinate info when snapshot version expanded
+
+Previously, work was done to expand SNAPSHOT versions to the version of
+the actual artifact previously deployed to a repository.  In the process
+of expansion, any qualifying info on the coordinate, e.g., any
+exclusions, was lost.  The resulting uberjar which was built would still
+honor the qualifying info, however, the ezba","['morph.syn.embedded_question', 'morph.mod.deontic']",,,
+commit:b153669d32bbebbce3a1ed5309149adf669327ee:commit_message,"Merge pull request #291 from underscorgan/0.3.21-prep
+
+(maint) 0.3.21 release prep",['affix.prefix.under'],,,
+commit:c6b942f590940c0cf60e04cf09b7a23ff0990d18:commit_message,"(RE-12082) Revert libuser changes
+
+This commit reverts the changes made to address PE-24606. We encountered
+installation failure when bumping puppetserver to a version of ezbake with
+these changes. There were several issues with this work, the largest of which
+being the fact that there is no libuser package for sles and there is a bug in
+libuser1, a dependency of libuser, for debian 8 (jessie) and","['morph.syn.embedded_question', 'affix.prefix.un']",,,
+commit:0147ccde42027e0d76a6eb7b675b07af26f0c5e3:commit_message,"(maint) Add docker container for ezbake builds
+
+This commit adds artifacts needed to build and test an ezbake container.
+This should help with development and testing, both internal to Puppet
+and for external contributors.",['morph.mod.deontic'],,,
+pr:OpenVoxProject/ezbake:91:body,"The tmpfiles configuration file isn't required anymore, since we set PrivateTmp=true in the systemd unit (introduced in 900b4eee0dfda861fd99934ce5f1532c411ab373).
+
+---
+
+The  directory contains only two files:
+
+
+
+We don't package /usr/lib/tmpfiles.d/*.conf anymore. And the changelog.gz is autogenerated by fpm afterwards. That means that in our packaging directory, there is no . If we force ",['morph.syn.embedded_question'],,,
+commit:1b260eaa519d110a07670ebe73002aa66111f90f:commit_message,"(maint) Correct jar name in the systemd service file
+
+Previously, the service file referred to $project.jar, which is a
+holdover from previous versions of ezbake. ezbake.rb contains
+uberjar_name, which is the full filename of the installed jar, which
+will almost certainly never be the same as project.",['morph.syn.embedded_question'],,,
+commit:08b1476592973bee78c4c708e5d76b6341d2be05:commit_message,(maint) Remove additional unused debian files,['affix.prefix.un'],,,
+commit:9fd20f834007be8e8684737f69a80f4ab9e2c6e8:commit_message,"Drop Debian 11 & 12 support
+
+They don't have Java 21, which is required for OpenVox 9.
+
+Signed-off-by: Tim Meusel <tim.de>",['morph.syn.embedded_question'],,,
+commit:d5a08db673bf57dd072421654196754524644b05:commit_message,(SERVER-1742) Restart functions should not try to start if stop fails,"['morph.mod.deontic', 'morph.syn.embedded_question']",,,
+pr:OpenVoxProject/ezbake:109:title,fpm.rb: Remove unused systemd option & Amazon 2023: Switch to Java 25,['affix.prefix.un'],,,
+commit:b6168be5c82b6dd90b3aa4b48063c05926704e6b:commit_message,"Merge pull request #443 from underscorgan/maint/master/bash-fix
+
+(maint) Fix empty if in bash controller",['morph.syn.embedded_question'],,,
+commit:6dc0b82f68fee8d24a2809d5b1810a45a9cd8814:commit_message,(maint) Update comment for when this should actually be fixed,"['morph.syn.embedded_question', 'morph.mod.deontic']",,,
+commit:00953990baf2692969df8839410f309d31f5632d:commit_message,"(PE-36861) Fix needrestart conf file
+
+Turns out needrestart doesn't merge the values in the conf file automatically, so whichever is loaded last is what is used. This modifies it to use 'push' to enforce this merging behavior.
+
+See https://github.com/liske/needrestart/issues/124",['morph.syn.embedded_question'],,,
+commit:790cf750ea04a7bfb7e78c7012b96f6896ae51e3:commit_message,"(maint) Cleanup foss packaging templates
+
+This fixes some issues with the foss packaging templates, in general
+merging where possible from the PE templates.",['morph.syn.embedded_question'],,,
+commit:01490cfaab960f23d7d4901d55d7ab254e131c5d:commit_message,"Merge branch 'stable'
+
+* stable:
+  Merge pull request #193 from shrug/maint/master/pe-8274
+  (MAINT) Updated changelog for 0.2.5
+  (SERVER-344) Remove quotes around sudo command
+  (SERVER-344) Remove hardcoded puppet user
+  (SERVER-344) Remove unnecessary redirects
+  (SERVER-344) Choose best method to become puppet
+  Version 0.2.5-SNAPSHOT
+  Version 0.2.4
+  (MAINT) Updated changelog
+  (MAINT) Corr","['affix.prefix.un', 'affix.prefix.in']",,,
+commit:db74b11e18f6f6de72297f0ed526585dc210b62b:commit_message,"Merge pull request #415 from underscorgan/tickets/master/re-4844-merge-templates
+
+(RE-4844) Merge FOSS/PE ezbake templates",['affix.prefix.under'],,,
+pr:OpenVoxProject/ezbake:106:body,"We support/test against Java 21 and 25 in our openvoxdb/openvox-server pipelines. Our packages depend on either of those versions. Where possible, we want to use Java 25. This also adds Debian 14 / Ubuntu 26.10 to the list. They are still in development, but it's already clear that they will ship Java 25 as well. See individual commits for details.","['morph.syn.embedded_question', 'affix.prefix.in']",,,
+commit:e5a4105a5ab0a329fe010b09291be043ece176c9:commit_message,"Don't hardcode PE in the proj naming
+
+Now that project is being automatically prefixed with PE when desired,
+hardcoding it in the control and rules is no longer necessary. This
+commit removes them.",['morph.syn.embedded_question'],,,
+pr:OpenVoxProject/ezbake:6:body,"OpenVox only supports platform 7 and 8, and we don't really need to worry about ancient el8 being weird. We build OpenVox with Java 11, so make this the base version, and ideally use 17 when available.",['morph.syn.embedded_question'],,,
+commit:5ba62cc32846c3064708e62ff0ced2e941c3cee2:commit_message,"Merge pull request #124 from cprice404/maint/master/SERVER-33-increase-default-permgen
+
+(SERVER-33) Increase default max permgen",['affix.prefix.in'],,,
+commit:ee4b88339c3f43cc147b3f51f5f8f7d630a716a8:commit_message,"(EZ-97) Kill background Java process if start script terminated
+
+This commit will trap HUP, INT, and TERM signals sent to the start
+script.  If any is trapped, the associated Java process that the start
+script spawned will be terminated.  This is done so that if a 'restart'
+is issued while a start is already in process, the Java process for the
+first start attempt will be cleaned up before the sec","['morph.syn.embedded_question', 'morph.mod.epistemic_maymight']",,,
+commit:c3e926ee84aafd474257b5c884d032d0c3131c71:commit_message,"Merge pull request #253 from shrug/master
+
+(re-4765) vardir should use real_name",['morph.mod.deontic'],,,
+commit:e8334295b6a86cd2303e8639eafca08f7a02f270:commit_message,"(EZ-108) Don't deploy if  set
+
+Change the  action to avoid deploying to the snapshots repository
+if the  environment variable is set to any value
+(including  or  or ), and mention this in the README",['morph.syn.embedded_question'],,,
+commit:0fbf29e63545dcb2efb454e2e19a8010b4ff4e63:commit_message,"(PE-3063) add manifest info
+
+This commit adds manifest info (about which packages are
+bundled) to the rpm/deb package descriptions, and to
+a file on disk.",['morph.syn.embedded_question'],,,
+commit:79eadbcc3bcee9fb38e2d31f0d21de1dc249ecc6:commit_message,"(SERVER-1772) Update ezbake.manifest with uberjar info
+
+Update generate-manifest-file to include dependency information for any
+additional uberjars that have been included in the project.
+
+Changes the function from using a formatted string to an arguably better
+mustache template, since mustache is already used elsewhere in ezbake",['morph.hedge.adverbial_perhaps'],,,
+pr:OpenVoxProject/ezbake:22:body,"The  directory contains only two files:
+
+
+
+Since https://github.com/OpenVoxProject/ezbake/pull/5, we don't package /usr/lib/tmpfiles.d/puppetserver.conf anymore. And the changelog.gz is autogenerated by fpm afterwards. That means that in our packaging directory, there is no . If we force fpm to package it, it will raise an error.
+
+This change was tested in https://github.com/OpenVoxProject/o",['morph.syn.embedded_question'],,,
+commit:08d0efec4e93960c67e434ce27278b69af8da51d:commit_message,"Fix some version strings for compatibility
+
+The packaging tools were making some regex-y assumptions
+about how we'd format our version strings.  My previous
+stuff for SNAPSHOT versions did not comply with these
+assumptions; this commit should hopefully fix that.","['morph.syn.embedded_question', 'morph.mod.deontic']",,,
+commit:ffc5349c50e8f5a890d4856e822c4491a18bd53f:commit_message,"(EZ-97) Terminate start / reload waiting loop if process dies
+
+This commit changes the start and reload commands to exit immediately if
+the service process dies while waiting for the command's action to
+complete.  Previously, the commands would continue to loop unnecessarily
+for up to the configured start_timeout (for start) or start_timeout / 10
+(for reload) before exiting with an error.",['morph.syn.embedded_question'],,,
+commit:fe6d06b6bec480f34902905f6cbd744a788140c0:commit_message,"(maint) add tzdata-java as dependency on el-7 and above platforms
+
+With the release of openjdk-headless 11.0.20.0.8-2.el8 tzdata-java
+is no longer included as a dependency of openjdk. This causes startup
+failures in puppetserver when it isn't present.  This adds an explicit
+dependency on the package, which is small, and is required.",['morph.syn.embedded_question'],,,
+commit:a58215f3219bb1b76459046751411654b4a2694b:commit_message,"Bump tk-ws-jetty9 to 0.7.2 for pe-jvm-puppet
+
+This was using 0.5.2 which is pretty old, and also had an incompatible
+dependency on schema.","['morph.syn.embedded_question', 'affix.prefix.in']",,,
+pr:OpenVoxProject/ezbake:3:body,"This is a copy of the PR to puppetlabs ezbake at https://github.com/puppetlabs/ezbake/pull/627. Additionally, this removes some more logic around determining Java version vs. Puppet Platform version, since we are only using this for OpenVox 7 and 8 and they should both use the same Java versions now.
+
+Original work by",['morph.mod.deontic'],,,
+pr:OpenVoxProject/ezbake:29:title,unit file: fix uninitialized LOG_APPENDER variable,['affix.prefix.un'],,,
+commit:8adc15af6e50decce3b42a81c52a5872321ef82a:commit_message,"(PE-6748) Update trapperkeeper-webserver-jetty9 dependency for pe-console-services
+
+Bump to 0.9.0 of tk-w-j9 which has a fix for the poodle sslv3 security issue.",['morph.syn.embedded_question'],,,
+commit:b328a318a7815fcc61abf3401ceb883dc8d43dee:commit_message,"Merge pull request #254 from kbarber/pdb-1455
+
+(PDB-1455) Fix some more terminus/FOSS bugs & inconsistencies",['affix.prefix.in'],,,
+commit:3dfa33c230c7455c7011238d4c5dadc1cbf37c1b:commit_message,"(MAINT) Update tk-jetty9 to 1.1.0 for FOSS puppetserver
+
+Without this patch FOSS puppet server builds 0.9.0 of tk-jetty9 in the
+uberjar.  This is a problem because FOSS puppet server should be using
+1.1.0 of tk-jetty9",['morph.mod.deontic'],,,
+commit:2eb83b3c843127f38e35c15f4043b694f981c9e3:commit_message,Fix tests after inclusion of package-name,['affix.prefix.in'],,,
+commit:c1e000e5e3a8ae23be0eeea1f01d2217a1fa6bbb:commit_message,"(maint) Update artifact cleanup so we're taking advantage of reuse
+
+Accidentally was cleaning up the artifact directory in fpm.rb, which was
+cleaning it up after each platform. Move that cleanup into the rake task
+so that it's done after all platforms have been built.",['morph.syn.embedded_question'],,,
+issue:OpenVoxProject/ezbake:23:body,"In https://github.com/OpenVoxProject/ezbake/pull/5 we introduced a regression.
+
+The systemd units now have:
+
+Turns out: Variable interpolation isn't support for the first arg of . the unit will fail with:
+
+It doesn't matter if the variable is in quotes or not. from  on IRC:
+
+I will fix this in https://github.com/OpenVoxProject/ezbake/pull/2/",['morph.syn.embedded_question'],,,

@@ -1,0 +1,72 @@
+unit,text,conf,is_genuine_nk,error_type,notes
+commit:6c4ed0f492435b33f97da3e133c4fd3f2f5a2f7f:commit_message,"(maint) Remove EOL cows from foss build_defaults.yaml
+
+Ubuntu raring and quantal are both EOL, so let's not build anymore
+packages for them.",0.9765625,,,
+commit:5e40b6530f1c0c3190847e18c49159227466fbf9:commit_message,"(maint) Fix make-template-map test
+
+The test was passing the wrong number of arguments for the current
+definition, and it was also expecting an exception that is no longer
+thrown (cf. 2a876d064c1acfc1ae08a8668a4fc262bb2fad7d).
+
+Update the arguments and rework the test to just verify the result for
+a trivial project.",0.97265625,,,
+pr:OpenVoxProject/ezbake:37:comment_body:10,are you interested in sending the patch to https://github.com/OpenVoxProject/trapperkeeper ? :),0.9765625,,,
+pr:OpenVoxProject/ezbake:2:comment_body:6,"Edit: Ah you are setting it properly below, nevermind.",0.5390625,,,
+pr:OpenVoxProject/ezbake:2:comment_body:9,"I'm not sure it is.  On debian 12 with openjdk 17, it's , for example.",0.9921875,,,
+pr:OpenVoxProject/ezbake:37:comment_body:13,I was hoping we can use the unit file from the debian maintainers (https://github.com/OpenVoxProject/ezbake/pull/37#issuecomment-3152891788) as an intermediate solution because that's quicker to implement and test. As a long term solution I would also prefer the trapperkeeper update.,0.99609375,,,
+commit:a8e49cc2ea34ab3f1652101d45e2fb358fd78f4a:commit_message,"(maint) Remove EOL platforms from cow lists
+
+We still had yakkety and precise in platform lists, but those are EOL so
+let's get rid of those.",0.890625,,,
+pr:OpenVoxProject/ezbake:27:comment_body:14,Is it then an idea to just blanket replace all instances in all files?,0.99609375,,,
+pr:OpenVoxProject/ezbake:10:comment_body:5,could you please rebase it?,0.99609375,,,
+pr:OpenVoxProject/ezbake:27:comment_body:13,"this was more of a 'just in case we want to set explicit paths for debian in the future as well' :D But yes, right now it doesn't make much sense",0.8515625,,,
+pr:OpenVoxProject/ezbake:82:comment_body:3,"Closing, as it is not necessary.
+
+-edit- Turns out it **is necessary**. Need  to recreate the fix.",0.7109375,,,
+pr:OpenVoxProject/ezbake:73:comment_body:2,":sad-face:
+matrix isn't available for ids?",0.984375,,,
+commit:019cfa43a984780b94983478d3e7c396bb892dd7:commit_message,"(maint) Make default cow precise
+
+We don't want to build packages for stable, so we need to ensure the
+default cow is not set to stable. This commit updates the default cow to
+be trusty",0.984375,,,
+pr:OpenVoxProject/ezbake:27:comment_body:16,I was too scared to do this in all files because I want to avoid side effects,0.69140625,,,
+pr:OpenVoxProject/ezbake:39:comment_body:2,do we still need this?,0.99609375,,,
+commit:0c46f07ec2646508ae4633ee0683698cb3752b2b:commit_message,"Add -U to 
+
+Without this, we don't always check for updated SNAPSHOTs.",0.66796875,,,
+issue:OpenVoxProject/ezbake:13:comment_body:2,are you interested in providing a PR for this?,0.99609375,,,
+commit:569ce5c0e783b363f5e1a37e825a0a1f6eef2a67:commit_message,(maint) missing 'then',0.6796875,,,
+commit:5c916a9e2321e74f551fb30c5c20c10071f2b241:commit_message,"No, we are not going to do suggests.",0.91796875,,,
+commit:30f2a618d1491e1c06aaa1cf0f05ad8304454743:commit_message,"Merge pull request #452 from underscorgan/maint/master/woops
+
+(maint) We accidentally released 1.7.0 as 1.6.4.  Let's fix this up good.",0.703125,,,
+pr:OpenVoxProject/ezbake:14:comment_body:2,Question is: can we merge this into the existing 8.x releases or is this more something for 9.x?,0.99609375,,,
+pr:OpenVoxProject/ezbake:16:comment_body:7,"there are a few rake tasks we don't use, I want to remove them in another PR",0.90625,,,
+commit:01048626a0d615a18c9936a128a1cb46b53e6036:commit_message,"Revert ""(maint) Add build_tar: FALSE to foss build_defaults""
+
+This reverts commit 8724f1b55b896bd41b541163d518adea5abee22e.
+We were fixing a symptom of a problem, rather than the problem itself (see
+RE-10238).",0.8359375,,,
+pr:OpenVoxProject/ezbake:2:comment_body:5,Do we still need EL7 specific code?,0.99609375,,,
+pr:OpenVoxProject/ezbake:16:comment_body:5,"ah lol, yes, I will clean it up and merge afterwards",0.5703125,,,
+pr:OpenVoxProject/ezbake:11:comment_body:7,Is a time mandatory? Can we just leave it out?,0.99609375,,,
+pr:OpenVoxProject/ezbake:2:comment_body:3,could you please rebase this PR?,0.9921875,,,
+commit:2818c90fe73dd87922c86605a980980b7516ca91:commit_message,"properly revert needsrestart blocklist
+
+we reverted needsrestart in 0702730ef17906d64ba9d368686c0b2e4c56b86e,
+but that wasn't complete.",0.98046875,,,
+pr:OpenVoxProject/ezbake:2:comment_body:15,could you please rebase this PR?,0.9921875,,,
+pr:OpenVoxProject/ezbake:15:comment_body:2,Is this comment really adding something?,0.99609375,,,
+pr:OpenVoxProject/ezbake:6:comment_body:2,Do we even build for EL6 or can we also simplify this?,0.99609375,,,
+commit:e7c86d2710e9832f83612f48a8719997a4e91e07:commit_message,"Revert ""(SERVER-29) exclude BouncyCastle jars from uberjar""
+
+This reverts commit b1476ed3ba9624d58c5b1e18dd3ea1dcabf212ed.
+
+This change needs to be put on hold until we have ezbake working
+as a lein plugin; see SERVER-29 and PE-7256.",0.83984375,,,
+pr:OpenVoxProject/ezbake:2:comment_body:10,"Oh, but that's jdk, not jre.  Lemme try that.",0.96484375,,,
+pr:OpenVoxProject/ezbake:2:comment_body:8,Is this (and the 17) path a stable path for all distributions of Java?,0.99609375,,,
+pr:OpenVoxProject/ezbake:65:body,"we reverted needsrestart in 0702730ef17906d64ba9d368686c0b2e4c56b86e, but that wasn't complete.",0.9375,,,

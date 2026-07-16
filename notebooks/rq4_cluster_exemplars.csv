@@ -1,0 +1,497 @@
+cluster,unit,kind,parent_type,text,roberts,smithson,gross_wehling,notes
+0,commit:1be11d7efafb4e5b46859f66d4a22ad70507d6d1:commit_message,top,commit,"(PDB-1455) Fix pe/foss inconsistencies and bug with using ruby detection in spec/rules.erb
+
+This patch solves an initial bug with ruby detection, but also attempts to find
+other cases where PE and FOSS differ by removing as much variation as well.
+
+Lots of incosistencies and bugs were found in this exercise:
+
+* Users created using old FOSS based homedirs
+* Removal of log files for FOSS was removin",,,,
+0,commit:9b9142ce6f8ee4502270283e9c3eab528b312077:commit_message,top,commit,"(EZ-108) Allow staging w/undeployed snapshots
+
+Add an options map to the functions in  that
+expand snapshot versions to provide the option to use undeployed
+snapshot artifacts by setting the :reproducible? option to .
+
+In the stage action, check whether the
+ environment variable is set, and if
+so set the :reproducible option to  to allow staging with
+undeployed SNAPSHOT versions.",,,,
+0,commit:23c5ec11ff154e9c30779694225a13a7c9f7cc98:commit_message,top,commit,"Merge pull request #52 from waynr/maint-nonzero-exit-status-on-fail
+
+(MAINT) Return nonzero exit status if parameters incorrect.",,,,
+0,commit:570838bb5046fabc1d702de19a9912b887b345ff:commit_message,top,commit,"(maint) Fix unterminated 'if' in RPM spec template
+
+This commit fixes an unterminated if statement that
+was introduced in a previous commit.",,,,
+0,commit:01f78204ea9af33f4f6d6da8e5e2fe900c748a4f:commit_message,top,commit,"(CPR-515) Allow separate tasks for install vs upgrade
+
+Currently, the postinstall tasks from the packaged project
+are executed unconditionally, both on install as well as
+upgrades. This can cause issues, as in the case with puppetserver
+potentially overwriting config values if the user has changed them
+from the package defaults.
+
+This adds an addtional set of tasks that can be executed in the
+pack",,,,
+0,pr:OpenVoxProject/ezbake:69:title,random,pull_request,Remove unused Makefile,,,,
+0,commit:c6b942f590940c0cf60e04cf09b7a23ff0990d18:commit_message,random,commit,"(RE-12082) Revert libuser changes
+
+This commit reverts the changes made to address PE-24606. We encountered
+installation failure when bumping puppetserver to a version of ezbake with
+these changes. There were several issues with this work, the largest of which
+being the fact that there is no libuser package for sles and there is a bug in
+libuser1, a dependency of libuser, for debian 8 (jessie) and",,,,
+0,commit:161e2741ca050584e8e3ad1743018b48c795f110:commit_message,random,commit,"Merge pull request #569 from underscorgan/2.1.6-prep
+
+(maint) Prep for 2.1.6 release",,,,
+0,commit:a1cc8e586e95bc2b29ad0e70d98561bef9615136:commit_message,random,commit,"Merge pull request #512 from underscorgan/tickets/master/ez-128-numeric-uid-gid
+
+(EZ-128) Add support for specifying numeric uid/gid in rpm packages",,,,
+0,commit:7339a1a11a6b4c72fbc797ce971352bee6ab156f:commit_message,random,commit,"Remove use of deprecated bundler flags
+
+In Ruby 4, you are explicitly blocked from using the --path flag due to it not being remembered across bundler invocations.
+
+Signed-off-by: nmburgan <13688219+nmburgan.noreply.github.com>",,,,
+0,pr:OpenVoxProject/ezbake:5:comment_body:4,random,pull_request,"I've updated it to include #8, a commit to remove sysvinit on Debian and then modified the service wrapper removal to also cover Debian. Then the cli tools become useless, so they're dropped. This also removes the need to manage the rundir, which help a lot to remove things.
+
+I'm unsure about the foreground cli app.",,,,
+0,commit:b328a318a7815fcc61abf3401ceb883dc8d43dee:commit_message,random,commit,"Merge pull request #254 from kbarber/pdb-1455
+
+(PDB-1455) Fix some more terminus/FOSS bugs & inconsistencies",,,,
+0,commit:187d24fe3fd66d181edf75649170a3ab11646f94:commit_message,random,commit,"Merge pull request #134 from haus/ticket/master/server-70-update-systemd-exit-codes
+
+(SERVER-70) Update systemd template for nonzero exit codes",,,,
+0,commit:3544545ebd78f0bf35a22a3abc2216e84ffeee6e:commit_message,random,commit,"(RE-12093) Remove unused files
+
+This commit removes the rpm spec and debian control templates that were
+previously used to build packages. We now use fpm to build, so these are no
+longer needed.",,,,
+0,commit:f0128d3ceb729c4fe10db3490320bbbdcb1da526:commit_message,random,commit,Split the configuration file into individual service configs,,,,
+1,pr:OpenVoxProject/ezbake:37:comment_body:8,top,pull_request,"Right, this is going to fail hard when the port is changed to something else than 8140, so I wouldn't recommend it.
+
+In Debian we ship [this service unit](https://sources.debian.org/src/puppetserver/8.7.0-5/debian/puppetserver.service/) which is basically the same in principle, but instead it uses a quirk from trapperkeeper where it writes  in a file called  in the runtime directory when it's do",,,,
+1,pr:OpenVoxProject/ezbake:8:comment_body:13,top,pull_request,"Agreed on the automated testing.
+
+I'd really like to move away from FPM and use native packaging mechanisms where possible. If you use that then at least for RPMs you could use [packit](https://packit.dev) to create RPMs for every PR to  and run end-to-end tests with it using [Testing Farm](https://docs.testing-farm.io).
+
+This cleanup is IMHO a good start to see what actually needs to be done.",,,,
+1,pr:OpenVoxProject/ezbake:8:comment_body:9,top,pull_request,"Agreed on the automated testing.
+
+I'd really like to move away from FPM and use native packaging mechanisms where possible. If you use that then at least for RPMs you could use [packit](https://packit.dev) to create RPMs for every PR to  and run end-to-end tests with it using [Testing Farm](https://docs.testing-farm.io).
+
+This cleanup is IMHO a good start to see what actually needs to be done.",,,,
+1,commit:7fcf76f7dd943e352d03c58f29c27bd93d520ee6:commit_message,top,commit,"(EZ-15) Implement  project map key.
+
+(EZ-15) Use current project's project.clj
+
+This commit definitively breaks compatibility with running ezbake as an app in
+the following ways:
+
+* project.clj has been modified to be compatible with leiningen plugin
+  development (no :main namespace, set :eval-in-leiningen true)
+* The main function from src/puppetlabs/ezbake/core.clj has been supplanted
+  entirel",,,,
+1,commit:b4d5af87485bab56e3ac0fe3d16840c7c153655f:commit_message,top,commit,"(SERVER-70) Update systemd template for nonzero exit codes
+
+Because of the way that java handles the TERM signal (which is what
+systemd uses by default), systemd considers the stoppage to have failed
+and puts the service in a failed state. This is because our clojure
+libraries don't catch or handle the TERM signal, but we can work around
+it in the service file for the time being. This commit adds ",,,,
+1,commit:ffc5349c50e8f5a890d4856e822c4491a18bd53f:commit_message,random,commit,"(EZ-97) Terminate start / reload waiting loop if process dies
+
+This commit changes the start and reload commands to exit immediately if
+the service process dies while waiting for the command's action to
+complete.  Previously, the commands would continue to loop unnecessarily
+for up to the configured start_timeout (for start) or start_timeout / 10
+(for reload) before exiting with an error.",,,,
+1,commit:8285a62e5cd44f298b5783cacb8b43f3a5fb74cc:commit_message,random,commit,"(EZ-52) Add custom created directories to the rpm
+
+Previously in ezbake, custom directories would be added to the buildroot
+for rpm, but would not be added to the %files section of the rpm, which
+means they would not be included in the package generated. This commit
+adds %dir declarations for each dir in create_dirs, and assigns it the
+same permissions and ownership that the install.sh postinst wi",,,,
+1,commit:74f72495fecbab966b8a9bb1a272f9b1e8af60c1:commit_message,random,commit,"(EZ-97) Replace ==, =, and != with -eq, -eq, and -ne in start and reload
+
+This commit replaces usages of ==, =, and != with -eq, -eq, and -ne
+where numeric comparisons are being made in if statements in the start
+and reload scripts.",,,,
+1,commit:dcb5cfb6a0740331d78cf6bc784e167e38760635:commit_message,random,commit,"Merge pull request #588 from jpartlow/issue/main/replats-150-skip-runas-when-service-user
+
+(REPLATS-150) Skip efforts to run as user when already service user",,,,
+1,pr:OpenVoxProject/ezbake:25:body,random,pull_request,"uses the deprecated  from the deprecated  package. But I can't find any uses of the functions in , so let's remove it. The functions were used in the wrappers which were eliminated in #5.
+
+Fixes #13.",,,,
+1,commit:39bd4e4e6d4e7096055835bfeb09f6ede1d34d41:commit_message,random,commit,"(maint) Deploy snapshot & list deployed version
+
+When staging a SNAPSHOT version of a project, EZBake will deploy
+a snapshot artifact to the configured snapshots repository to ensure we
+have a maven artifact for the build, and the full snapshot version of
+the deployed artifacts will be listed as the version in EZBake's
+manifest and project_data.yaml.",,,,
+1,commit:904890bac0bd9e970cbe75433df395a6cc0e3241:commit_message,random,commit,"(maint) Update CHANGELOG for 2.0.3 release
+I forgot to update the changelog before tagging so thats why it skips 2.0.2",,,,
+1,commit:9ca5df5b48bb579d10a037d42dad76ed372fc587:commit_message,random,commit,(maint) Only print the  directive if any dependencies are given,,,,
+1,commit:aeda617f867b70b21d89a66db983105674481fe3:commit_message,random,commit,"(maint) Include project's version in description
+
+Change  to include the name
+and version of the project itself, so it can be retrieved in the same
+way as all the dependencies. This is mostly useful when staging
+a SNAPSHOT version of a project.",,,,
+1,pr:OpenVoxProject/ezbake:42:body,random,pull_request,This now uses the same unit files as debian.org in their packages. The restart counter is used to check if the service is already started properly or not. The legacy wrapper scripts from Perforce had the same logic.,,,,
+2,pr:OpenVoxProject/ezbake:11:comment_body:8,top,pull_request,"Technically Java 21 is a new feature, right? Not sure if the release notes should mention this.",,,,
+2,pr:OpenVoxProject/ezbake:35:comment_body:6,top,pull_request,Also not sure if this is unquoted by purpose or just forgotten,,,,
+2,commit:c29d762ff7aae9d136fdd8302d0fe3aa472eb1a6:commit_message,top,commit,"(PE-5792) Stop managing and creating logdir in init scripts
+
+Now that we are installing the /var/log/$project directory during
+packaging, there is no reason to do it in the init scripts. This commit
+removes all of the making and chowning of the logdir from the init
+script templates.",,,,
+2,pr:OpenVoxProject/ezbake:2:comment_body:12,top,pull_request,"Nope, I'm wrong, that is with  installed. So yeah, not sure this path is one we can rely on.",,,,
+3,pr:OpenVoxProject/ezbake:35:comment_body:2,top,pull_request,"This provided a few methods:
+
+* 
+* 
+* 
+* 
+
+Looks like  is used. That is then passed to  as a restart file. That whole function basically creates a file where TrapperKeeper can keep a restart counter.
+
+Maybe in the short term just inline it here?",,,,
+3,pr:OpenVoxProject/ezbake:11:comment_body:2,top,pull_request,Do we have this? Below is also a  and it looks like this whole workflow just fails. Should we drop it?,,,,
+3,pr:OpenVoxProject/ezbake:27:body,top,pull_request,"This ensures that EL packages have the correct java path in the systemd unit. And all packages have JAVA_BIN variable in their defaults file. This is probably required for the different CLI apps.
+
+There's a systemd limitation that prevents us from doing something like ExecStart=$VAR.. The first argument for ExecStart= cannot be a variable.
+
+From https://www.freedesktop.org/software/systemd/man",,,,
+3,pr:OpenVoxProject/ezbake:82:comment_body:2,top,pull_request,"Looks like this is unnecessary. Notice the double .
+
+and:
+
+Will need more eyes on this, regarding the double .",,,,
+3,pr:OpenVoxProject/ezbake:99:comment_body:7,top,pull_request,"Looks like the issue runs deeper (but only for SLES). On SLES we need to find a source for .
+
+I'm not sure how else it would be possible to expand the macros.",,,,
+3,commit:60cddb8039bd256142b23b2f1b14697eae4ee417:commit_message,random,commit,"(maint) Additional preinstall scripts weren't added properly
+
+It looks like we were treating  as a string in the
+rpm preinst, but it's an array. Iterate over the array to get these into
+the packages correctly.",,,,
+3,pr:OpenVoxProject/ezbake:37:comment_body:14,random,pull_request,that also looks like a good solution that doesn't require parsing the configuration and I don't mind it as an intermediate solution.,,,,
+4,commit:51411df6031bf512ce2949e59a7356cc2db4fcca:commit_message,top,commit,"(PE-7614) Fix SLES-11 pe-puppetserver init script
+
+Without this patch the pe-puppetserver service in PE fails to start on SLES-11.
+
+The root cause of the issue is that the JAVA_ARGS string contains
+sub-strings which are intended to be positional arguments.  Because the
+complete string is used when invoking a command, BASH expands the string
+into positional arguments without considering the inner q",,,,
+4,commit:8dec99e5c4e80fa01dc4377f2505a7e50bacaa71:commit_message,top,commit,"packaging: Switch from Perforce to OpenVoxProject releases
+
+The Gemfile is a template. For every ezbake based build, the Gemfile is
+copied into the build dir. Aftwards the gems are installed. the
+packaging gem is used to publish packages, update repos and render
+different templates, e.g. the systemd unit files for openvox-server and
+openvox-db.
+
+As far as I know, the erb template rendering is the ",,,,
+4,pr:OpenVoxProject/ezbake:21:body,top,pull_request,"The Gemfile is a template. For every ezbake based build, the Gemfile is copied into the build dir. Aftwards the gems are installed. the packaging gem is used to publish packages, update repos and render different templates, e.g. the systemd unit files for openvox-server and openvox-db.
+
+As far as I know, the erb template rendering is the only feature from packaging that we use. I didn't want to ",,,,
+4,pr:OpenVoxProject/ezbake:87:body,top,pull_request,"The Gemfile is a template. For every ezbake based build, the Gemfile is copied into the build dir. Aftwards the gems are installed. the packaging gem is used to publish packages, update repos and render different templates, e.g. the systemd unit files for openvox-server and openvox-db.
+
+As far as I know, the erb template rendering is the only feature from packaging that we use. I didn't want to ",,,,
+4,commit:8763ee9a83638683c9ddf1e0d45cb46b5a34cec0:commit_message,top,commit,"(MAINT) change echo to '0' without newline in start script to fix timeout bug
+originally '1' was piped in, which is the same as the updated value from the service
+starting, so the restartfile will never be updated and will timeout",,,,
+4,commit:724bad97848bac123e7099d59f4f4933cb83d3f6:commit_message,random,commit,(maint) Remove platforms that dont have puppet-agent yet,,,,
+4,commit:b9935e8fc84dfb10ea440dcf157434da096864ed:commit_message,random,commit,"(maint) Do not use virtual package for java dep
+
+Prior to this commit, we were requiring virtual packages to satisfy java
+runtime dependencies on deb based platforms. This was fine until we get
+to Ubuntu 16.04 Xenial. On Xenial, Java7, Java8, and Java9 all provide
+java8-runtime-headless. This is a problem, because it means that java9
+is automatically installed to satisfy the specified runtime requ",,,,
+5,commit:aa6861dc16562d13fa5888c070a636d2ac6e14a2:commit_message,top,commit,"(SERVER-3) Update EL init scripts to invoke the daemon from INSTALL_DIR
+
+On el systems, if the service is invoked using init.d directly, while in
+a root owned directory, it will fail to run several external commands
+during startup. This isn't a problem for debian because we pass in a
+directory to run from that will be accessible to the service user. This
+commit implements the same behavior for EL ",,,,
+5,commit:40e3935e73d8727fdf5b7dd884c44ccf1a39056d:commit_message,top,commit,"(SERVER-338) Add net-tools dependency for service unit files
+
+Without this patch the init scripts and unit files make calls to
+netstat, which may or may not exist on the system.  This is a problem
+because the service will fail to start if netstat is not present.  This
+patch addresses the problem by expressing net-tools as a dependency of
+the packages which will ensure netstat is present prior to s",,,,
+5,commit:7bae2fd0ce44e34b93d5410eccf4f0904a36dc61:commit_message,top,commit,"(EZ-103) Address incorrect rundir perms
+
+Prior to this commit, we had been creating the rundir, but sometimes
+with permissions which prevented the service from being able to create
+its own pidfile.  In these cases, the Java process could be launched
+successfully and the service start command could still return success.
+Any subsequent attempts to ask the service framework for status on the
+service,",,,,
+5,commit:ee4b88339c3f43cc147b3f51f5f8f7d630a716a8:commit_message,top,commit,"(EZ-97) Kill background Java process if start script terminated
+
+This commit will trap HUP, INT, and TERM signals sent to the start
+script.  If any is trapped, the associated Java process that the start
+script spawned will be terminated.  This is done so that if a 'restart'
+is issued while a start is already in process, the Java process for the
+first start attempt will be cleaned up before the sec",,,,
+5,commit:09c7612537dda1e6b047003fbdcecf12242cd8d3:commit_message,top,commit,"(EZ-97) Remove pidfile just before start
+
+This commit removes an old pidfile for a service process just before
+starting up a new process.  Previously, if an old pid file had been in
+place but the start failed, the underlying service script might
+interpret the result of the start as 'success' when it should be
+'failed'.",,,,
+5,commit:f7e371b6070ef3ca85798f4671aae03ec08d0123:commit_message,random,commit,"Explicitly check out main branch during backports
+
+The v7 release of  introduced a major change where it
+will refuse to check out repository state that may be mutated by the
+pull request. This commit explicitly sets  on the checkout
+step of the workflow as  has logic for finding
+the pull request and cherry-picking commits out of it.
+
+Signed-off-by: Charlie Sharpsteen <charlie.com>",,,,
+5,commit:71301a86c9d8a2dc19dce7bd8250c9a92d66aa39:commit_message,random,commit,"(SERVER-1670) Stop autogenerating dependencies for RPM packages
+
+Currently the generated RPM packages will automatically generate
+a set of requirements based on the contents of the package. This
+has become an issue with puppet-server 2.7.0, as adding gems
+to the package inadvertently added a dependency on system ruby.
+
+This adds 'AutoReq: 0' to the RPM specs to stop generating automatic
+dependency",,,,
+5,pr:OpenVoxProject/ezbake:24:body,random,pull_request,"In https://github.com/OpenVoxProject/ezbake/pull/2/commits/6b3ad939736bb8d0f0a22a715f398a49a678a8d3 we introduced a new configuration option for . To get this working, we need to add it to ezbake itself. Otherwise the variable won't exist and we cannot use it in templates:
+
+
+
+(see the whitespace after  where the java path should be.",,,,
+5,commit:0d03169b2ebc107bba914295a6297eaafad081a3:commit_message,random,commit,"(SERVER-2602) Do not manage egd
+
+This setting is of little value in Java 8+ and we've seen no difference
+anecdotally between explicitly configuring /dev/urandom as a source vs
+using the JVMs defaults.
+
+We will be explicitly setting this to /dev/random for FIPS enabled
+builds, however we will do so via the JAVA_ARGS variable. FOSS users who
+would like to manage their egd source should use JAVA_ARGS",,,,
+5,commit:d2ad06508bed85d7d886678c3563948903659faf:commit_message,random,commit,"(EZ-48) Add support for debian systemd
+
+This commit updates both the PE and foss build pipelines to correctly
+install systemd scripts for packages built with EZBake. It also cleans
+up some of the logic in the {pre,post}{inst,rm} debian scripts.
+
+This only upgrades Ububtu Xenial to systemd, even though it really
+should include Debian Jessie. We disable the service in the prerm, which
+prevents us fr",,,,
+5,commit:f93255827b47c00f31370da9ab0533a0907fa07b:commit_message,random,commit,"Merge pull request #486 from sarameisburger/i-broke-things
+
+(maint) i tagged when i shouldn't have...1.8.3 it is",,,,
+5,commit:ceac3e367f0e866177989ca9755886fd8ca73eca:commit_message,random,commit,"Merge pull request #479 from sarameisburger/add_tk_args
+
+(EZ-20) EZBake defaults templates should create a separate variable f…",,,,
+5,commit:5a3f21f4606776c1013695477a65c19341610c07:commit_message,random,commit,"(RE-4779) Restart service on upgrade
+
+In the postinst script, we have the potential for making changes to the
+service on upgrade. Since we're already restarting the service for rpm,
+we should be doing the same thing for deb. However, we want to ensure
+this happens after any changes in the postinst script happen.
+
+This is for both PE and foss, becuase, why not?",,,,
+5,commit:883120b7cdfefb3d1e3d8372a679a56c2d67dcab:commit_message,random,commit,"(RE-8861) Change date time format to ISO8601
+
+We should use the International format instead of the RFC",,,,
+5,pr:OpenVoxProject/ezbake:35:comment_body:5,random,pull_request,Should be  :(,,,,
+6,pr:OpenVoxProject/ezbake:37:comment_body:6,top,pull_request,My concern here is.. what if a person changes the listening port of an openvox-server/openvoxdb instance? Shall we parse the real config instead maybe? Or at least make it explicit in the config file to update the systemd unit file if the port is changed by some reason.,,,,
+6,commit:a305a07bfaf392d160c6940442798beed19449c5:commit_message,top,commit,"Refactor code for copying files out of jars
+
+Prior to this commit, there was a ton of overlap in how
+we were copying config files out of the upstream jars
+vs. how we were copying doc files out of the upstream jars.
+Since there may be some more of these kinds of files coming
+into play, I thought now would be a good time to refactor
+out some common logic and clean things up a bit.",,,,
+6,commit:f2e390618119e7aeff9740ea1f22fd222b034a71:commit_message,top,commit,"(MAINT) Fix init script bug when no post_start_action specified.
+
+By default the post_start_action is an empty list which is a logical 'true'
+value in Ruby. The previous logic led to an empty  block in the init scripts
+which is a syntax error in sh and probably other shell script interpreters.
+
+Signed-off-by: Wayne <wayne.com>",,,,
+6,pr:OpenVoxProject/ezbake:27:comment_body:26,top,pull_request,"That makes sense. what is doing what when is confusing, but I don't think that's the fault of your pr :)",,,,
+6,pr:OpenVoxProject/ezbake:27:comment_body:9,top,pull_request,"That makes sense. what is doing what when is confusing, but I don't think that's the fault of your pr :)",,,,
+6,commit:fbb70c36d427d070551cc4698c4df99df5514b51:commit_message,random,commit,"(maint) Remove OnOutOfMemoryError from systemd service files
+
+The kill in the OnOutOfMemoryError setting in the systemd service files
+causes systemd to try to run the command for some reason. Possibly
+something to do with escaping quotes. Until this can be fixed, this
+commit removes those settings from the systemd service definitions.",,,,
+6,pr:OpenVoxProject/ezbake:37:comment_body:7,random,pull_request,"This is not a major issue because long running migrations are so infrequently run, but just wanted to call it out.
+
+openVoxDB will bind its port during startup, but before migrations are run, but it will reject all queries until migrations are finished. So I think this will report the service as ready before it can respond to queries. This may be a problem for catalog applications that apply a l",,,,
+6,pr:OpenVoxProject/ezbake:8:comment_body:6,random,pull_request,"Not a real test, but I had a look at the differences. A lot of noise because of an update to the  gem and I guess the binstubs aren't deterministic.",,,,
+6,pr:OpenVoxProject/ezbake:27:comment_body:18,random,pull_request,My version doesn't include this. Probably still a good thing to include.,,,,
+6,commit:3477e4b0e9e17484c2d96e02cea99779515f4abe:commit_message,random,commit,Change ssl config to contain the likely defaults,,,,
+6,pr:OpenVoxProject/ezbake:37:comment_body:5,random,pull_request,I guess it's  from busybox maybe.,,,,
+6,pr:OpenVoxProject/ezbake:26:body,random,pull_request,"Disclaimer: I needed this to get my builds elsewhere running and I haven't verified this in the proper builds. However, I think it may show up. I'm submitting this before I log off.
+
+Fixes: b2de7c7a2e7704491a08665a9f53ded8009aa109 (""Drop service wrappers"")",,,,
+6,pr:OpenVoxProject/ezbake:37:comment_body:9,random,pull_request,"I guess it'd be nice to have sd_notify implemented, especially if you have a patch already 😆",,,,
+6,commit:f9de8c42da74af5301260dd50e324c21e5dc7455:commit_message,random,commit,"(EZ-132) Change Java runtime OOM and logfile behavior
+
+I think this should be all that's needed. I changed
+
+  -XX:OnOutOfMemoryError=""kill -9 %p""
+to
+  -XX:+CrashOnOutOfMemoryError
+
+CrashOnOutOfMemoryError has been around since Java 8, so this should work with all our products.
+
+I also added:
+
+    -XX:ErrorFile=""${app_logdir}/${real_name}_err_pid%p.log""",,,,
+6,commit:d35daac6af5159318bcb17681dfaf19ced63719f:commit_message,random,commit,"(maint) Interpolate EZBake::Config[:project] correctly
+
+Previously the literal string ""EZBake::Config[:project]"" was printed for
+all rake task invocations. I imagine this was intended to be the value
+of the project name instead. This commit updates the line to correctly
+interpolate the variable in the string.",,,,
+7,commit:16e76c94d43e7acd13709c441783a30effac49a9:commit_message,top,commit,"(PE-3002) Support cli apps
+
+This commit adds support for looking for cli apps that
+upstream projects may wish to ship with their packaging.
+It works basically the same as shared config files; projects
+can put scripts into their jars in , and
+if any such scripts are found, they will be installed
+in .  ezbake will also create a wrapper
+script in  which allows the apps to be called as
+subcommands, an",,,,
+7,commit:a8bd63284dcb0a0d0f61c3bc7b1f1d1908143052:commit_message,top,commit,"(maint) Use proper file format for random source
+
+On OpenJDK 8 the security.egd and securerandom.sourcefile parameters,
+if set, should have a protocol attached their path. When using
+ one can see this error with the
+previous value:
+
+With this change service start up time (measure with just
+)
+goes from 27 seconds on redhat 7 to 20 seconds and from 23 seconds on
+debian 8 to 18 seconds.
+
+I should not",,,,
+7,commit:009df4251250951339bac9ab7cddb0a1823eee8f:commit_message,top,commit,"(EZ-59) Pass mirrors setting to aether
+
+This commit improves the places where ezbake calls into
+pomegranate/aether to make sure that we are passing through
+the value for the  setting from the project (or
+from the user profile), so that aether will look for artifacts
+in our nexus repository before going out to clojars or
+maven central.  This should improve performance and reduce
+network I/O for our",,,,
+7,commit:58b39960427db01ad4cbfd77ddc4492f6e3f7cd2:commit_message,top,commit,"(EZ-72) Support split bootstrap in configuration
+
+This commit adds support to ezbake for splitting a project's bootstrap files
+between /etc/puppetlabs/{project}/services.d/ and
+/opt/puppetlabs/server/apps/{project}/config/services.d/
+
+This serves the ultimate goal of putting user-configurable service entries
+in one location, and the services that should not be modified in another.
+
+It accomplishes",,,,
+7,commit:5ae891b67cdc5833ef26dc68f8c288821895ef63:commit_message,top,commit,"(re-4845) Upgrade from pre-aio to aio paths fails to stop service
+
+Because of the path changes and the change to the name of the jar file
+when upgrading from, for example, puppetdb 2.3.x to 3.0.x, the new
+init script that gets installed is not able to stop the old service.
+
+This updates the search constraints for the PID of the process to look for
+the name of the $JARFILE, which should allow the i",,,,
+7,commit:d72c2314a1bfa901ff5c0dad49fee99f0c9a7455:commit_message,random,commit,"Remove extra debian defaults file.
+
+Seems to be unnecessary. Also removes references to it in the project_data.yaml
+mustache.
+
+Signed-off-by: Wayne <wayne.com>",,,,
+7,pr:OpenVoxProject/ezbake:27:comment_body:28,random,pull_request,I tested this a bit more and it seems to work fine. Also I added lots of documentation. Let me know if you have any more questions.,,,,
+7,pr:OpenVoxProject/ezbake:16:comment_body:6,random,pull_request,"When I looked at this job I wondered if we even need it at all. In fact, I questioned that wit the entire file because we don't have a Jenkins instance. So is it easier to get rid of it altogether?",,,,
+7,commit:cf72edca6b1297fde943522fe3fff12b7440903d:commit_message,random,commit,"Rename stage.clj to core.clj
+
+As the main clj now contains both stage and build logic, it no longer
+makes sense to name it stage.clj. This commit renames it to core.clj, as
+seems to be common in clojure projects.",,,,
+7,commit:77525f035b7aa7ae467de51567b936c115a50102:commit_message,random,commit,"(EZ-35) Make use of project build-scripts
+
+This commit adds a method to copy build-scripts from the current project to the
+staging dir. Previously, we only copied build-scripts from direct dependencies,
+which resulted in the FOSS puppetserver build-scripts to be used instead of the
+pe-puppet-server-extensions build-scripts when building from pe-pse instead of
+from pe-puppetserver (PE-28810).
+
+It a",,,,
+7,pr:OpenVoxProject/ezbake:27:comment_body:11,random,pull_request,I tested this a bit more and it seems to work fine. Also I added lots of documentation. Let me know if you have any more questions.,,,,
+7,commit:3152c2d1eb9266216895eb7ad52ca5f9b6f375b1:commit_message,random,commit,"Fix paths for docs and config files
+
+Verified an RPM and a deb that were built with this configuration,
+and the files appear to be getting packed properly now.",,,,
+7,commit:2f5b9b8e62f6882a208abbef85df63073af5dce6:commit_message,random,commit,"(SERVER-1247) fix bug with services-d bootstrap on systemd
+
+In systemd, it doesn't appear that variable interpolation is supported
+inside of the defaults files.  Prior to this commit, when using
+the  option for bootstrap configuration, we were generating
+a defaults file that relied on interpolation.  This commit changes
+the code to avoid the interpolation.",,,,
+7,pr:OpenVoxProject/ezbake:28:body,random,pull_request,This seems to produce valid packages for openvox-server. They start fine with JRE21.,,,,
+7,commit:c67e70c657d84937f5c523e40abc2cb08567c254:commit_message,random,commit,"(maint) Undo some bad assumptions from packaging hard-coding
+
+For debian repos with no apt_repo_name set, the packaging tasks that
+generate the repo look for artifacts under deb/dist, rather than
+deb/dist/main as it had originally appeared. This fixes the code to
+match the assumptions in packaging.",,,,
+8,pr:OpenVoxProject/ezbake:8:comment_body:12,top,pull_request,"I'm currently using their container for SLES 15
+https://github.com/OpenVoxProject/vanagon/blob/38e78d96bd14510e236a1f5137ad87e67a110dfe/lib/vanagon/platform/defaults/sles-15-x86_64.rb#L24
+
+They have one for 12, but I ran into issues with the openvox build on it.  I don't recall what they were, but I should probably try again, since it looks like they updated the image since I last tried.
+
+ Lo",,,,
+8,pr:OpenVoxProject/ezbake:8:comment_body:8,top,pull_request,"I'm currently using their container for SLES 15
+https://github.com/OpenVoxProject/vanagon/blob/38e78d96bd14510e236a1f5137ad87e67a110dfe/lib/vanagon/platform/defaults/sles-15-x86_64.rb#L24
+
+They have one for 12, but I ran into issues with the openvox build on it.  I don't recall what they were, but I should probably try again, since it looks like they updated the image since I last tried.
+
+ Lo",,,,
+9,pr:OpenVoxProject/ezbake:2:comment_body:4,top,pull_request,I was never a fan of this path. I think there is a java11/java17 symlink as well that we could use? We don't really know to what usr/bin/java points and I had multiple issues at customers where this was pointing to a too new or too old jre.,,,,
+9,pr:OpenVoxProject/ezbake:37:comment_body:4,top,pull_request,"I don't remember what platform(s) this happened on, but I remember hitting an error where the version of  did not have the  flag for skipping the header.  That's why we went with  instead [here](https://github.com/puppetlabs/puppet_operational_dashboards/blob/main/templates/grafana_wait.epp#L5).  Feel free to ignore if this only applies to old versions we won't see anymore.",,,,
+9,pr:OpenVoxProject/ezbake:8:comment_body:10,top,pull_request,"Yep, I think that'd be good.  Testing the openvoxdb package too would be nice, but if the changes work for openvox-server, I don't know why they'd screw up openvoxdb.",,,,
+9,pr:OpenVoxProject/ezbake:8:comment_body:14,top,pull_request,"Yep, I think that'd be good.  Testing the openvoxdb package too would be nice, but if the changes work for openvox-server, I don't know why they'd screw up openvoxdb.",,,,
+9,commit:00f9b3e7576df88418f4aac45c8643da846276f1:commit_message,top,commit,"Delete unused rake tasks
+
+This removes Jenkins related rake tasks that Perforce used. I haven't
+tested this and I don't know if there are more tasks we can remove, e.g.
+https://github.com/OpenVoxProject/ezbake/blob/main/resources/puppetlabs/lein-ezbake/template/global/tasks/integration.rake
+
+Signed-off-by: Tim Meusel <tim.de>",,,,
+9,commit:badbe78b038b6adee1f3cd85c3a7ef9bd029e8d4:commit_message,random,commit,"(PE-5992) fix heap dump filenames
+
+Sadly, I don't know what we can use for systemd.",,,,
+9,pr:OpenVoxProject/ezbake:90:body,random,pull_request,"This removes Jenkins related rake tasks that Perforce used. I haven't tested this and I don't know if there are more tasks we can remove, e.g. https://github.com/OpenVoxProject/ezbake/blob/main/resources/puppetlabs/lein-ezbake/template/global/tasks/integration.rake
+
+
+
+#### Pull Request (PR) description
+
+
+#### This Pull Request (PR) fixes the following issues",,,,
+9,pr:OpenVoxProject/ezbake:27:comment_body:23,random,pull_request,I had  the same question. I don't know where the best place would be and that would also be a bigger change. My goal was to get the packages in any working condition.,,,,
+9,pr:OpenVoxProject/ezbake:11:comment_body:11,random,pull_request,"I don't know, that's what we usually configure for other vox pupuli projects.",,,,
+9,pr:OpenVoxProject/ezbake:12:comment_body:2,random,pull_request,I don't know a lot about the packaging. Do I need to configure something to ensure the config files are removed on package upgrades? Or will that happen automatically because the files are missing in the latest package?,,,,
+9,pr:OpenVoxProject/ezbake:11:comment_body:6,random,pull_request,I don't know too much about the actions / the development workflow. I just wanted to clean them up.,,,,
+9,pr:OpenVoxProject/ezbake:17:body,random,pull_request,"This removes Jenkins related rake tasks that Perforce used. I haven't tested this and I don't know if there are more tasks we can remove, e.g. https://github.com/OpenVoxProject/ezbake/blob/main/resources/puppetlabs/lein-ezbake/template/global/tasks/integration.rake",,,,
+9,pr:OpenVoxProject/ezbake:27:comment_body:6,random,pull_request,I had  the same question. I don't know where the best place would be and that would also be a bigger change. My goal was to get the packages in any working condition.,,,,
