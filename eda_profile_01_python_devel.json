@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "mode": "profile",
+    "files": 1,
+    "sample_rate": 1,
+    "max_per_file": null,
+    "full_scan": true,
+    "groups_filter": [
+      "gmane.comp.python.devel"
+    ],
+    "lang_filter": null,
+    "email_segment_labels": [
+      "paragraph",
+      "section_heading"
+    ],
+    "pattern_set_version": "0.2"
+  },
+  "groups": [
+    {
+      "group": "gmane.comp.python.devel",
+      "messages_sampled": 16309,
+      "messages_estimated": 16309,
+      "unique_authors": 1544,
+      "msgs_per_author": 10.6,
+      "en_pct": 99.2,
+      "year_min": 1999,
+      "year_max": 2019,
+      "reply_pct": 78.5,
+      "thread_resolution_pct": 0.5,
+      "bot_from_pct": 0.0,
+      "templated_subject_pct": 0.4,
+      "machine_segment_pct": 24.1,
+      "paragraph_segment_pct": 28.5,
+      "kept_segments_per_msg": 2.37,
+      "kept_span_valid_pct": 100.0,
+      "utf8_bytes_doc_pct": 15.6,
+      "est_text_units": 55032,
+      "est_text_units_scaled": 55032,
+      "est_annotatable_units_scaled": 52115,
+      "mean_chars_per_msg": 1605,
+      "nk_prescreen_pct": null
+    }
+  ]
+}

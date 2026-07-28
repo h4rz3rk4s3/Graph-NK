@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "mode": "profile",
+    "files": 9,
+    "sample_rate": 1,
+    "max_per_file": null,
+    "full_scan": true,
+    "groups_filter": [
+      "gmane.comp.python.general",
+      "gmane.linux.kernel"
+    ],
+    "lang_filter": null,
+    "email_segment_labels": [
+      "paragraph",
+      "section_heading"
+    ],
+    "pattern_set_version": "0.2"
+  },
+  "groups": [
+    {
+      "group": "gmane.linux.kernel",
+      "messages_sampled": 2431257,
+      "messages_estimated": 2431257,
+      "unique_authors": 47651,
+      "msgs_per_author": 51.0,
+      "en_pct": 98.8,
+      "year_min": 1999,
+      "year_max": 2019,
+      "reply_pct": 83.6,
+      "thread_resolution_pct": 7.0,
+      "bot_from_pct": 0.0,
+      "templated_subject_pct": 0.0,
+      "machine_segment_pct": 42.5,
+      "paragraph_segment_pct": 22.3,
+      "kept_segments_per_msg": 1.8,
+      "kept_span_valid_pct": 100.0,
+      "utf8_bytes_doc_pct": 8.6,
+      "est_text_units": 6802395,
+      "est_text_units_scaled": 6802395,
+      "est_annotatable_units_scaled": 6612275,
+      "mean_chars_per_msg": 4117,
+      "nk_prescreen_pct": null
+    },
+    {
+      "group": "gmane.comp.python.general",
+      "messages_sampled": 663711,
+      "messages_estimated": 663711,
+      "unique_authors": 55016,
+      "msgs_per_author": 12.1,
+      "en_pct": 98.2,
+      "year_min": 1999,
+      "year_max": 2019,
+      "reply_pct": 38.2,
+      "thread_resolution_pct": 2.0,
+      "bot_from_pct": 0.0,
+      "templated_subject_pct": 0.0,
+      "machine_segment_pct": 26.1,
+      "paragraph_segment_pct": 24.4,
+      "kept_segments_per_msg": 2.03,
+      "kept_span_valid_pct": 100.0,
+      "utf8_bytes_doc_pct": 12.8,
+      "est_text_units": 2008038,
+      "est_text_units_scaled": 2008038,
+      "est_annotatable_units_scaled": 1912827,
+      "mean_chars_per_msg": 1226,
+      "nk_prescreen_pct": null
+    }
+  ]
+}
