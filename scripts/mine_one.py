@@ -9,7 +9,7 @@ Usage:
     python scripts/mine_one.py --repo python/cpython
     python scripts/mine_one.py --repo python/cpython --no-commits
     python scripts/mine_one.py --repo-file repos.txt   # one repo per line
-    python scripts/mine_one.py --repo python/cpython --max-items 50
+    python scripts/mine_one.py --repo qgis/qgis --no-commits
 """
 from __future__ import annotations
 

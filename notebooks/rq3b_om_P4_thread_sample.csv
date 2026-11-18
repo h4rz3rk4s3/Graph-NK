@@ -1,0 +1,12 @@
+thread_id,stratum,selection_reason,seed
+issue:openment:54d1156417c977d6b769537ccf83ce3c340393c122fc77f6205282f4b4481cf9:68604,typical,|gap-median|<0.25SD (median=7.05),20261002
+issue:openment:d8dc50873b3e5670daab7e62355e1031f1878cb826158df0701c1feff785ce49:7030,typical,|gap-median|<0.25SD (median=7.05),20261002
+issue:openment:41f9a2a85cd95b3fca21a28c5bffd2a8fe5d4cc108b5fa8f3fa4d1784bc56727:58748,typical,|gap-median|<0.25SD (median=7.05),20261002
+issue:openment:ec43efbed18ebd7846a76716f705d9936a576e11a1faae3ce67fd3acf7113ec8:61025,typical,|gap-median|<0.25SD (median=7.05),20261002
+issue:openment:8f57cea5ade390741d2913a9e91a85dd0d893f7f1c5e4ea49773ddab771aea2d:67989,typical,|gap-median|<0.25SD (median=7.05),20261002
+issue:openment:f49ce8d1b336fa5bd8f43eeef0b9782a03d1c428673903c062f209dd7efa15d6:19756,extreme_pos,gap_abs=59.32,20261002
+issue:openment:cf43501004e989ccec0397aa8ce0e831e8c9faf0923fd3bc6deeb5de8fdf8a7b:24253,extreme_pos,gap_abs=56.74,20261002
+issue:openment:67505a2aba9161ba84ccf393aba939c4ee5c16e9a9fc8ff7173f1392fb816fb8:71422,composition,"similar gap, category cos-dist=1.00",20261002
+issue:openment:06ae237c9532b70d89271e4bbff6aed356415683612a07d59ee51f4c7d1a1a1d:12015,composition,"similar gap, category cos-dist=1.00",20261002
+issue:openment:8b167c65f729a1796141389af2af1e700c1df52e4aae50e586574e1ba7f072eb:30317,same_mentor,lowest-gap thread of a repeated mentor,20261002
+issue:openment:6ca1410dca9092ee494ef12089e1150d9aec87945b99df50188f064cbfd1cccf:25947,same_mentor,highest-gap thread of a repeated mentor,20261002

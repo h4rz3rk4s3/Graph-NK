@@ -1,0 +1,846 @@
+coding_id,with_context,text,context,primary_code,multi_fit_candidates,wehling_knowledge,wehling_intentionality,wehling_durability,residual_but_for,rationale,coder_id
+C00000,False,"Yeah, but we don't really want to do that.",,,,,,,,,
+C00001,False,"4.14-stable review patch.  If anyone has any objections, please let me know.",,,,,,,,,
+C00002,False,Last set of CW Pro 5 projects (probably),,,,,,,,,
+C00003,False,"Apparently there are a lot of improvements in OpenLayers plugin.
+
+It use to be that project with OpenLayers only could use EPSG 3857 
+(pseudo Merkator)
+projection. It seems it is different now.
+
+Bit still there is a problem:
+
+1. Assuming that there is a project with one GeoTIFF (or other GIS 
+raster / vector data)
+     in UTM.
+
+2. Use OpenLayers to add Google or OpenStreets later.
+
+3. Use Project / Project properties menu to set on the fly projection 
+and assign project
+     projection as UTM (NOT as Pseudo Merjator!) Everything seems 
+working correctly so far
+
+4. Go to print composer and create parer map. Everything looks right in 
+map composer.
+
+5. Print / create PDF. Now Google Layer is misplaced considerably from 
+other GIS data!
+      It is still about the same place, but difference is few hundreds 
+meters or so.
+      This is also true for OpenStreet or Bing layers if they are used - 
+the same shift.
+
+       There should be no licensing restrictions at least for OpenStreets.",,,,,,,,,
+C00004,False,"Ok.  I missed that cpu_needs_another_gp() would somehow prevent
+rsp->jiffies_force_qs from getting set.",,,,,,,,,
+C00005,False,"PEP 709 hasn't been accepted, but I think there's a reasonable chance it might be soon, and in case that happens, I would like to be ready to get this merged in time for 3.12b1. Reviews/comments welcome!",,,,,,,,,
+C00006,False,Mauro and Dmitiri probably have better answers.,,,,,,,,,
+C00007,False,"Something like so in fact,.. except for the MB bits..",,,,,,,,,
+C00008,False,"This is documented behavior. See https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address
+
+""The following constitutes a valid IPv4 address:
+...
+     An integer packed into a bytes object of length 4 (most significant octet first).
+""
+
+
+
+
+So I'm going to close this as not a bug.",,,,,,,,,
+C00009,False,"Since it was signed-off by me before, you can assume it's been ACKed as well.",,,,,,,,,
+C00010,False,"that is made terrible by our own mad attempt to interpret it as though it had
+ an underlying truth.""",,,,,,,,,
+C00011,False,", after taking some time to think this over and get a fresh perspective, I completely agree with your latest comments. Let's close this PR and fix the documentation.
+
+I'm not even sure an enhancement proposal is necessary: This hasn't been requested so far, so I'm not sure it is worth the effort to implement for purely theoretical use cases.",,,,,,,,,
+C00012,False,"this patch adds a test module for util, to improve distutils test
+coverage. It does not yet test byte_compile, but the other ones are covered.",,,,,,,,,
+C00013,False,"Hi ,
+
+It hasn't been reviewed yet.  I don't have any other updates.",,,,,,,,,
+C00014,False,"drivers/power/avs/smartreflex.c - ok here
+drivers/power/reset/brcmstb-reboot.c - looks ok, too
+drivers/power/twl4030_charger.c - should probably be converted",,,,,,,,,
+C00015,False,"I tried to update the SEXTANTE plugin (v 1.0.7) for QGIS (lisboa 1.8.0 - OS
+win7). Previous version worked fine, no problem at all. This time the
+installer told me:
+
+The plugin is broken. Python said:
+*3*
+
+Anybody had the same problem or knows a solution?",,,,,,,,,
+C00016,False,"and I want dimensionless groups with no more than four base units, I
+would like a result like the following:",,,,,,,,,
+C00017,False,Isn't this an imported file?,,,,,,,,,
+C00018,False,"I'm inclined to document that ""iterating views while adding or deleting entries an ordered dictionary is an undefined behavior"".",,,,,,,,,
+C00019,False,I'm not sure that's necessarily a good thing. It's helpful for extension authors to know whether they need to validate their input.,,,,,,,,,
+C00020,False,"To pass automatic checks, you'll need to make a corresponding issue at bugs.python.org so that it can be discussed, and link to it from this PR. Also looks like [you'll need to fill this in](https://blurb-it.herokuapp.com/) to fulfill the news file requirement.",,,,,,,,,
+C00021,False,This should be fixed now as of r14387.,,,,,,,,,
+C00022,False,"With gcc-4.6 -O1, Python 3.2 works correctly. With gcc-4.6 -O1 -ftree-vectorize, the assertion ""assert (new_line - last_line \< 255);"" fails in PyCode_Optimize().
+
+I think that the problem is in the following loop:
+\-------------------------------------
+
+
+-------------------------------------
+
+gcc-4.6 -O1:
+\-------------------------------------
+0x0000000000480991 \<+5041\>:  mov    %eax,%edx
+0x0000000000480993 \<+5043\>:  sub    %esi,%edx
+0x0000000000480995 \<+5045\>:  mov    %edx,(%r12,%rax,4)
+0x0000000000480999 \<+5049\>:  movzbl 0x0(%rbp,%rax,1),%edx
+0x000000000048099e \<+5054\>:  cmp    $0x9,%dl
+0x00000000004809a1 \<+5057\>:  jne    0x4809a8 \<PyCode_Optimize+5064\>
+0x00000000004809a3 \<+5059\>:  add    $0x1,%esi
+0x00000000004809a6 \<+5062\>:  jmp    0x4809b2 \<PyCode_Optimize+5074\>
+0x00000000004809a8 \<+5064\>:  mov    $0x3,%ecx
+0x00000000004809ad \<+5069\>:  cmp    $0x59,%dl
+0x00000000004809b0 \<+5072\>:  ja     0x4809b7 \<PyCode_Optimize+5079\>
+0x00000000004809b2 \<+5074\>:  mov    $0x1,%ecx
+0x00000000004809b7 \<+5079\>:  add    %rcx,%rax
+0x00000000004809ba \<+5082\>:  cmp    %rax,%rdi
+0x00000000004809bd \<+5085\>:  jg     0x480991 \<PyCode_Optimize+5",,,,,,,,,
+C00023,False,"Removed PyModule_GetWarningsModule of pylifecycle.c that was useless now due to
+the _warnings module was converted to a builtin module in 2.6.
+
+
+
+
+
+https://bugs.python.org/issue42599",,,,,,,,,
+C00024,False,"I only made two changes to the test class itself: 1. move ""requires('gui')"" to the top to quit as soon as possible.  2. add ""del class.root"" to prevent exit error message.
+
+Westley is already in misc.ACKS.",,,,,,,,,
+C00025,False,"Ha!  Apparently this bug broke coverage for the Mailman 3 source code:
+
+https://bitbucket.org/ned/coveragepy/issue/360/html-reports-get-confused-by-l-in-the-code",,,,,,,,,
+C00026,False,"Issue bpo-25926
+Changed all ""equivalent to"" occurrences to ""roughly equivalent to""",,,,,,,,,
+C00027,False,"This avoids needless JIT recompilation during make install.
+
+
+
+* Issue: gh-140454",,,,,,,,,
+C00028,False,"I guess the best choice would be to join the effort to port GRASS into
+the processing framework and to build the modeller for the same
+framework.
+
+This list is the right place to start tale contact with the people
+involved/interested :)",,,,,,,,,
+C00029,False,"Sorry,  and -storchaka, I could not cleanly backport this to  due to a conflict. 
+                            Please backport using [cherry_picker](https://pypi.org/project/cherry-picker/) on command line.",,,,,,,,,
+C00030,False,"Actually, your patch works just peachy, my fiddling with sleepers
+vruntime at attach time was a dainbramaged thing to do.",,,,,,,,,
+C00031,False,"Right, it's quite useless as public API. Remove it in 3.9. But:
+* Don't keep the same name if the semantics changed.
+* Mention the removal in the news file, so anyone who did use it may know the removal was intentional.
+
+It was probably never intended to be public (and probably predates discussions on what should be public), but it *is* an exported symbol.",,,,,,,,,
+C00032,False,"""not single character"" is not true. Also ""copy into the new object"" is questionable.",,,,,,,,,
+C00033,False,"Thanks for your two messages, Nick, they make things clearer for me and
+I'll make the necessary modifications in the patch some time today.",,,,,,,,,
+C00034,False,make install doesn't seem to support --quiet,,,,,,,,,
+C00035,False,"I've read the thread now and I think the original proposal of having a
+\~/.python was more sensible and more user-friendly.",,,,,,,,,
+C00036,False,I don't have a merge button on this.,,,,,,,,,
+C00037,False,"In this PR, we prepare the  for #123630 and clean-up some bits. To that end, we:
+
+- ensure that error branches correctly free resources (even if the error is usually ""critical"", in the sense that the interpreter would exit after reporting it).
+- protect macros against dangling else using  constructions.
+- use upper-case names for global variables; this helps the readability of the module.
+
+There are some un-necessary  casts that will be removed if I were to move from a static type to a heap type, so I won't do it now. 
+
+---
+
+Now I have an important question. There is a global variable named  which is set to the module's dict upon initialization. It is then used in  to add other constants. However, AFACIT, this variable is only used as a convenience to avoid re-querying the module's dict, right? Or is there some deeper meaning where I *must* use a global variable to store tha module's dict? 
+
+cc   
+
+* Issue: gh-123290",,,,,,,,,
+C00038,False,"Yes, there are two known use-cases that have this characteristic:
+
+1) High performance numeric application which has been optimized
+to a certain fraction of the cache.
+
+2) Low latency application in multi-application OS.
+
+For both cases exclusive cache access is wanted.",,,,,,,,,
+C00039,False,"truncate_inode_pages_range()'s final loop has a nice pincer property,
+bringing start and end together, squeezing out the last pages.  But
+the range handling missed out on that, just sliding up the range,
+perhaps letting pages come in behind it.  Add one more test to give
+it the same pincer effect.",,,,,,,,,
+C00040,False,"Merged revisions 83675 via svnmerge from
+svn+ssh://pythondev.python.org/python/branches/py3k
+
+........
+  r83675 | r.david.murray | 2010-08-03 13:56:09 -0400 (Tue, 03 Aug 2010) | 12 lines
+
+  #9444: use first of prefix_chars for help opt instead of raising error
+
+  An argparse option parser created with a prefix_chars that did not
+  include a '-' would happily add -h and --help options, and then throw
+  an error when it tried to format the help because the - was an invalid
+  prefix character.  This patch makes it use the first character of
+  prefix_chars as the character for the help options if and only if '-'
+  is not one of the valid prefix_chars.
+
+  Fix by Theodore Turocy, unit tests by Catherine Devlin.
+........",,,,,,,,,
+C00041,False,"Sure. But do_mpage_readpage() needs an aenema. It's a complex mess
+that relies on block_read_full_page() and bufferhead based IO to
+sort out the crap it gets confused about.
+
+As it is, I suspect that this is all going to be academic. I'm in
+the process of ripping bufferhead support out of XFS and adding a
+new iomapping interface so that we don't have to carry bufferheads
+around on pages anymore. As such, I'll have to re-implement whatever
+you do with DAX to support bufferhead enabled filesystems....",,,,,,,,,
+C00042,False,Could you add the other optimisations as separate commits?,,,,,,,,,
+C00043,False,"Basic question: How to select a layer in the GUI
+ and get the handle in the Python code?",,,,,,,,,
+C00044,False,"I believe something like the following diff restores the previous behavior (untested!):
+
+diff --git a/Lib/logging/__init__.py b/Lib/logging/__init__.py
+index a61c2b0..4a8f83e 100644
+--- a/Lib/logging/__init__.py
++++ b/Lib/logging/__init__.py
+@@ -129,7 +129,7 @@ def getLevelName(level):",,,,,,,,,
+C00045,False,"I really appreciate your efforts to learn and contribute to CPython, but I would recommend starting with a different issue: because this one is very general and is quite complex. Not only because of the technical side, but also because of the related history and because different people have different opinions about it :)
+
+Here's the list of issues you can look at: https://github.com/python/cpython/issues?q=is%3Aissue+is%3Aopen+label%3Aeasy",,,,,,,,,
+C00046,False,"Works nicely:
+
+The patch does not apply cleanly because of changes in traceback.py, but it is easy to fix. But IMHO, the special casing that checks for the presence of the extra stmt_lineno attribute is not nice at all. I think it would be better if stmt_lineno always was included and equal to lineno in the normal case. Then traceback.py would just check if stmt_lineno differs from lineno, and if so, append the extra '(continuing line %d)' information.",,,,,,,,,
+C00047,False,"LGTM. Needs tests and blurb. Maybe consider making the assignment a constant instead of a comment, though I don't feel strongly about it.",,,,,,,,,
+C00048,False,I see no reason to change the current code.,,,,,,,,,
+C00049,False,"Logged In: YES 
+user_id=849994
+
+Closing due to lack of other opinions.",,,,,,,,,
+C00050,False,"+1. In general, the original approach back in GRASS plugin was to split
+complex commands into several atomiic modules; I think this approach
+still proves sane",,,,,,,,,
+C00051,False,"Just to be sure, I checked on my system with just the three + and it compiles in 2min29s, versus 2min28s with the invasive pass jobserver to everything change. So it's basically the same.
+
+The only difference is GCC will have a benign complaint that we're doing serial compilation on multiple LTO translation units. Hopefully downstream will just ignore that.",,,,,,,,,
+C00052,False,"You're being victimized by floating point (im)precision.  Details here:
+
+    http://python.sourceforge.net/devel-docs/tut/node14.html
+    http://www.python.org/cgi-bin/faqw.py?req=show&file=faq04.098.htp",,,,,,,,,
+C00053,False,"Bump Windows ""build number"" to 6.
+Note that somebody still needs to change the interpreter to say ""2.0b2"";
+I'm assuming that's a normal part of somebody's Unix release checklist.",,,,,,,,,
+C00054,False,"Note: there are more updates to the docs of the individual create_task function/methods, see gh-134202.
+
+* Issue: gh-128307
+
+
+
+
+----
+📚 Documentation preview 📚: https://cpython-previews--134304.org.readthedocs.build/",,,,,,,,,
+C00055,False,"The attached patch builds the \_tkinter module, if
+Tk.framework or Tcl.framework are found.
+
+The appropriate binary installer for those framworks is
+here:
+
+http://prdownloads.sourceforge.net/tcl/TclTkAqua-8.4.1-Jaguar.dmg?download",,,,,,,,,
+C00056,False,"I would just say  ""use"" instead of ""we can use"".",,,,,,,,,
+C00057,False,Address most of Ezio's comments. str/bytes/bytearray docs still need consolidation,,,,,,,,,
+C00058,False,"Logged In: YES 
+user_id=6380
+
+Switching between the DEBUG and non-DEBUG Python DLL is not
+supported. There are too many things that wouldn't work;
+Py_INCREF is just the tip of the iceberg. So I'm rejecting this.",,,,,,,,,
+C00059,False,"I'm using QGIS 2.18.3 on Windows 10 and I would like to make a question 
+to you.
+Is it possible to save the geoprocessing results into an existing 
+Database (Postgres with Postgis extention, SQLite and others)?
+
+For example:
+Given an existing Database( /MyDB.sqlite/ ) and an existing Table( 
+/MyDB.table_1/) , I would like to save the result coming from the 
+geoprocessing function *Dissolve* (ran on table_1) in the db table 
+/MyDB.table_result.
+
+/Thank you for your time and have a nice day,",,,,,,,,,
+C00060,False,"I think callbacks are needed to implement various forms of weak dicts: when the object is deleted, whatever's in the weak dict for it should be deleted as well.
+
+Even though we may not provide weak dicts in 2.1a1, we should still support writing them using what we \*do* provide.
+
+IMHO (I still haven't had the time to read the PEP or Fred's code. :-( )",,,,,,,,,
+C00061,False,"If I read the code correctly at [locale.cpp on bionic master branch (aka Android libc)](https://android.googlesource.com/platform/bionic/+/master/libc/bionic/locale.cpp#158) setlocale(LC_CTYPE, """") returns ""C.UTF-8"". But on Android API 24 it does return ""C"" as expected by the implementation of PEP 538.
+
+Another point is that call_readline() in Modules/readline.c does call setlocale(LC_CTYPE, """") (and the reason I gave in [msg305848](https://bugs.python.org/msg305848) to explain why test_nonasci succeeds seems to be wrong).
+
+For these reasons, I am starting to think we could use a new _Py_setlocale_from_env() function to replace all calls to setlocale(category, """") with a custom implementation for Android and returning setlocale(category, """") for all other platforms.",,,,,,,,,
+C00062,False,"BPO | [841807](https://bugs.python.org/issue841807)
+--- | :---
+Nosy | 
+Files | <li>[pythonbuild.patch](https://bugs.python.org/file5684/pythonbuild.patch ""Uploaded as text/plain at 2003-11-13.23:12:19 by ondrap""): Patch that makes install not to ln -sf library, if there should not be such link</li>
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00063,False,You could use `if-else <if>` to make it consistent with the others.,,,,,,,,,
+C00064,False,Could we have the default code generator generate a function for the body of the pure instruction and then call that from the three interpreters?,,,,,,,,,
+C00065,False,"D'oh, yes, it can (and I've closed it now).",,,,,,,,,
+C00066,False,"All this code code be refactored by using the  extraction filter or the  one. Since the source *is* trusted, I don't think we need to do change it, but we could add it. The entire PR would boil down to a single change.",,,,,,,,,
+C00067,False,Isn’t this a dupe of bpo-5411?,,,,,,,,,
+C00068,False,"See https://github.com/python/cpython/actions/runs/11115927540/job/30887579831?pr=124813#step:6:1063 as an example.
+
+Related to a change I made in https://github.com/python/cpython/pull/124443/files#diff-700c6057d24addce74e8787edb5f5556f718299f6ef1742cbb1d79580cdb535cR144
+
+### Linked PRs
+* gh-124821
+* gh-124883",,,,,,,,,
+C00069,False,"4.14-stable review patch.  If anyone has any objections, please let me know.",,,,,,,,,
+C00070,False,I don't see how that solves anything.,,,,,,,,,
+C00071,False,"Odd, I haven't changed anything there.  I'll check to see what happened.",,,,,,,,,
+C00072,False,"-storchaka thanks for your comment. I agree that we can see this pattern in many places in the documentation, but it seems to be common only when the parameter and the term have different names.
+
+I'll probably shoot myself in the foot by making a counter argument using regex, but I could only find 5 examples where both parameter and the term have the same name and are written as  or `term`:
+
+
+
+
+Having the same word duplicated doesn't look like the best approach. I'd still consider the change  proposed (if he'd still be interested in spending the time with it, as it's quite a small change) or rephrasing (e.g. in the same file: `FutureSchedule *callback* to be called after the given *delay* number of seconds (can be either an int or a float).`).
+
+Also, not sure if the discussion is worth it, so fell free to ignore this comment.",,,,,,,,,
+C00073,False,"Re: Bad interaction between sextante and grass
+	plugin?",,,,,,,,,
+C00074,False,"BPO | [8892](https://bugs.python.org/issue8892)
+--- | :---
+Nosy | , 
+Files | <li>[itertools_import_star_reproducer.patch](https://bugs.python.org/file17540/itertools_import_star_reproducer.patch ""Uploaded as text/plain at 2010-06-03.22:22:23 by ""): Patch against trunk (r81679) adding a reproducer</li>
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00075,False,All commit authors signed the Contributor License Agreement. <br/> [](https://cpython-clabot.herokuapp.com/signed-contributor-license-agreement?version=96a49432b8b111ec9bf5bfe9ad6c72c4),,,,,,,,,
+C00076,False,"It's inaccurate of my original description, sorry for that.
+
+It's a different behavior of tab completion on Windows and Linux.
+
+On Windows,  only displays the  filenames within  if  is a folder. If  is a single  file, it will display nothing. 
+
+However, on Linux, it displays all the non-internal variables(not starting with _) in a single  file.
+
+This might be a result of the different search methods used by each OS. 
+
+Tested using  on Windows and  on Linux (WSL2).
+
+On Windows:
+<img width=""860"" height=""80"" alt=""Image"" src=""https://github.com/user-attachments/assets/7193ca63-aa44-4d51-86cd-5a2628e897ad"" />
+
+On Linux(WSL2):
+<img width=""674"" height=""243"" alt=""Image"" src=""https://github.com/user-attachments/assets/d43c9b39-f19d-4079-80d3-9481c97fe898"" />
+
+On Windows( displays nothing here)
+<img width=""329"" height=""98"" alt=""Image"" src=""https://github.com/user-attachments/assets/823fe685-5ab7-4f7f-af5e-6d9fb69fbae7"" />
+
+On Linux(WSL2):
+<img width=""642"" height=""65"" alt=""Image"" src=""https://github.com/user-attachments/assets/29518c47-0d47-4741-b4ee-d5c79ade2d85"" />",,,,,,,,,
+C00077,False,"Most changes to Python [require a NEWS entry](https://devguide.python.org/core-developers/committing/#updating-news-and-what-s-new-in-python). Add one using the [blurb_it](https://blurb-it.herokuapp.com) web app or the [blurb](https://pypi.org/project/blurb/) command-line tool.
+
+If this change has little impact on Python users, wait for a maintainer to apply the  label instead.",,,,,,,,,
+C00078,False,"Not sure about the duplicate comments above, either.",,,,,,,,,
+C00079,False,[3.12] gh-110549: Remove unused includes of <stddef.h> in _testcapi (GH-110552),,,,,,,,,
+C00080,False,": How can I change the template used to create a new ""What's New in Python 3.X"" document when a new Python version is created?
+
+PEP 101 says ""Add a new whatsnew/3.x.rst file"": ok, but what's the template? https://peps.python.org/pep-0101/",,,,,,,,,
+C00081,False,Re: GRASS missing from Processing?,,,,,,,,,
+C00082,False,"Thanks for the detailed explanation, that's fantastic.
+
+Are you happy for me to log a bug and include your write-up? Even with the caveats/incompatibility you mention, your proposal still seems like a substantial improvement.",,,,,,,,,
+C00083,False,I hope this works for some million years ...,,,,,,,,,
+C00084,False,"ut I wanted to give it a try anyway.
+
+There's no such ""über-__",,,,,,,,,
+C00085,False,"+print(""Hello world..."")
+
+I would prefer a more positive ""Hello World!"", but thanks for the patch.",,,,,,,,,
+C00086,False,"gmake install
+
+The ""env SGI_ABI=-n32"" just forces n32 architecture binaries.  That runs
+on all our machines.  Only some of them support n64.
+
+Also, I use GNU make out of habit.  SGI make may work.",,,,,,,,,
+C00087,False,"nfo.
+Again I find this very confus",,,,,,,,,
+C00088,False,I didn't expect the Spanish Inquisition!,,,,,,,,,
+C00089,False,"I would like to use buildbots to check for regressions, but I see a lot of red buildbots, so buildbots became useless :-/
+
+I skipped failing test_statistics tests, since failures are known.
+
+I put the priority to ""release blocker"".
+
+I suggest to either revert the change or find a fix before 3.6b1.",,,,,,,,,
+C00090,False,"This patch is not the prettiest solution, but it seems to work:
+(note that Github auto-markdowned the BPO reference in the comment :-/)",,,,,,,,,
+C00091,False,should do the trick.,,,,,,,,,
+C00092,False,"Linus, please do a
+
+	bk pull http://linux-ntfs.bkbits.net/ntfs-tng-2.5",,,,,,,,,
+C00093,False,"Remove PyThread_type_lock (now uses PyMutex internally).
+
+Add new benchmark options:
+- work_inside/work_outside: control work inside and outside the critical section to vary contention levels
+- num_locks: use multiple independent locks with threads assigned round-robin
+- total_iters: fixed iteration count per thread instead of time-based, useful for measuring fairness
+- num_acquisitions: lock acquisitions per loop iteration
+- random_locks: acquire random lock each iteration
+
+Also return elapsed time from benchmark_locks() and switch lockbench.py to use argparse.
+
+
+
+
+
+* Issue: gh-145230",,,,,,,,,
+C00094,False,I closed this to re-run the status checks but apparently the PR this is based on was deleted.,,,,,,,,,
+C00095,False,Is the plan to handle this in the textual assembly transformation step? Or by relaxing the relocations at runtime?,,,,,,,,,
+C00096,False,"Turn on macOS builds for Travis (GH-1846)
+
+Initially the macOS builds are allowed to fail until such time that they can be determined to be stable and not add an unacceptable amount of time to the overall Travis-passing process.",,,,,,,,,
+C00097,False,"BPO | [30885](https://bugs.python.org/issue30885)
+--- | :---
+Nosy | , , , , 
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00098,False,"best way to do it. I would prefer fixing a chip's shortcomings in it's own
+driver.",,,,,,,,,
+C00099,False,Is this needed for any earlier kernel versions?,,,,,,,,,
+C00100,False,"Also, unless people haven't been reporting other errors, these buildbots have been stable up until recently, with the exception of the multiprocessing hangs that plague all the buildbots as far as I know.  (My impression could be mistaken, though.)",,,,,,,,,
+C00101,False,I assume you mean https://github.com/sethmlarson/truststore/pull/137/files#diff-64ad03ae2eedc4414b98845398d17597aa584eccc854cabd4efe9f9445e6a9faR285 and https://github.com/ansible-collections/community.crypto/pull/784/files#diff-635a318cc493470aa9c8734ff6623a4ff998bf00cf457197469268f21bea52faR524 ?,,,,,,,,,
+C00102,False,"2.6.35-longterm review patch.  If anyone has any objections, please let me know.",,,,,,,,,
+C00103,False,"The first checks in mtdchar_read() and mtdchar_write() attempt to limit
+ such that . However, they ignore the
+possibility of , allowing the calculation of  to
+wrap around.  prevents seeking beyond mtd->size, but the",,,,,,,,,
+C00104,False,Would something like this be more maintainable?,,,,,,,,,
+C00105,False,"Well, no. In that one specific example, it happens to be possible to
+pass all the args to one print() call and get the same effect, but
+imagine some function that doesn't have that particular feature. (I
+just used print for simplicity.)",,,,,,,,,
+C00106,False,"I know.
+
+I only CCed stable because the acceptance email for the original patch was
+CCed to stable, and I wanted to prevent that one from being backported early.",,,,,,,,,
+C00107,False,"BPO | [29073](https://bugs.python.org/issue29073)
+--- | :---
+Nosy | , , , -storchaka, 
+Files | <li>[bytearray_format_nul.patch](https://bugs.python.org/file46039/bytearray_format_nul.patch ""Uploaded as text/plain at 2016-12-26.10:31:22 by -storchaka"")</li>
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00108,False,"Also, we need to full list of invalid arguments to report to keep the old behavior I think. So we need to turn this  to a list and check that.",,,,,,,,,
+C00109,False,"I supported patches for repr(list), repr(tuple) and repr(dict) because they made the code shorter and cleaner. But this patch is more questionable.",,,,,,,,,
+C00110,False,Re: Any users of statistics.mode() here?,,,,,,,,,
+C00111,False,Could be. Removing that feature would also be a mistake.,,,,,,,,,
+C00112,False,"Removed pointless parens around  expressions;
+deleted some curlies around one-line blocks.",,,,,,,,,
+C00113,False,-					# address where it loaded the image.,,,,,,,,,
+C00114,False,"We can use the following function to check if the filesystem does support sparse files:
+
+
+
+
+We may skip the test if the filesystem doesn't support sparse file... But I think that it is already the purpose of the ""largefile"" resource.
+
+If this issue is not a bug, but just that the timeout is too low, we should use a bigger timeout on this specific buildbot.",,,,,,,,,
+C00115,False,This should be opened in the [pythondotorg](https://github.com/python/pythondotorg) repository.,,,,,,,,,
+C00116,False,QGIS Jenkins test server broken?,,,,,,,,,
+C00117,False,"Straw for GTK/GNOME is written in Python, though it's somewhat inactive.
+http://projects.gnome.org/straw/
+http://strawreader.wordpress.com/",,,,,,,,,
+C00118,False,test_pyrepl.test_repl_eio is flaky on some machines,,,,,,,,,
+C00119,False,"Then you load the raster, which is projected in ""UTM_WGS84_M15"", choose your
+custom projection in the Project Properties dialog, select ""Enable OTF"" and
+load the shape. The vector should now fit with the raster.",,,,,,,,,
+C00120,False,Re: sparse sets of integers?,,,,,,,,,
+C00121,False,"I think you're taking Python's OO-ness too seriously. One of the 
+strengths of Python is that it can _look_ like an OO language without 
+actually being OO.",,,,,,,,,
+C00122,False,"I'm attaching here the reduced, minimal, inputrc. I think it's a bug in Python because it doesn't happen with any other program that uses readline (bash, perl -d, etc.) that I checked. I'll check with a vanilla readline compiled from source from the GNU site , though.",,,,,,,,,
+C00123,False,"One page may store a set of entries of the
+sis->swap_map (swap_info_struct->swap_map) in multiple swap clusters.
+If some of the entries has sis->swap_map[offset] > SWAP_MAP_MAX,
+multiple pages will be used to store the set of entries of the
+sis->swap_map.  And the pages are linked with page->lru.  This is
+called swap count continuation.  To access the pages which store the
+set of entries of the sis->swap_map simultaneously, previously,
+sis->lock is used.  But to improve the scalability of
+__swap_duplicate(), swap cluster lock may be used in",,,,,,,,,
+C00124,False,"When you're done making the requested changes, leave the comment: .",,,,,,,,,
+C00125,False,Should this backport be merged?,,,,,,,,,
+C00126,False,"It expects priority to be capped with 19, which is the cap for Linux,
+but for FreeBSD the cap is 20 and the test fails under the similar
+conditions. Tweak the condition to cover FreeBSD as well.
+(cherry picked from commit 437924465de5cb81988d1e580797b07090c26a28)
+
+Co-authored-by: Dmitry Marakasov <amdmi3.ru>",,,,,,,,,
+C00127,False,"Er, yes.  By design.
+
+The kernel has to run an init program in order to hand off control to 
+userspace.  In initramfs, this is defined as /init.  It looks in exactly one 
+documented place.
+
+The older root= mechanism fell back to a half-dozen places (eventually trying 
+things like /bin/sh if it couldn't find anything else).  This is because 
+there wasn't a documented standard for what should be executed, like there is 
+with initramfs.",,,,,,,,,
+C00128,False,"math.fabs returns float.
+The documentation should say so, and help(math.fabs) should include the expected return type  -\> float
+
+fabs(x, /) -\> float
+    Return the absolute value of the float x.
+
+I did not check, but expect these annotations recommendations are pervasive throughout the python libraries.",,,,,,,,,
+C00129,False,Can you rebase your PR on the main branch?,,,,,,,,,
+C00130,False,"OS: x64 Windows 10 Professional 1903 fresh installation (with latest updates)
+
+Python 3.8 app (final version 3.8.0, not RC) installation from Microsoft Store adds two shortcuts to the Start menu:
+- Python 3.8
+- IDLE (Python 3.8)
+
+Clicking the ""Python 3.8"" (python3.8.exe) starts Python interpreter - all fine and good.
+
+Clicking the ""IDLE (Python 3.8)"" (idle3.8.exe) displays only the error message ""MSVCP140.DLL was not found"" (I do not remember exact sentence, because eventually I manually installed Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019).",,,,,,,,,
+C00131,False,"Again, it might be helpful to have a comment that makes the division between  and  more clear.",,,,,,,,,
+C00132,False,"A couple of extra notes:
+-  is not converted, because its  parsing / in-place mutation is optimized
+-  and  require , as far as I know AC does not support that at the moment, they are not converted
+- The same for 
+- I've also noticed a couple of other oddities that I will report in two separate issue later
+
+* Issue: gh-64373",,,,,,,,,
+C00133,False,Great work!  Very thorough patches.  Strange that it's a regression versus 10.5.,,,,,,,,,
+C00134,False,"Sure, but there's still many, many programs that don't fit that
+criteria. Nor are people generally happy about being compelled to use
+online services to 'activate' their games.",,,,,,,,,
+C00135,False,I cannot reproduce the issue on Linux:,,,,,,,,,
+C00136,False,"Actually, the transport needs to change too, so not sure this is right.",,,,,,,,,
+C00137,False,"I have a forcedeth system (ASUS A8N-E) which can't use either the Linux 
+driver *or* the standard Windows driver *at all* after booting PXE and 
+then exiting the PXE stack for local boot.",,,,,,,,,
+C00138,False,"That looks awesome!  please open PR, can't wait for this to be added. 
+Also I noticed that querySelector, getElementById and other get single element methods return NodeList but I think it would be more appropriate for them to return Node.
+EDIT: and closest returns one element before target.",,,,,,,,,
+C00139,False,"No response since 2020. In the three years since 2020, there has been a lot of changes to Modules/timemodule.c[^1]. I suggest to close this PR; if someone wants to pick this up, it will probably be easier to start from scratch, rather than rebasing this PR.
+
+[^1]: 569 insertions(+), 231 deletions(-)",,,,,,,,,
+C00140,False,"For the test, you need to use a different type so that you're not catching everything. Something like this:",,,,,,,,,
+C00141,False,"Hello, and thanks for your contribution!
+
+I'm a bot set up to make sure that the project can legally accept your contribution by verifying you have signed the [PSF contributor agreement](https://www.python.org/psf/contrib/contrib-form/) (CLA).
+
+Unfortunately our records indicate you have not signed the CLA. For legal reasons we need you to sign this before we can look at your contribution. Please follow [the steps outlined in the CPython devguide](https://devguide.python.org/pullrequest/#licensing) to rectify this issue.
+
+Thanks again to your contribution and we look forward to looking at it!",,,,,,,,,
+C00142,False,I saw that the other already existing  occurrences were not linked so I just followed the approach. But I agree that it's a good idea. I'll make an update. Thanks!,,,,,,,,,
+C00143,False,Re: sys_recvmmsg: wire up or not?,,,,,,,,,
+C00144,False,"Re: doubt about sm7xxfb (was: Re: [PATCH v4 0/7] staging: fsl-mc:
+ New functionality to the MC bus driver)",,,,,,,,,
+C00145,False,"Stop being afraid of objects, especially if your fear is caused by
+straw-man C style APIs.",,,,,,,,,
+C00146,False,"I'll close and re-open the PR to restart the CI. The Ubuntu failure is definitely unrelated, as it failed in the ""Install Dependencies"" stage.",,,,,,,,,
+C00147,False,All commit authors signed the Contributor License Agreement. <br/> [](https://cpython-clabot.herokuapp.com/signed-contributor-license-agreement?version=96a49432b8b111ec9bf5bfe9ad6c72c4),,,,,,,,,
+C00148,False,"Certainly we use a check_chain function at least indirectly but, whether that path is vulnerable, dunno.
+
+But, in any case, we will no doubt be pinged about it so best to be ahead of the curve, I think.",,,,,,,,,
+C00149,False,"""""""
+The gmtime() function shall convert the time in seconds since the Epoch pointed to by timer into a broken-down time, expressed as Coordinated Universal Time (UTC).
+""""""
+
+In a technical sense, this is correct.  The result of gmtime() is UTC time, but it fails to mention that gmtime() will never produce tm_sec=60.",,,,,,,,,
+C00150,False,"I haven't seen any replies to this, so even though I don't actually
+use Pythoncard I'll take a wild shot in the dark.",,,,,,,,,
+C00151,False,I agree with toning down the antagonistic comparison between Tcl/Tk and other GUI kits and between Tcl and Python.,,,,,,,,,
+C00152,False,Okay let me know when it's ready for the final review.,,,,,,,,,
+C00153,False,Python is not ready for Tcl/Tk 8.6 yet.,,,,,,,,,
+C00154,False,"=?UTF-8?B?UmU6IFtQQVRDSCAxLzJdIHNlcmlhbDogc2MxNmlzN3h4OiBkZXBlbmQgb24g?=
+ =?UTF-8?B?STJD?=",,,,,,,,,
+C00155,False,You are right. I haven't seen this comment yet. I have also added an appropriate  function.,,,,,,,,,
+C00156,False,I'd rather see the wording come from more experienced users of IDLE and on other platforms.,,,,,,,,,
+C00157,False,"SOC frameworks to organize code as needed.
+	Rename of enable to available to better reflect the intent
+	few fixes and typos
+	Introduced mutex based locking for controlling access to list
+	 modification (note: query functions are still unsafe- rationale
+	 in the patch below)
+	A new home for opp.c in drivers/base/power (moved from lib/)
+	A few optimization in function flow and additional error checks
+	 added to exposed functions
+	offline aligned with Kevin for cleaning up the copyrights",,,,,,,,,
+C00158,False,"For five Ubuntu releases now, I apply this patch.  In contrast to Catalin's statement, it is not solved for me unless the upstream changes of two years ago haven't yet found their way into Ubuntu.  I'm currently using Python 2.7.4 on Ubuntu 13.04.  That said, the patch solves my issue every time.",,,,,,,,,
+C00159,False,"I propose:
+
+
+
+
+    Return a copy of *object* with the sign set to be the same as the sign of *other*.
+
+This format is most familiar to me.  But like Ezio wrote, all other methods referring to first and second operands would need to updated to refer to \*object* and \*other*, respectively.",,,,,,,,,
+C00160,False,"BPO | [474919](https://bugs.python.org/issue474919)
+--- | :---
+Nosy | 
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00161,False,"Right. This opcode is the end of a sequence of opcodes that sets up the stack in the way expected. Perhaps something like
+
+Pushes a new function object on the stack. From bottom to top, the consumed stack must have have argc & 0xFF positional default parameter objects, (argc \>\> 8) & 0xFF keyword only name, default parameter object pairs (with name and object in separate positions), (argc \>\> 16) & 0x7FFF parameter annotations, a tuple listing the parameter names for the annotations, and finally a code object as TOS.",,,,,,,,,
+C00162,False,Re: Search in textfiles?,,,,,,,,,
+C00163,False,The bug is no longer there. Probably it is fixed in bpo-14399.,,,,,,,,,
+C00164,False,"nonewlinesherenow
+there
+will
+be
+new
+lines
+Old methods such as writelines
+will still work fine
+nowbacktonormalwriting
+
+f:
+nonewlinesherenow
+there
+will
+be
+new
+lines
+Old methods such as writelines
+will still work fine
+nowbacktonormalwriting",,,,,,,,,
+C00165,False,Re: What is proper way to require a method to be overridden?,,,,,,,,,
+C00166,False,"Bug fixes are backported, yes (to 3.13 as well at the time of writing). The labels can be applied at any point, even after merge. I'm leaving the decision whether we backport this or not to  -- I'm not sure if this is a bug fix and not a feature, but it seems very reasonable to backport it, so you have a +1 from me in any case!",,,,,,,,,
+C00167,False,"BPO | [36946](https://bugs.python.org/issue36946)
+--- | :---
+Nosy | , -storchaka, , -islington, 
+PRs | <li>python/cpython#13375</li><li>python/cpython#13376</li><li>python/cpython#15639</li><li>python/cpython#15729</li>
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00168,False,"We won't know until you post more information. Show us the create table
+statement for amember_payments, show us the query you're running
+manually and the results you're getting from running the query manually.
+Maybe that'll give us a clue. (Include the member_id, expire_date,
+completed, and product_id columns in your manual query, please.)",,,,,,,,,
+C00169,False,"# Feature or enhancement
+Increase the speed of exclude_address by treating IPs as integer ranges making exclude_address O(1).
+
+
+# Pitch
+
+Currently exclude_address will take a subnet and split it by calling subnets()
+
+
+each time it is split, it checks which one contains the subnet being excluded and splits again.
+This ends up being a lot of work.
+
+Instead I propose we can use the fact that IPs are represented as integers behind the scene
+
+For a given subnet, it can be thought of as an integer range between its network and broadcast address
+
+
+
+Given these can be treated as an integer range, excluding is just removing the range integers you wish to exclude
+
+
+
+
+
+
+# Previous discussion
+https://discuss.python.org/t/ipaddress-py-exclude-address-speed-up/19445",,,,,,,,,
+C00170,False,It looks like increasing this timeout works.  The socket tests have all passed on the Windows ARM32 buildbot workers since making this change.,,,,,,,,,
+C00171,False,"Thanks for the answer. I will try to make it work in ""my"" model then.",,,,,,,,,
+C00172,False,"On Linux many ioctl request code values cannot be
+passed to ioctl
+because it assumes that the values are signed ints.
+Value with the
+top bit set 0x8000000 are common.
+
+Changing the PyArg_ParseTuple calls to use ""I"" instead
+of ""i""
+fixes the problem.
+
+This may well also be the issue with bug 1112949
+""ioctl has problems on 64 bit machines"".
+
+The attached patch fixes the problem in 2.4.1 and was
+tested on FC4.",,,,,,,,,
+C00173,False,"This PR is incomplete: I wrote it to propose the idea of a new ""stdlib_deprecations"" module: API to query if a function is deprecated or not. The API should be designed. So far, I only proposed a very basic API:
+
+`` returns True if a stdlib module or a stdlib module is deprecated.
+
+`` returns True if a C API symbol is deprecated.
+
+Internally, I wrote a dataclass which contains the following data:
+
+* Name
+* Version when the API is deprecated
+* Optional version when the API is removed
+* Optional message: usually explain how to replace the deprecate API
+
+My current API doesn't provide all data. Maybe the API should be `` instead: return the dataclass, or None if it's not deprecated.
+
+TODO: enhance the API to support other deprecation kinds, like deprecation of a function parameter. I propose `` suffix in the format string.",,,,,,,,,
+C00174,False,"bpo-36379: __ipow__ must be a ternaryfunc, not a binaryfunc (GH-13546)
+
+If a type's __ipow__ method was implemented in C, attempting to use
+the *modulo* parameter would cause crashes.
+
+https://bugs.python.org/issue36379",,,,,,,,,
+C00175,False,"BPO | [32726](https://bugs.python.org/issue32726)
+--- | :---
+Nosy | , -deily
+PRs | <li>python/cpython#5448</li><li>python/cpython#6279</li><li>python/cpython#6280</li><li>python/cpython#6281</li><li>python/cpython#6307</li><li>python/cpython#6308</li><li>python/cpython#6469</li>
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00176,False,"If you need some more info let me know. I would be happy to have 
+working docked sysfs entry.",,,,,,,,,
+C00177,False,"Thanks  for the PR, and  for merging it 🌮🎉.. I'm working now to backport this PR to: 3.13, 3.14, 3.15.
+🐍🍒⛏🤖 I'm not a witch! I'm not a witch!",,,,,,,,,
+C00178,False,"Sounds good to me.  Raymond, do you concur?",,,,,,,,,
+C00179,False,There was still a label about the need for a backport.,,,,,,,,,
+C00180,False,That's interesting but please update your patch.,,,,,,,,,
+C00181,False,That's wrong: you must return PyObject*.,,,,,,,,,
+C00182,False,Cc:  (as someone who knows a lot about Linux perf),,,,,,,,,
+C00183,False,I don't think this entry is needed.,,,,,,,,,
+C00184,False,"BPO | [220994](https://bugs.python.org/issue220994)
+--- | :---
+Nosy | 
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00185,False,"# Documentation
+
+I found a wrong comment in the documentation, the screenshot is as follows， The link is https://docs.python.org/3.10/tutorial/introduction.html#lists
+
+
+
+The list here is directly append 216 instead of append 6 **3 , so the comment here can't be said to add the cube of 6",,,,,,,,,
+C00186,False,The patch LGTM. But native speaker should check documentation part.,,,,,,,,,
+C00187,False,"Is it worth it to have two implementations, _PyImport_GetModuleWithError() and _PyImport_GetModule()? Is it for best performances? Or can we implement _PyImport_GetModule() using _PyImport_GetModuleWithError()?",,,,,,,,,
+C00188,False,"I see, you would prefer to keep it a bit vague, like ?",,,,,,,,,
+C00189,False,"Yup, I plan to get a few things like this incorporated once I have broadband access at home again. Probably won't be early enough to get things into alpha 2, but they should make it for alpha 3.",,,,,,,,,
+C00190,False,"(with changes form my logfile format):
+
+Of course, its no longer the same as the perl version, and
+the perl version would also probably benefit from something
+similar.",,,,,,,,,
+C00191,False,"Clearly I still wasn't clear enough.
+
+I'll select a 'format' myself. ;)",,,,,,,,,
+C00192,False,"BPO | [31256](https://bugs.python.org/issue31256)
+--- | :---
+Nosy | , , 
+PRs | <li>python/cpython#12225</li>
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",,,,,,,,,
+C00193,False,"to be identified by a pair of delimiters, maybe like [|x|] or
+something like that as in the Fortress language. I don't know...",,,,,,,,,
+C00194,False,"That actually sort of makes sense, though, except that the code is racy. :-)",,,,,,,,,
+C00195,False,Does this qualify as a new feature that needs to be in before beta 1?,,,,,,,,,
+C00196,False,"Sorry, was just looking when you merged.  Your changes made all the complex parts really simple.  I'm glad my test didn't need too much of a rewrite.  Maybe I'm getting the hang of it.  :-)
+
+One test I think I missed was making sure it sorted by line numbers.",,,,,,,,,
+C00197,False,"bpo-27099: IDLE - Convert built-in extensions to regular features (#2494)
+
+About 10 IDLE features were implemented as supposedly optional
+extensions.  Their different behavior could be confusing or worse for
+users and not good for maintenance.  Hence the conversion.
+
+The main difference for users is that user configurable key bindings
+for builtin features are now handled uniformly.  Now, editing a binding
+in a keyset only affects its value in the keyset.  All bindings are
+defined together in the system-specific default keysets in config-
+extensions.def.  All custom keysets are saved as a whole in config-
+extension.cfg.  All take effect as soon as one clicks Apply or Ok.
+
+The affected events are '<<force-open-completions>>', '<<expand-word>>',
+'<<force-open-calltip>>', '<<flash-paren>>', '<<format-paragraph>>',
+'<<run-module>>', '<<check-module>>', and '<<zoom-height>>'.  Any
+(global) customizations made before 3.6.3 will not affect their keyset-
+specific customization after 3.6.3. and vice versa.
+
+Inital patch by Charles Wohlganger, revised by Terry Jan Reedy.",,,,,,,,,
+C00198,False,"This is too much magic for a simple need. I suggest to factor out common tests and empty helpers into a base class and then use that to create two test cases, e.g.:",,,,,,,,,
+C00199,False,"That looks nice, but keep in mind that behaviour of getmntent(3) in chroot
+jails is a traditional misfeature.  Hopefully nothing important relies on it,
+but...
+
+As far as I'm concerned patch (and behaviour change) are fine.  Let's do it
+and see if anybody screams...",,,,,,,,,

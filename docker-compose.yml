@@ -13,6 +13,17 @@ x-app-env: &app-env
     NEO4J_URI:   bolt://neo4j:7687
   restart: unless-stopped
 
+# Neo4j memory, parameterized so the operator sets ONE value that also sizes the
+# Docker Desktop VM. CHANGELOG 2026-08-23: the graph grew far beyond the 2g
+# pagecache sized for the original ~9M-node corpus; the live store is ~111 GiB
+# (22M TextUnits + 70M Signals + edges + indexes), so a large pagecache is what
+# keeps the Phase-2 projector off the external-SSD hot path (the 2026-08-21 smoke
+# drained ~9.6k/s when the cache held the working set). These defaults are for a
+# ~128 GiB VM; reduce NEO4J_PAGECACHE_SIZE for smaller machines.
+x-neo4j-mem: &neo4j-mem
+  NEO4J_dbms_memory_heap_initial__size: 512m
+  NEO4J_dbms_memory_heap_max__size: ${NEO4J_HEAP_MAX:-8g}
+  NEO4J_dbms_memory_pagecache_size: ${NEO4J_PAGECACHE_SIZE:-48g}
 
 services:
   neo4j:
@@ -22,9 +33,7 @@ services:
     environment:
       NEO4J_AUTH: none #neo4j/${NEO4J_PASSWORD:-changeme}
       NEO4J_PLUGINS: '["apoc"]'
-      NEO4J_dbms_memory_heap_initial__size: 512m
-      NEO4J_dbms_memory_heap_max__size: 2g
-      NEO4J_dbms_memory_pagecache_size: 512m
+      <<: *neo4j-mem
     ports:
       - "7474:7474"
       - "7687:7687"
@@ -40,19 +49,34 @@ services:
       - "27017:27017"
     volumes:
       - /Volumes/Samsung SSD 990 PRO 4TB/NK-MongoDB:/data/db
+    # Cap WiredTiger's file cache (CHANGELOG 2026-08-23): during Stage 2 Mongo is
+    # idle, yet its cache idles at ~21 GiB inside the shared Docker VM, competing
+    # with Neo4j's page cache. Bounded while keeping ingest snappy.
+    command: mongod --wiredTigerCacheSizeGB ${MONGO_CACHE_GB:-8}
 
   redis:
     image: redis:latest
     container_name: graph_nk_redis
     restart: unless-stopped
-    # maxmemory: tune to your machine / repo size. The pipeline now trims streams
-    #   as they are consumed (see broker.read_all trim=), so memory is reclaimed
-    #   during the run; this ceiling only needs to hold the in-flight backlog.
-    # noeviction: never silently drop queued work — fail loudly instead. If you
-    #   hit OOM, raise REDIS_MAXMEMORY or process the repo in smaller chunks.
+    # Persistence is deliberately DISABLED (--save ""): Redis is a transient
+    # queue here — Mongo is the durable source of truth and re-ingestion is
+    # idempotent. RDB snapshots (--save 60 1) fork under heavy XADD load and
+    # copy-on-write transiently doubles RSS, which triggered the OOM-kill of
+    # redis-server on the 2026-08-14 large ingest. See CHANGELOG 2026-08-14.
+    # maxmemory: holds the in-flight backlog (stream_raw pointer events only;
+    #   the derived streams are drained+trimmed concurrently, see CHANGELOG).
+    #   It is set BELOW the container mem_limit so allocator fragmentation /
+    #   client buffers cannot push RSS past the limit before Redis's own
+    #   noeviction failure path triggers (mem_limit covers RSS; maxmemory is
+    #   the managed ceiling).
+    # mem_limit: if Redis ever overgrows, Docker kills just Redis, not the VM
+    #   that Neo4j/Mongo share.
+    # noeviction: never silently drop queued work — fail loudly instead.
+    # Added a bit more MAXMEMORY (10 -> 12).
+    mem_limit: ${REDIS_MEM_LIMIT:-16g}
     command: >
-      redis-server --save 60 1
-      --maxmemory ${REDIS_MAXMEMORY:-6gb}
+      redis-server --save ""
+      --maxmemory ${REDIS_MAXMEMORY:-12gb}
       --maxmemory-policy noeviction
     ports:
       - "6379:6379"

@@ -6,6 +6,8 @@ __pycache__/
 # Don't uplaod the classification models (large)
 models/
 learn/
+ocean_dataset/
+dataset_papers/
 
 # C extensions
 *.so
@@ -81,6 +83,8 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+# Generated figures/table exports from notebooks/eda_curated_datasets.ipynb (FSE Data Source section)
+notebooks/figs/
 
 # IPython
 profile_default/
@@ -209,3 +213,5 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+ocean_dataset/
+notebooks/rq3b_om_P1_unit_flags.csv

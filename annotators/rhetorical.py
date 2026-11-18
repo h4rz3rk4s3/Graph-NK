@@ -9,7 +9,7 @@ a RhetoricalFigure node. The projector handles the node MERGE.
 
 Known double-counting with LexiconAnnotator (e.g. 'blind spot' matches both
 lex.blind_spot and rhetor.metaphor.visibility.blind_spot) is INTENTIONAL —
-the two Signals carry different categorical meanings. See AGENTS.md §3.3.
+the two Signals carry different categorical meanings. See AGENTS.md §5.3.
 (v0.2, MARKER_REVIEW C-5: the SAME-function 'kind of'/'sort of' duplicate
 between this layer and morpho_syntactic hedging WAS redundant, unlike the
 blind-spot case, and is removed from rhetorical_v0.2.yml — hedging is now

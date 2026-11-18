@@ -1,72 +1,200 @@
 unit,text,conf,is_genuine_nk,error_type,notes
-commit:6c4ed0f492435b33f97da3e133c4fd3f2f5a2f7f:commit_message,"(maint) Remove EOL cows from foss build_defaults.yaml
+issue:python/cpython:148732:comment_body:3,"This is fixed on main, and I believe a duplicate of #135552.",0.81640625,,,
+issue:python/cpython:142525:comment_body:4,"Then it indeed is a duplicate, thanks for checking Skip!",0.59765625,,,
+email:urn:uuid:3339563b-2b57-4076-8afc-6206014ea825:paragraph:1,"Cool!  I was thinking about such a thing with the ""while 1:"" thread.",0.83203125,,,
+email:urn:uuid:146f35fe-a807-460e-acf5-3146ea836ba5:subject,Re: Erlang (was Re: Good introduction to functional programming with Python?),0.81640625,,,
+pr:python/cpython:4910:comment_body:8,Any new inputs to this?,0.98046875,,,
+pr:python/cpython:119781:comment_body:4,"Thanks. Pretty sure it was simply an oversight, though I haven't delved into the git history.",0.9921875,,,
+email:urn:uuid:8620ba49-f545-42a3-8878-c3f863734772:subject,Re: PME via interrupt or SCI mechanism?,0.98828125,,,
+issue:python/cpython:84246:comment_body:11,I'm working on it. I will make a PR today.,0.84765625,,,
+issue:python/cpython:95818:comment_body:27,does this make a difference by any chance?,0.99609375,,,
+pr:python/cpython:129941:comment_body:2,"As long as we call this on a valid database pointer (checked via ), we can assert we won't fail here.",0.98046875,,,
+email:urn:uuid:ba9085e5-458c-4958-890b-9f42f25bea8f:subject,Re: PEP 249 (database api) -- executemany() with iterable?,0.90625,,,
+email:urn:uuid:6255464d-cf8f-4258-957c-247cb22100cb:paragraph:1,"Can you fold this into the previous patch that kills fiopt to
+this function?",0.99609375,,,
+commit:ce1519d250ca457e60a91943d7686e2b85764170:commit_message,"test_asyncore: wait explicitly for a thread termination (this dangling thread
+could be the cause of a random failure).",0.64453125,,,
+email:urn:uuid:cb9024a1-82b2-40c8-9f91-2001a3a802b6:subject,Re: Moving towards QGIS3?,0.95703125,,,
+email:urn:uuid:ab59a82d-2281-4119-af38-83a78993d953:subject,Re: Qgis-server recompute always the layer bbox ?,0.890625,,,
+email:urn:uuid:71a8a742-1e6d-4080-a5ad-cf2410b9ac9b:paragraph:2,"even by those of us who are reputed not to be able to use (human) 
+languages well. (This last observation courtesy of my wife.)",0.6484375,,,
+email:urn:uuid:e4d07434-8973-4371-a669-3447c2bbc3d0:subject,"Re: UMN Mapserver & PostgreSQL-PostGIS - Fails to draw
+	layers",0.91015625,,,
+issue:python/cpython:137623:comment_body:8,Is there anything more left to do here?,0.99609375,,,
+pr:python/cpython:133148:comment_body:6,"Yes. (#134030, but wait till buildbot results come in & I take a look at them)",0.609375,,,
+issue:python/cpython:77090:comment_body:5,"There's nothing we can do to suppress these warnings that wouldn't cause problems on other scenarios (e.g. setting `` breaks GUI libraries that do want to store state). 
 
-Ubuntu raring and quantal are both EOL, so let's not build anymore
-packages for them.",0.9765625,,,
-commit:5e40b6530f1c0c3190847e18c49159227466fbf9:commit_message,"(maint) Fix make-template-map test
+I'm therefore closing this issue.",0.95703125,,,
+email:urn:uuid:f2a8a6b5-21fa-40b2-8a58-e45bf4b90c38:paragraph:4,"I'm still scratching my head over this one.
+As a test I created a table 'test' in postgis:
+id: pkey type oid
+naam: type text",0.98046875,,,
+email:urn:uuid:bdd103eb-bc25-437c-945e-6df9d08149ba:paragraph:2,I'm seeing this avc denial show up:,0.94140625,,,
+email:urn:uuid:72d68a0c-527b-4f35-b7e6-367732d413ab:paragraph:1,"It could just become ""__"" something that would match on an ident and
+keep the spacing the same.",0.8203125,,,
+email:urn:uuid:b4fd6bb0-0004-4cba-90ff-6cfa6ff47b4b:paragraph:1,"For interest, are you building with Qt build from source or from the
+Qt dmg they introduced this release?",0.9453125,,,
+email:urn:uuid:946d8c43-3e99-4ae0-81b8-7532eccf3e57:paragraph:2,"Just don't go ""Keyser Söze"" once you're done with your major
+at University. You would need to test/review patches in future.
 
-The test was passing the wrong number of arguments for the current
-definition, and it was also expecting an exception that is no longer
-thrown (cf. 2a876d064c1acfc1ae08a8668a4fc262bb2fad7d).
+Not a big deal though..",0.88671875,,,
+pr:python/cpython:145560:comment_body:36,"Yeah I screwed something up badly, my bad!",0.79296875,,,
+email:urn:uuid:8927a135-a9a3-43c3-8129-75aa3eaa0f55:paragraph:1,"I'll hold onto it until we've settled on something.  Worst case,
+Andrea's original is easily backportable.",0.9921875,,,
+email:urn:uuid:81e247c0-5cad-4ddc-81fa-e4e10a322a06:subject,Re: Silly function call lookup stuff?,0.97265625,,,
+pr:python/cpython:143549:comment_body:15,isn't test_cells already next to test_free?,0.9921875,,,
+email:urn:uuid:e79ad7f5-87ff-467b-bd5f-5841bbd2e421:paragraph:1,"I agree with Mark, this will need a better description.",0.984375,,,
+email:urn:uuid:dccd5d22-df0d-4b4c-ba50-67d95ff02f2f:paragraph:1,"This is irrelevant. That some context defines a constant, and that you
+can use a variable with the same name as a constant in python, doesn't
+contradict the statement that python (as a language) doesn't has
+constants. There is nothing in the language that would prevent buggy
+code from changing any of those variables. So from a python point of
+views these are just global variables. Just as the stru",0.55859375,,,
+email:urn:uuid:4f42a9aa-db6d-4001-9136-cf9d25c93e4c:paragraph:2,"Then it makes sense to have those +towgs84 parameters as the default,",0.7421875,,,
+email:urn:uuid:71b14ffa-2cd5-4feb-8130-141421b0f6df:subject,Re: anything like C++ references?,0.984375,,,
+pr:python/cpython:128845:comment_body:27,"I encountered a couple blockers for aarch64, a failed assertion in the instrumented binary
 
-Update the arguments and rework the test to just verify the result for
-a trivial project.",0.97265625,,,
-pr:OpenVoxProject/ezbake:37:comment_body:10,are you interested in sending the patch to https://github.com/OpenVoxProject/trapperkeeper ? :),0.9765625,,,
-pr:OpenVoxProject/ezbake:2:comment_body:6,"Edit: Ah you are setting it properly below, nevermind.",0.5390625,,,
-pr:OpenVoxProject/ezbake:2:comment_body:9,"I'm not sure it is.  On debian 12 with openjdk 17, it's , for example.",0.9921875,,,
-pr:OpenVoxProject/ezbake:37:comment_body:13,I was hoping we can use the unit file from the debian maintainers (https://github.com/OpenVoxProject/ezbake/pull/37#issuecomment-3152891788) as an intermediate solution because that's quicker to implement and test. As a long term solution I would also prefer the trapperkeeper update.,0.99609375,,,
-commit:a8e49cc2ea34ab3f1652101d45e2fb358fd78f4a:commit_message,"(maint) Remove EOL platforms from cow lists
 
-We still had yakkety and precise in platform lists, but those are EOL so
-let's get rid of those.",0.890625,,,
-pr:OpenVoxProject/ezbake:27:comment_body:14,Is it then an idea to just blanket replace all instances in all files?,0.99609375,,,
-pr:OpenVoxProject/ezbake:10:comment_body:5,could you please rebase it?,0.99609375,,,
-pr:OpenVoxProject/ezbake:27:comment_body:13,"this was more of a 'just in case we want to set explicit paths for debian in the future as well' :D But yes, right now it doesn't make much sense",0.8515625,,,
-pr:OpenVoxProject/ezbake:82:comment_body:3,"Closing, as it is not necessary.
 
--edit- Turns out it **is necessary**. Need  to recreate the fix.",0.7109375,,,
-pr:OpenVoxProject/ezbake:73:comment_body:2,":sad-face:
-matrix isn't available for ids?",0.984375,,,
-commit:019cfa43a984780b94983478d3e7c396bb892dd7:commit_message,"(maint) Make default cow precise
+and (after hacking past that) a segfault in BOLT
 
-We don't want to build packages for stable, so we need to ensure the
-default cow is not set to stable. This commit updates the default cow to
-be trusty",0.984375,,,
-pr:OpenVoxProject/ezbake:27:comment_body:16,I was too scared to do this in all files because I want to avoid side effects,0.69140625,,,
-pr:OpenVoxProject/ezbake:39:comment_body:2,do we still need this?,0.99609375,,,
-commit:0c46f07ec2646508ae4633ee0683698cb3752b2b:commit_message,"Add -U to 
 
-Without this, we don't always check for updated SNAPSHOTs.",0.66796875,,,
-issue:OpenVoxProject/ezbake:13:comment_body:2,are you interested in providing a PR for this?,0.99609375,,,
-commit:569ce5c0e783b363f5e1a37e825a0a1f6eef2a67:commit_message,(maint) missing 'then',0.6796875,,,
-commit:5c916a9e2321e74f551fb30c5c20c10071f2b241:commit_message,"No, we are not going to do suggests.",0.91796875,,,
-commit:30f2a618d1491e1c06aaa1cf0f05ad8304454743:commit_message,"Merge pull request #452 from underscorgan/maint/master/woops
 
-(maint) We accidentally released 1.7.0 as 1.6.4.  Let's fix this up good.",0.703125,,,
-pr:OpenVoxProject/ezbake:14:comment_body:2,Question is: can we merge this into the existing 8.x releases or is this more something for 9.x?,0.99609375,,,
-pr:OpenVoxProject/ezbake:16:comment_body:7,"there are a few rake tasks we don't use, I want to remove them in another PR",0.90625,,,
-commit:01048626a0d615a18c9936a128a1cb46b53e6036:commit_message,"Revert ""(maint) Add build_tar: FALSE to foss build_defaults""
+I dropped aarch64 in https://github.com/python/cpython/pull/128845/commits/684ece4831d2ae6462a9b030f7d8b198c1214280 — we can add it later.",0.984375,,,
+issue:python/cpython:59586:comment_body:18,I don't see any differences.,0.98046875,,,
+email:urn:uuid:e7a27907-d4f8-4390-8f57-178861a36e2b:paragraph:2,"- please review all global symbols, check that they really do need to be
+  global, and that they have suitable names (ie: not like ""debug"")",0.94140625,,,
+email:urn:uuid:caee6b9a-cc32-4c36-ae7f-b6a68646400d:paragraph:1,"Is there any way to put it back, short of a full system reinstall?",0.99609375,,,
+email:urn:uuid:aa5259ce-797f-41ef-81b3-e6fe83a30928:paragraph:2,"However, this is very confusing for users since no probe hits are
+recorded nor is an error logged in dmesg.
 
-This reverts commit 8724f1b55b896bd41b541163d518adea5abee22e.
-We were fixing a symptom of a problem, rather than the problem itself (see
-RE-10238).",0.8359375,,,
-pr:OpenVoxProject/ezbake:2:comment_body:5,Do we still need EL7 specific code?,0.99609375,,,
-pr:OpenVoxProject/ezbake:16:comment_body:5,"ah lol, yes, I will clean it up and merge afterwards",0.5703125,,,
-pr:OpenVoxProject/ezbake:11:comment_body:7,Is a time mandatory? Can we just leave it out?,0.99609375,,,
-pr:OpenVoxProject/ezbake:2:comment_body:3,could you please rebase this PR?,0.9921875,,,
-commit:2818c90fe73dd87922c86605a980980b7516ca91:commit_message,"properly revert needsrestart blocklist
+Fix this by logging an error in dmesg so that users can discover that
+there was an issue with the uprobe.
 
-we reverted needsrestart in 0702730ef17906d64ba9d368686c0b2e4c56b86e,
-but that wasn't complete.",0.98046875,,,
-pr:OpenVoxProject/ezbake:2:comment_body:15,could you please rebase this PR?,0.9921875,,,
-pr:OpenVoxProject/ezbake:15:comment_body:2,Is this comment really adding something?,0.99609375,,,
-pr:OpenVoxProject/ezbake:6:comment_body:2,Do we even build for EL6 or can we also simplify this?,0.99609375,,,
-commit:e7c86d2710e9832f83612f48a8719997a4e91e07:commit_message,"Revert ""(SERVER-29) exclude BouncyCastle jars from uberjar""
+With this patch, we see a message similar to this in dmesg:
+    [  201.449213] uprobe: uprobe_t:9740 failed to setup probe at 0x95c (-524)",0.70703125,,,
+email:urn:uuid:f86bdd6d-8bb0-48a2-8d30-b5137f9bd463:subject,Re: WMS bug?,0.9296875,,,
+email:urn:uuid:8209a967-53f7-4912-a7e4-9dfd6b31826d:paragraph:2,"You mean in Python? (or C++)
+Could you give me a pointer to one of those modules?",0.9921875,,,
+pr:python/cpython:110547:comment_body:3,Good luck! It is not easy because some changes in C API tests structure (#93649)  were not backported to 3.11. Now there is a great barrier between 3.12 and 3.11.,0.94140625,,,
+email:urn:uuid:48933243-f4ee-4bea-b5dd-aaa120798ec7:subject,Re: WCS save as does not stop?,0.9921875,,,
+email:urn:uuid:345a6fe3-612e-4a82-8b56-bf21b2cfb933:subject,Re: Re: Ready for feature freeze?,0.71484375,,,
+email:urn:uuid:3df999bb-8f58-4e57-9a32-9ad1fd6ffa0a:subject,Re: job scheduling framework?,0.8515625,,,
+email:urn:uuid:dbad04eb-90fc-4902-8b62-faed413fcf80:paragraph:1,"Thank you for the patch! Yet something to improve:
 
-This reverts commit b1476ed3ba9624d58c5b1e18dd3ea1dcabf212ed.
+[auto build test ERROR on bluetooth/master]",0.51171875,,,
+pr:python/cpython:108107:comment_body:7,"Definitely; content changes are out of scope for this PR.
 
-This change needs to be put on hold until we have ezbake working
-as a lein plugin; see SERVER-29 and PE-7256.",0.83984375,,,
-pr:OpenVoxProject/ezbake:2:comment_body:10,"Oh, but that's jdk, not jre.  Lemme try that.",0.96484375,,,
-pr:OpenVoxProject/ezbake:2:comment_body:8,Is this (and the 17) path a stable path for all distributions of Java?,0.99609375,,,
-pr:OpenVoxProject/ezbake:65:body,"we reverted needsrestart in 0702730ef17906d64ba9d368686c0b2e4c56b86e, but that wasn't complete.",0.9375,,,
+I'll add your Sphinx suggestions before landing.
+
+Thanks for chiming in, y'all.",0.8828125,,,
+pr:python/cpython:108370:comment_body:31,: You reviewed my PR just after I launched a second buildbot job batch. I will until this one complete before addressing your latest review.,0.96484375,,,
+email:urn:uuid:51b51279-9b83-4572-980c-bb967c3fd3d0:subject,Re: PHP's str_replace ?,0.63671875,,,
+email:urn:uuid:65a3e641-a8e4-4599-80bd-23c662caf829:subject,Re: POD vs. reST for standalone writing?,0.9765625,,,
+issue:python/cpython:130902:comment_body:4,I'll write tests then open a pr,0.9296875,,,
+email:urn:uuid:a14f105f-811f-4777-9016-601bdc8a116b:subject,Re: best language for 3D manipulation over web ?,0.515625,,,
+pr:python/cpython:124907:comment_body:10,"Would you mind to use designated initializer, ex: ?",0.95703125,,,
+email:urn:uuid:679174da-690a-4275-bcc9-24ff7a580152:subject,"Re: Kconfig doesn't support select on choices (was Re: [GIT PULL]
+ nohz: Adaptively stop the tick, finally)",0.88671875,,,
+email:urn:uuid:4e3a43a9-5d19-4527-9adc-341e729f2ddf:subject,"Re: Is it just me, or is sip totally broken?",0.99609375,,,
+email:urn:uuid:5c4a602a-79c4-4504-991d-dd0801ade042:subject,Re: Last iteration?,0.9375,,,
+email:urn:uuid:cf02a234-8842-457e-aa51-2fd6cef44fa5:paragraph:2,Are you sure you actually managed to update that?,0.99609375,,,
+pr:python/cpython:152309:comment_body:11,"Sure, I completely forgot that file.  Done, with other requested changes.",0.8671875,,,
+email:urn:uuid:25170af3-9eb3-49e1-bd17-12e546d301cf:paragraph:1,"Oh sorry, that was Polynomial 1, using only four GCPs.  I'd have used Polynomial 2 but it was hard to find matching points.",0.99609375,,,
+pr:python/cpython:122161:comment_body:6,Could you rewrite the test to use this ast rather than construct the intermediate structure?,0.98828125,,,
+pr:python/cpython:129850:comment_body:8,"I tried to keep the introductory paragraph simple, leaving details for later (you need to define the struct differently, and you need to use ).
+
+So, it's not clear at *this* point, but I'm building up to it in the next paragraph and the one with .
+
+The end result is that you still need to read this more than once... but I hope it's less times than before.",0.69140625,,,
+issue:python/cpython:99316:title,A 'Bug'?,0.98046875,,,
+pr:python/cpython:8920:comment_body:4,"Hmm, the problem is this will break code such as:",0.73828125,,,
+email:urn:uuid:4e37cf62-4ea9-432f-864c-648de09a991a:subject,Re: Best GUI for small-scale accounting app?,0.703125,,,
+issue:python/cpython:68264:comment_body:18,"The actual accumulation of a long int result is still as fast as it ever was.
+
+The main difference from Py2.7 isn't the addition, it is that detecting and extracting a small int added has become expensive.  
+
+
+-- Python 2 fastpath \--------------------------------------
+
+
+
+
+-- Python 3 fastpath \--------------------------------------
+
+
+
+
+-- Supporting function \-----------------------",0.57421875,,,
+pr:python/cpython:122104:comment_body:3,"- 3.8 to 3.11 only accept security fixes
+- We can backport to 3.12 and 3.13.",0.58984375,,,
+email:urn:uuid:3298d8bf-824e-4de2-9813-2358fdd99eb3:paragraph:1,"Not a lot of info on the site BUT it is cool that they are now talking about
+Python AND have given us a glimpse of their vision.",0.77734375,,,
+email:urn:uuid:47c056e1-0ef4-4b8c-9675-cf86f1454e7b:subject,Safe to use asynchat?,0.96484375,,,
+email:urn:uuid:cc507519-8597-42a4-8c69-b52e51939365:paragraph:4,"Please ...
+
+Don't bother to offer me a git tree, I'm going to apply that manually
+anyway.",0.96484375,,,
+issue:python/cpython:145098:comment_body:10,"Oh, no, I mixed up the backports, https://github.com/python/cpython/pull/149991 still needs backporting.",0.94140625,,,
+pr:python/cpython:144852:comment_body:3,"Hold on, this flow is more complicated than I thought...",0.94140625,,,
+issue:python/cpython:87324:comment_body:12,"~~Looking at the command line, it doesn't even try to add the include directory for  to work. I feel like something got dropped somewhere…~~ Sorry, got the wrong command line due to the parallel build. It *does* have the include directory for  to work.",0.98828125,,,
+email:urn:uuid:95b1bdef-db1e-4c15-90e9-f78e128f3be3:paragraph:12,Potential for future optimizations on small immediate?,0.85546875,,,
+pr:python/cpython:149710:comment_body:10,"I had definitely forgotten the conflicting backport, thanks for reminding me. Opened #153763.",0.88671875,,,
+email:urn:uuid:c1cf9daf-2863-436c-a778-62bd824c9241:paragraph:1,now that's nice new variation (for me)!,0.50390625,,,
+pr:python/cpython:102445:comment_body:3,"Sorry, , I could not cleanly backport this to  due to a conflict. 
+                                Please backport using [cherry_picker](https://pypi.org/project/cherry-picker/) on command line.",0.875,,,
+email:urn:uuid:7d56bc6a-e758-4965-926a-3218bef5cf0c:paragraph:1,"I'am searching for a python solution for display a tachometer diagram.
+I prefer a solution for wxPython.
+The plot libraries I've found do not implement this diagram type.
+Any hints welcome!",0.9140625,,,
+email:urn:uuid:6dafd386-e0df-4c08-b1f9-b913f917e533:paragraph:1,"BTRFS and guard_bio_eod() need to get the last page from one segment, so
+introduce this helper to make them happy.",0.7265625,,,
+email:urn:uuid:caa4572b-ecc4-4f71-b5b7-8e4a0cae0584:paragraph:2,"yes. but need that to keep switch from early_res/nobootmem to lmb/nobootmem smooth.
+
+will clean it after early_res is replaced.",0.9921875,,,
+email:urn:uuid:46c4202b-934e-4ecb-951f-fbad89cc9bc4:subject,Re: Is it advisable to replace 'self' with '_' or 'I' or something shorter?,0.99609375,,,
+email:urn:uuid:22878c11-cb93-456d-80d1-2c629f489d30:paragraph:1,"Do you have an example for this behavior? I would call that a BUG in the
+implementation of the clockevent device, no?",0.99609375,,,
+email:urn:uuid:100964cb-3d06-45a5-85c5-147b841653a4:paragraph:1,"Is there any reason I couldn't build qgis with all the goodies including 
+postgis and grass on an intel mac?",0.99609375,,,
+issue:python/cpython:153176:comment_body:5,"I can make one PR for sure :), and thanks for your suggestion.",0.58984375,,,
+pr:python/cpython:112823:comment_body:4,One open question is the documentation: The [termios documentation](https://docs.python.org/3/library/termios.html) does not list constants and therefore there is IMHO no good place to add a version-changed for this PR.,0.98828125,,,
+pr:python/cpython:97013:comment_body:3,"Would you like to merge this PR?
+also for https://github.com/python/cpython/pull/97012",0.96484375,,,
+email:urn:uuid:03ebafc4-c557-4de2-8575-b7b8909ef141:paragraph:1,"I hope I am not wrong but I did not find them, so here they are:
+http://trac.osgeo.org/qgis/ticket/1887
+http://trac.osgeo.org/qgis/ticket/1888",0.921875,,,
+email:urn:uuid:58e46b1c-f03d-4cd8-bc5c-f95f074acd7d:paragraph:1,"In MapInfo - at the top of Layercontrol there is a possibillity to set a link, so the map can be interactive.
+In my case I would like to make the qgis map interactive to external links - and then upload to QGISCloud.",0.984375,,,
+pr:python/cpython:118395:comment_body:7,"While it's appealing to make the test stricter, CLOCK_RES is used to compare time.monotonic() values (resolution better than 1 us), but also to compare Windows ""wait"" functions (resolution of 15.6 ms). I prefer to abandon this PR. I don't want to have multiple CLOCK_RES depending on the function and/or the operating system. Let's keep the status quo of 50-100 ms tolerance.",0.99609375,,,
+email:urn:uuid:5d8fb811-f65b-4a40-b674-25b8a3e49705:paragraph:1,"Oh.. I actually made a script for mutt and I didn't notice it.
+I will remove these lines and resend it.",0.99609375,,,
+email:urn:uuid:1c9ec56b-16b6-48f7-8bdc-c9fe79ec1e09:paragraph:1,The mask feature is also needed in the main Map Canvas.  It would be better to implement a full Mask feature .,0.98828125,,,
+email:urn:uuid:7c4bd208-6fdc-49e7-a8c7-15da2ea334d4:subject,Re: Python 3K or Python 2.9?,0.91796875,,,
+issue:python/cpython:60650:comment_body:8,"Would be nice to have this commited as without this change
+
+
+
+
+it's not possible to quit Bdb (and the code it's executing) as it just returns and doesn't raise BdbQuit.",0.99609375,,,
+email:urn:uuid:14419769-f0d7-48a5-b52f-646027f56aae:paragraph:2,for whatever linear snapping tolerance I want to set?,0.99609375,,,
+email:urn:uuid:1daa79d4-f34b-4970-9f15-be91a4e11f1a:paragraph:2,"Yes, like you mentioned, we met problems at DesignWare USB3 controller
+host glue, do you have any better solutions to solve this problem?",0.9921875,,,
+pr:python/cpython:27923:comment_body:5,Can you add the unit tests for this case?,0.9609375,,,
+issue:python/cpython:128777:comment_body:4,"I agree with Eli here. This would be a breaking change, and would either need:
+1. The supported platforms (PEP 11) to update.
+OR
+2. A PEP.
+
+Anyways, I don't think this matters, because distributions choose to package/support their own CPython.
+
+Thus, I'm closing this issue.",0.9921875,,,
+email:urn:uuid:c3b575a3-5140-428a-8dda-3142ecddbcd5:paragraph:9,"Oh.
+
+It would be a lot more reassuring to verify buf' here.
+
+The patch adds new trailing whitespace.  checkpatch helps.",0.5546875,,,
+email:urn:uuid:fd6d48e7-e145-432c-a27f-192e1ecb1eca:subject,Re: thermal governor: does it actually work??,0.9921875,,,
+email:urn:uuid:b4fad743-9cc7-48b8-a5e5-042e2e86080a:subject,Re: iostream-like lib?,0.90625,,,
+email:urn:uuid:2a5e3d57-2e6e-40e8-93fc-847a06a390da:paragraph:1,Great work. a bit comments.,0.78125,,,
+issue:python/cpython:60389:comment_body:3,Slipped under the radar?,0.9921875,,,

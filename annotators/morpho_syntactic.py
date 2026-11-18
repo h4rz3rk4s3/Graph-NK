@@ -19,8 +19,11 @@ an optional `type` field:
                                             in the stated grammatical relation
                                             (e.g. negation attached to a
                                             cognition verb with a 1st-person
-                                            subject). This is the review's
-                                            fix for the cue≠scope problem.
+                                            subject). This is the review's fix
+                                            for the cue-vs-scope problem. A rule
+                                            may supply `patterns:` (a list of
+                                            node lists) when one cue has several
+                                            grammatical realisations.
 This is backward-compatible by construction: a pattern file with no `type`
 fields (v0.1) is loaded entirely by the Matcher path.
 
@@ -46,6 +49,7 @@ Literature:
   Tense        → Janich 2020
   Syntactic/Q  → Bongelli et al. 2018; San Roque et al. 2015
 """
+
 from __future__ import annotations
 
 import logging
@@ -72,6 +76,7 @@ class SpacyMorphoAnnotator:
     Loads Matcher + DependencyMatcher patterns from YAML and emits one Signal
     per match. Implements the Annotator protocol.
     """
+
     name = "SpacyMorphoAnnotator"
 
     def __init__(self, nlp, pattern_path: Path | None = None) -> None:
@@ -82,9 +87,11 @@ class SpacyMorphoAnnotator:
         self._dep_matcher, self._dep_meta = self._build_dependency_matcher()
         self.version = self._pattern_data["version"]
         logger.info(
-            "SpacyMorphoAnnotator loaded %d Matcher + %d DependencyMatcher "
-            "patterns from %s (v%s)",
-            len(self._meta), len(self._dep_meta), pattern_path.name, self.version,
+            "SpacyMorphoAnnotator loaded %d Matcher + %d DependencyMatcher patterns from %s (v%s)",
+            len(self._meta),
+            len(self._dep_meta),
+            pattern_path.name,
+            self.version,
         )
 
     def annotate(self, unit: TextUnit, doc) -> list[Signal]:
@@ -97,31 +104,8 @@ class SpacyMorphoAnnotator:
         for match_id, start, end in self._matcher(doc):
             meta = self._meta[match_id]
             span = doc[start:end]
-            signals.append(Signal(
-                text_unit_id=unit.text_unit_id,
-                layer="morpho_syntactic",
-                category=meta["category"],
-                subcategory=meta.get("subcategory"),
-                surface_form=span.text,
-                span_start=span.start_char,
-                span_end=span.end_char,
-                rule_id=meta["id"],
-                rule_version=self.version,
-                weight=meta.get("weight"),
-                status=meta.get("status", "active"),
-                payload={"note": meta.get("note", "")},
-            ))
-
-        # --- DependencyMatcher patterns (scoped — v0.2, MARKER_REVIEW §4) ---
-        if self._dep_matcher is not None and len(self._dep_meta):
-            for match_id, token_ids in self._dep_matcher(doc):
-                meta = self._dep_meta[match_id]
-                # Span = the bounding range over every matched node, so the
-                # surface_form captures the whole scoped construction (e.g.
-                # subject + negation + verb), not just one token.
-                lo, hi = min(token_ids), max(token_ids)
-                span = doc[lo : hi + 1]
-                signals.append(Signal(
+            signals.append(
+                Signal(
                     text_unit_id=unit.text_unit_id,
                     layer="morpho_syntactic",
                     category=meta["category"],
@@ -133,8 +117,35 @@ class SpacyMorphoAnnotator:
                     rule_version=self.version,
                     weight=meta.get("weight"),
                     status=meta.get("status", "active"),
-                    payload={"note": meta.get("note", ""), "matcher": "dependency"},
-                ))
+                    payload={"note": meta.get("note", "")},
+                )
+            )
+
+        # --- DependencyMatcher patterns (scoped — v0.2, MARKER_REVIEW §4) ---
+        if self._dep_matcher is not None and len(self._dep_meta):
+            for match_id, token_ids in self._dep_matcher(doc):
+                meta = self._dep_meta[match_id]
+                # Span = the bounding range over every matched node, so the
+                # surface_form captures the whole scoped construction (e.g.
+                # subject + negation + verb), not just one token.
+                lo, hi = min(token_ids), max(token_ids)
+                span = doc[lo : hi + 1]
+                signals.append(
+                    Signal(
+                        text_unit_id=unit.text_unit_id,
+                        layer="morpho_syntactic",
+                        category=meta["category"],
+                        subcategory=meta.get("subcategory"),
+                        surface_form=span.text,
+                        span_start=span.start_char,
+                        span_end=span.end_char,
+                        rule_id=meta["id"],
+                        rule_version=self.version,
+                        weight=meta.get("weight"),
+                        status=meta.get("status", "active"),
+                        payload={"note": meta.get("note", ""), "matcher": "dependency"},
+                    )
+                )
 
         # --- Question-answer syntactic pattern (not expressible in one Matcher rule) ---
         signals.extend(self._detect_question_answer(unit, doc))
@@ -181,7 +192,11 @@ class SpacyMorphoAnnotator:
         rule should not take down the whole layer (same philosophy as the
         Matcher path above).
         """
-        dep_patterns = [p for p in self._pattern_data.get("patterns", []) if p.get("type") == "DependencyMatcher"]
+        dep_patterns = [
+            p
+            for p in self._pattern_data.get("patterns", [])
+            if p.get("type") == "DependencyMatcher"
+        ]
         if not dep_patterns:
             return None, {}
 
@@ -189,10 +204,15 @@ class SpacyMorphoAnnotator:
         meta: dict[int, dict] = {}
         for p in dep_patterns:
             pattern_id = p["id"]
+            # `patterns` (plural) allows one cue with several grammatical
+            # realisations; `pattern` (singular) is the common one-pattern case.
+            raw_patterns = p.get("patterns") or [p["pattern"]]
             try:
-                matcher.add(pattern_id, [p["pattern"]])
+                matcher.add(pattern_id, raw_patterns)
             except Exception as exc:
-                logger.error("Skipping malformed DependencyMatcher pattern '%s': %s", pattern_id, exc)
+                logger.error(
+                    "Skipping malformed DependencyMatcher pattern '%s': %s", pattern_id, exc
+                )
                 continue
             meta[self._nlp.vocab.strings[pattern_id]] = p
 
@@ -207,22 +227,24 @@ class SpacyMorphoAnnotator:
         Emits at most one Signal per TextUnit (unit-level, not token-level).
         """
         sents = list(doc.sents)
-        has_question    = any("?" in s.text for s in sents)
+        has_question = any("?" in s.text for s in sents)
         has_declarative = any("?" not in s.text and s.text.strip() for s in sents)
 
         if has_question and has_declarative:
-            return [Signal(
-                text_unit_id=unit.text_unit_id,
-                layer="morpho_syntactic",
-                category="syntactic_pattern",
-                subcategory="question_answer",
-                surface_form="",          # unit-level signal, no single span
-                span_start=0,
-                span_end=len(unit.text),
-                rule_id="morph.syn.question_answer",
-                rule_version=self.version,
-                weight=0.5,
-                status="active",
-                payload={"source": "Bongelli et al. 2018; Spranz-Fogasy 2014"},
-            )]
+            return [
+                Signal(
+                    text_unit_id=unit.text_unit_id,
+                    layer="morpho_syntactic",
+                    category="syntactic_pattern",
+                    subcategory="question_answer",
+                    surface_form="",  # unit-level signal, no single span
+                    span_start=0,
+                    span_end=len(unit.text),
+                    rule_id="morph.syn.question_answer",
+                    rule_version=self.version,
+                    weight=0.5,
+                    status="active",
+                    payload={"source": "Bongelli et al. 2018; Spranz-Fogasy 2014"},
+                )
+            ]
         return []

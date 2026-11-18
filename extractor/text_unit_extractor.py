@@ -18,6 +18,7 @@ Stripping rules (FRAMEWORK_DESIGN.md §5 Module 2):
   - Preserve typos, casing, punctuation
   - Skip units whose text is empty after stripping
 """
+
 from __future__ import annotations
 
 import dataclasses
@@ -25,18 +26,19 @@ import hashlib
 import logging
 import re
 from dataclasses import dataclass
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 # ── stripping regexes ────────────────────────────────────────────────────────
 
-_RE_FENCED_CODE    = re.compile(r"```[\s\S]*?```", re.MULTILINE)
-_RE_INLINE_CODE    = re.compile(r"`[^`\n]+`")
-_RE_BLOCKQUOTE     = re.compile(r"(?m)^>.*$")
-_RE_IMAGE          = re.compile(r"!\[[^\]]*\]\([^)]*\)")
-_RE_MENTION        = re.compile(r"@\w+")
-_RE_HTML_COMMENT   = re.compile(r"<!--[\s\S]*?-->")
-_RE_MULTI_NEWLINE  = re.compile(r"\n{3,}")
+_RE_FENCED_CODE = re.compile(r"```[\s\S]*?```", re.MULTILINE)
+_RE_INLINE_CODE = re.compile(r"`[^`\n]+`")
+_RE_BLOCKQUOTE = re.compile(r"(?m)^>.*$")
+_RE_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
+_RE_MENTION = re.compile(r"@\w+")
+_RE_HTML_COMMENT = re.compile(r"<!--[\s\S]*?-->")
+_RE_MULTI_NEWLINE = re.compile(r"\n{3,}")
 
 
 @dataclass(slots=True)
@@ -45,19 +47,20 @@ class TextUnit:
     Atomic unit of NK analysis. All annotation targets TextUnits.
     Shape mirrors BUILD_SPEC.md §4.2.
     """
-    text_unit_id: str        # "{parent_id}:{role}" or "{parent_id}:{role}:{position}"
-    parent_id:    str        # e.g. "issue:python/cpython:12345"
-    parent_type:  str        # "issue" | "pull_request" | "commit" | "comment"
-    repo:         str
+
+    text_unit_id: str  # "{parent_id}:{role}" or "{parent_id}:{role}:{position}"
+    parent_id: str  # e.g. "issue:python/cpython:12345"
+    parent_type: str  # "issue" | "pull_request" | "commit" | "comment"
+    repo: str
     parent_number: int | None
-    role:         str        # "title" | "body" | "commit_message" | "comment_body"
-    position:     int        # 0=title, 1=body, 2+=comments in order
-    text:         str        # stripped text
-    lang:         str | None # detected language code
-    token_count:  int        # whitespace-split estimate
-    sha256:       str        # sha256(text) for dedup
+    role: str  # "title" | "body" | "commit_message" | "comment_body"
+    position: int  # 0=title, 1=body, 2+=comments in order
+    text: str  # stripped text
+    lang: str | None  # detected language code
+    token_count: int  # whitespace-split estimate
+    sha256: str  # sha256(text) for dedup
     author_login: str | None
-    created_at:   str | None
+    created_at: str | None
 
 
 def strip_text(raw: str) -> str:
@@ -84,6 +87,7 @@ def _detect_lang(text: str) -> str | None:
     """
     try:
         from fasttext_langdetect import detect  # type: ignore[import]
+
         result = detect(text[:1000], low_memory=True)  # first 1000 chars are enough
         return result.get("lang")
     except Exception:
@@ -139,6 +143,7 @@ def _make_unit(
 
 # ── Public extraction functions ───────────────────────────────────────────────
 
+
 def extract_from_issue(doc: dict, repo: str) -> list[TextUnit]:
     """
     Extract TextUnits from a raw issue document (as stored in MongoDB).
@@ -158,9 +163,15 @@ def extract_from_issue(doc: dict, repo: str) -> list[TextUnit]:
     # Title (position 0)
     if title := doc.get("title"):
         u = _make_unit(
-            parent_id=parent_id, parent_type=parent_type, repo=repo,
-            parent_number=number, role="title", position=0,
-            raw_text=title, author_login=author, created_at=created_at,
+            parent_id=parent_id,
+            parent_type=parent_type,
+            repo=repo,
+            parent_number=number,
+            role="title",
+            position=0,
+            raw_text=title,
+            author_login=author,
+            created_at=created_at,
         )
         if u:
             units.append(u)
@@ -168,9 +179,15 @@ def extract_from_issue(doc: dict, repo: str) -> list[TextUnit]:
     # Body (position 1)
     if body := doc.get("body"):
         u = _make_unit(
-            parent_id=parent_id, parent_type=parent_type, repo=repo,
-            parent_number=number, role="body", position=1,
-            raw_text=body, author_login=author, created_at=created_at,
+            parent_id=parent_id,
+            parent_type=parent_type,
+            repo=repo,
+            parent_number=number,
+            role="body",
+            position=1,
+            raw_text=body,
+            author_login=author,
+            created_at=created_at,
         )
         if u:
             units.append(u)
@@ -178,8 +195,12 @@ def extract_from_issue(doc: dict, repo: str) -> list[TextUnit]:
     # Comments (position 2, 3, ...)
     for i, comment in enumerate(doc.get("comments_data", []), start=2):
         u = _make_unit(
-            parent_id=parent_id, parent_type=parent_type, repo=repo,
-            parent_number=number, role="comment_body", position=i,
+            parent_id=parent_id,
+            parent_type=parent_type,
+            repo=repo,
+            parent_number=number,
+            role="comment_body",
+            position=i,
             raw_text=comment.get("body", ""),
             author_login=_actor(comment.get("user")),
             created_at=comment.get("created_at"),
@@ -205,18 +226,30 @@ def extract_from_pull_request(doc: dict, repo: str) -> list[TextUnit]:
 
     if title := doc.get("title"):
         u = _make_unit(
-            parent_id=parent_id, parent_type="pull_request", repo=repo,
-            parent_number=number, role="title", position=0,
-            raw_text=title, author_login=author, created_at=created_at,
+            parent_id=parent_id,
+            parent_type="pull_request",
+            repo=repo,
+            parent_number=number,
+            role="title",
+            position=0,
+            raw_text=title,
+            author_login=author,
+            created_at=created_at,
         )
         if u:
             units.append(u)
 
     if body := doc.get("body"):
         u = _make_unit(
-            parent_id=parent_id, parent_type="pull_request", repo=repo,
-            parent_number=number, role="body", position=1,
-            raw_text=body, author_login=author, created_at=created_at,
+            parent_id=parent_id,
+            parent_type="pull_request",
+            repo=repo,
+            parent_number=number,
+            role="body",
+            position=1,
+            raw_text=body,
+            author_login=author,
+            created_at=created_at,
         )
         if u:
             units.append(u)
@@ -224,14 +257,17 @@ def extract_from_pull_request(doc: dict, repo: str) -> list[TextUnit]:
     # Code-review comments (comments_data) and issue-level comments (issue_comments_data)
     # are both annotated as "comment_body" — their kind is preserved in the graph at
     # the parent Comment node level, not at the TextUnit level.
-    combined_comments = (
-        list(doc.get("comments_data", []))
-        + list(doc.get("issue_comments_data", []))
+    combined_comments = list(doc.get("comments_data", [])) + list(
+        doc.get("issue_comments_data", [])
     )
     for i, comment in enumerate(combined_comments, start=2):
         u = _make_unit(
-            parent_id=parent_id, parent_type="pull_request", repo=repo,
-            parent_number=number, role="comment_body", position=i,
+            parent_id=parent_id,
+            parent_type="pull_request",
+            repo=repo,
+            parent_number=number,
+            role="comment_body",
+            position=i,
             raw_text=comment.get("body", ""),
             author_login=_actor(comment.get("user")),
             created_at=comment.get("created_at"),
@@ -256,9 +292,15 @@ def extract_from_commit(doc: dict, repo: str) -> list[TextUnit]:
     units: list[TextUnit] = []
 
     u = _make_unit(
-        parent_id=parent_id, parent_type="commit", repo=repo,
-        parent_number=None, role="commit_message", position=0,
-        raw_text=raw_message, author_login=author, created_at=committed_at,
+        parent_id=parent_id,
+        parent_type="commit",
+        repo=repo,
+        parent_number=None,
+        role="commit_message",
+        position=0,
+        raw_text=raw_message,
+        author_login=author,
+        created_at=committed_at,
     )
     if u:
         units.append(u)
@@ -267,6 +309,7 @@ def extract_from_commit(doc: dict, repo: str) -> list[TextUnit]:
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 def _actor(user_obj: dict | None) -> str | None:
     if not user_obj:
@@ -314,9 +357,11 @@ def _resolve_email_offset_convention(text: str, segments: list[dict]) -> tuple[s
     surrogate-pair drift, e.g. from a JVM/JS segmentation runtime).
     """
     spans = [
-        (s.get("begin"), s.get("end")) for s in segments
-        if isinstance(s.get("begin"), int) and isinstance(s.get("end"), int)
-           and s.get("end") > s.get("begin") >= 0
+        (s.get("begin"), s.get("end"))
+        for s in segments
+        if isinstance(s.get("begin"), int)
+        and isinstance(s.get("end"), int)
+        and s.get("end") > s.get("begin") >= 0
     ]
     if not spans:
         return "char", 0, 0
@@ -426,9 +471,15 @@ def extract_from_email(doc: dict, repo: str) -> list[TextUnit]:
     # Subject (position 0)
     if subject := headers.get("subject"):
         u = _make_unit(
-            parent_id=parent_id, parent_type="email", repo=repo,
-            parent_number=None, role="subject", position=0,
-            raw_text=subject, author_login=author, created_at=created_at,
+            parent_id=parent_id,
+            parent_type="email",
+            repo=repo,
+            parent_number=None,
+            role="subject",
+            position=0,
+            raw_text=subject,
+            author_login=author,
+            created_at=created_at,
         )
         if u:
             # Corpus lang is authoritative for the message; subject inherits it.
@@ -450,7 +501,11 @@ def extract_from_email(doc: dict, repo: str) -> list[TextUnit]:
             "email %s: best-fit offset convention '%s' validates %d/%d segments "
             "(the rest are treated as isolated data-quality issues and skipped "
             "individually below). Run scripts/diagnose_email_spans.py if this "
-            "recurs often.", urn, convention, n_valid, n_total,
+            "recurs often.",
+            urn,
+            convention,
+            n_valid,
+            n_total,
         )
     elif convention != "char":
         logger.debug("email %s: segments use %s offsets (converted uniformly)", urn, convention)
@@ -463,16 +518,24 @@ def extract_from_email(doc: dict, repo: str) -> list[TextUnit]:
         resolved = _resolve_final_span(text_plain, raw_begin, raw_end, convention)
         if resolved is None:
             logger.warning(
-                "email %s: segment (%s..%s) invalid even under best-fit "
-                "convention '%s'; skipping.", urn, raw_begin, raw_end, convention,
+                "email %s: segment (%s..%s) invalid even under best-fit convention '%s'; skipping.",
+                urn,
+                raw_begin,
+                raw_end,
+                convention,
             )
             continue
         begin, end = resolved
         u = _make_unit(
-            parent_id=parent_id, parent_type="email", repo=repo,
-            parent_number=None, role=label, position=pos,
+            parent_id=parent_id,
+            parent_type="email",
+            repo=repo,
+            parent_number=None,
+            role=label,
+            position=pos,
             raw_text=text_plain[begin:end],
-            author_login=author, created_at=created_at,
+            author_login=author,
+            created_at=created_at,
         )
         if u:
             # Deterministic positional id for segment units (multiple segments
@@ -485,4 +548,231 @@ def extract_from_email(doc: dict, repo: str) -> list[TextUnit]:
             units.append(u)
             pos += 1
 
+    return units
+
+
+def extract_from_ocean_email(doc: dict, repo: str) -> list[TextUnit]:
+    """
+    Extract TextUnits from an OCEAN dataset email document (v0.8).
+
+    The OCEAN corpus (angular/golang/nodejs/python mailing lists) is flat
+    JSONL with raw `subject`/`body_text` fields and NO precomputed segment
+    spans (unlike Webis Gmane). We therefore derive one unit per (parent,
+    role) at message granularity, mirroring extract_from_issue: the subject
+    is position 0 and the whole stripped body is a single position-1 unit.
+
+    This deliberately reuses the email parent_id convention
+    ("email:<urn>", parent_type "email") so the projector's EmailMessage
+    wiring (graph_projector.upsert_text_unit, MATCH EmailMessage {urn})
+    and the annotator/analysis email unit family work unchanged. Ingest
+    sets doc["lang"] = "en" (OCEAN lists are English); that value is
+    authoritative, exactly as the gmane extractor treats corpus lang.
+    """
+    urn = doc.get("urn") or ""
+    if not urn:
+        return []
+
+    parent_id = f"email:{urn}"
+    lang = doc.get("lang")
+    author = (doc.get("raw_from_string") or doc.get("from_email") or "").strip() or None
+    created_at = doc.get("raw_date_string")
+
+    units: list[TextUnit] = []
+
+    # Subject (position 0)
+    u = _make_unit(
+        parent_id=parent_id,
+        parent_type="email",
+        repo=repo,
+        parent_number=None,
+        role="subject",
+        position=0,
+        raw_text=doc.get("subject", ""),
+        author_login=author,
+        created_at=created_at,
+    )
+    if u:
+        u = dataclasses.replace(u, lang=lang or u.lang)
+        units.append(u)
+
+    # Body (position 1) — whole message body as a single unit.
+    u = _make_unit(
+        parent_id=parent_id,
+        parent_type="email",
+        repo=repo,
+        parent_number=None,
+        role="body",
+        position=1,
+        raw_text=doc.get("body_text", ""),
+        author_login=author,
+        created_at=created_at,
+    )
+    if u:
+        u = dataclasses.replace(u, lang=lang or u.lang)
+        units.append(u)
+
+    return units
+
+
+def extract_email_for_corpus(doc: dict, repo: str) -> list[TextUnit]:
+    """
+    Pick the email extractor for a raw email doc based on its corpus.
+
+    OCEAN dataset docs (repo_name "ocean:<list>") are flat JSONL with raw
+    subject/body_text and no segment spans, so they go through
+    extract_from_ocean_email; Webis Gmane docs (which carry precomputed
+    segments) keep using extract_from_email. Dispatched on the repo_name
+    namespace because both corpora share the item_type "email" and the
+    raw_emails collection. Placed here (not in extractor.worker) so it stays
+    importable and testable without services (see AGENTS.md §5.7 / the
+    test_email_integration import pattern).
+    """
+    if repo.startswith("ocean:"):
+        return extract_from_ocean_email(doc, repo)
+    # Curated email code reviews (miner/curated_email_ingester.py) are flat
+    # JSONL mail with subject/body_text but no segment spans — same shape as
+    # OCEAN, so the same message-granularity extractor applies.
+    if repo.startswith("curatedemail:") or repo.startswith("curated:"):
+        return extract_from_ocean_email(doc, repo)
+    return extract_from_email(doc, repo)
+
+
+# ── External artefact extractors (v0.8, curated MSR corpora) ──────────────────
+# All read the normalized raw_external docs produced by the miner/*_ingester.py
+# modules. Message-granularity, mirroring extract_from_ocean_email; the
+# projector matches each TextUnit's parent by record_id (= parent_id).
+
+
+def extract_from_jira_issue(doc: dict[str, Any], repo: str) -> list[TextUnit]:
+    """
+    TextUnits from a normalized Jira issue doc (miner/jira_ingester.py):
+    title (pos 0), description (pos 1), comments (role comment_body, pos 2+).
+    parent_type "jira_issue". See FRAMEWORK_DESIGN §4.8.
+    """
+    parent_id = doc.get("record_id") or ""
+    if not parent_id:
+        return []
+    author = doc.get("author_login")
+    created_at = doc.get("created_at")
+
+    units: list[TextUnit] = []
+    if title := doc.get("title") or doc.get("summary"):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="jira_issue", repo=repo,
+            parent_number=None, role="title", position=0, raw_text=title,
+            author_login=author, created_at=created_at,
+        )
+        if u:
+            units.append(u)
+    if body := doc.get("body") or doc.get("description"):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="jira_issue", repo=repo,
+            parent_number=None, role="body", position=1, raw_text=body,
+            author_login=author, created_at=created_at,
+        )
+        if u:
+            units.append(u)
+    for i, comment in enumerate(doc.get("comments") or [], start=2):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="jira_issue", repo=repo,
+            parent_number=None, role="comment_body", position=i,
+            raw_text=comment.get("body", ""),
+            author_login=comment.get("author_login"),
+            created_at=comment.get("created_at"),
+        )
+        if u:
+            units.append(u)
+    return units
+
+
+def extract_from_bugzilla_issue(doc: dict[str, Any], repo: str) -> list[TextUnit]:
+    """
+    TextUnits from a normalized Bugzilla bug doc (miner/bugzilla_ingester.py):
+    same shape as Jira issues (title/body/comments) under parent_type
+    "bugzilla_issue".
+    """
+    parent_id = doc.get("record_id") or ""
+    if not parent_id:
+        return []
+    author = doc.get("author_login")
+    created_at = doc.get("created_at")
+
+    units: list[TextUnit] = []
+    if summary := doc.get("summary") or doc.get("title"):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="bugzilla_issue", repo=repo,
+            parent_number=None, role="title", position=0, raw_text=summary,
+            author_login=author, created_at=created_at,
+        )
+        if u:
+            units.append(u)
+    if description := doc.get("description") or doc.get("body"):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="bugzilla_issue", repo=repo,
+            parent_number=None, role="body", position=1, raw_text=description,
+            author_login=author, created_at=created_at,
+        )
+        if u:
+            units.append(u)
+    for i, comment in enumerate(doc.get("comments") or [], start=2):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="bugzilla_issue", repo=repo,
+            parent_number=None, role="comment_body", position=i,
+            raw_text=comment.get("body", ""), author_login=comment.get("author_login"),
+            created_at=comment.get("created_at"),
+        )
+        if u:
+            units.append(u)
+    return units
+
+
+def extract_from_chat_message(doc: dict[str, Any], repo: str) -> list[TextUnit]:
+    """
+    One TextUnit per chat/IRC message (Slack/Discord/Gitter/IRC ingesters):
+    role "message", position 0. A chat utterance is neither a body nor a
+    comment — FRAMEWORK_DESIGN §4.8 keeps the role vocabulary explicit.
+    """
+    parent_id = doc.get("record_id") or ""
+    if not parent_id:
+        return []
+    u = _make_unit(
+        parent_id=parent_id, parent_type="chat_message", repo=repo,
+        parent_number=None, role="message", position=0,
+        raw_text=doc.get("text") or doc.get("content") or "",
+        author_login=doc.get("author_login"), created_at=doc.get("created_at"),
+    )
+    return [u] if u else []
+
+
+def extract_from_so_post(doc: dict[str, Any], repo: str) -> list[TextUnit]:
+    """
+    TextUnits from a normalized Stack Overflow post doc
+    (miner/stackoverflow_ingester.py): optional title (pos 0) + body (pos 1).
+    parent_type "so_post"; post_type distinguishes q/a/comment at the node
+    level, not by role.
+    """
+    parent_id = doc.get("record_id") or ""
+    if not parent_id:
+        return []
+    author = doc.get("author_login")
+    created_at = doc.get("created_at")
+
+    units: list[TextUnit] = []
+    if title := doc.get("title"):
+        u = _make_unit(
+            parent_id=parent_id, parent_type="so_post", repo=repo,
+            parent_number=None, role="title", position=0, raw_text=title,
+            author_login=author, created_at=created_at,
+        )
+        if u:
+            units.append(u)
+    if body := doc.get("text") or doc.get("body"):
+        pos = 1 if title else 0
+        u = _make_unit(
+            parent_id=parent_id, parent_type="so_post", repo=repo,
+            parent_number=None, role="body", position=pos, raw_text=body,
+            author_login=author, created_at=created_at,
+        )
+        if u:
+            units.append(u)
     return units

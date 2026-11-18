@@ -25,7 +25,7 @@ ONLY here — per lexicons/en_core_v0.2.yml's own header, it is enforced only
 for the entries the morpho_syntactic annotator scopes via DependencyMatcher
 (e.g. morph.hedge.shield_think for "I think/guess/suppose ..."). The lexical
 layer deliberately still fires the bare cue in parallel — this mirrors the
-existing, intentional 'blind spot' double-count (AGENTS.md §3.3): different
+existing, intentional 'blind spot' double-count (AGENTS.md §5.3): different
 layers, different questions, never collapsed. requires_context is carried
 through to the payload so it's visible in the graph for analysis.
 
@@ -136,12 +136,19 @@ class LexiconAnnotator:
         matcher = PhraseMatcher(self._nlp.vocab, attr="LEMMA")
         id_map: dict[int, str] = {}
 
-        for entry in self._lexicon.get("entries", []):
+        entries = self._lexicon.get("entries", [])
+        lemmas = [entry["lemma"] for entry in entries]
+
+        unneeded = [p for p in ("parser", "ner") if p in self._nlp.pipe_names]
+        with self._nlp.select_pipes(disable=unneeded):
+            pattern_docs = list(self._nlp.pipe(lemmas))
+
+        for entry, pattern_doc in zip(entries, pattern_docs):
             entry_id = entry["id"]
-            pattern_doc = self._nlp.make_doc(entry["lemma"])
             key = f"LEX_{entry_id}"
             matcher.add(key, [pattern_doc])
             id_map[self._nlp.vocab.strings[key]] = entry_id
+
 
         return matcher, id_map
 

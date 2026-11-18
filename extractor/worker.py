@@ -7,24 +7,29 @@ TextUnit events to stream_units.
 
 See FRAMEWORK_DESIGN.md §5 Module 2 for design rationale.
 """
+
 from __future__ import annotations
 
-import asyncio
 import dataclasses
 import logging
+import asyncio
 from typing import Any
 
 from broker import get_broker
 from extractor.text_unit_extractor import (
     TextUnit,
+    extract_email_for_corpus,
+    extract_from_bugzilla_issue,
+    extract_from_chat_message,
     extract_from_commit,
-    extract_from_email,
     extract_from_issue,
+    extract_from_jira_issue,
     extract_from_pull_request,
+    extract_from_so_post,
 )
+from progress import Progress
 from settings import settings
 from storage import gather_bounded, make_mongo_client
-from progress import Progress
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +49,14 @@ async def run_extractor() -> None:
     logger.info("Extractor worker started. Consuming %s", settings.stream_raw)
 
     async for batch in broker.read_all(settings.stream_raw):
+        # Backpressure (Fix 2, CHANGELOG 2026-08-16): if Phase 1 is falling
+        # behind, pause so stream_units never buffers the corpus in Redis (the
+        # Docker-VM OOM trigger). Phase 1 now batches, so this is a safety net.
+        while True:
+            queued = await broker.stream_length(settings.stream_units)
+            if queued < settings.extractor_max_stream_units_backlog:
+                break
+            await asyncio.sleep(0.5)
         results = await gather_bounded(
             (_process_event(event, db, broker) for event in batch),
             settings.mongo_fetch_concurrency,
@@ -65,14 +78,15 @@ async def _process_event(
     broker: Any,
 ) -> None:
     """Fetch raw document from MongoDB and publish its TextUnit events."""
-    item_type    = event.get("item_type", "")
+    item_type = event.get("item_type", "")
     item_subtype = event.get("item_subtype", item_type)
-    repo         = event.get("repo_name", "")
-    mongo_id     = event.get("mongo_id")
+    repo = event.get("repo_name", "")
+    mongo_id = event.get("mongo_id")
 
     # Fetch full document from Mongo
     collection_name = _collection_for(item_type)
     from bson import ObjectId
+
     doc = await db[collection_name].find_one({"_id": ObjectId(mongo_id)})
     if doc is None:
         logger.warning("Document not found: mongo_id=%s collection=%s", mongo_id, collection_name)
@@ -87,7 +101,15 @@ async def _process_event(
     elif item_type == "commit":
         units = extract_from_commit(doc, repo)
     elif item_type == "email":
-        units = extract_from_email(doc, repo)
+        units = _extract_email(doc, repo)
+    elif item_type == "jira_issue":
+        units = extract_from_jira_issue(doc, repo)
+    elif item_type == "bugzilla_issue":
+        units = extract_from_bugzilla_issue(doc, repo)
+    elif item_type == "chat_message":
+        units = extract_from_chat_message(doc, repo)
+    elif item_type == "so_post":
+        units = extract_from_so_post(doc, repo)
     else:
         logger.debug("Skipping item_type=%s (no extractor)", item_type)
         return
@@ -96,17 +118,24 @@ async def _process_event(
     for unit in units:
         await broker.publish(settings.stream_units, dataclasses.asdict(unit))
 
-    logger.debug(
-        "Published %d TextUnits for %s/%s",
-        len(units), item_type, event.get("item_id")
-    )
+    logger.debug("Published %d TextUnits for %s/%s", len(units), item_type, event.get("item_id"))
 
 
 def _collection_for(item_type: str) -> str:
     return {
-        "repository":   "raw_repositories",
-        "issue":        "raw_issues",
+        "repository": "raw_repositories",
+        "issue": "raw_issues",
         "pull_request": "raw_pull_requests",
-        "commit":       "raw_commits",
-        "email":        "raw_emails",
+        "commit": "raw_commits",
+        "email": "raw_emails",
+        # v0.8 external artefacts all live in raw_external, keyed on record_id.
+        "jira_issue": "raw_external",
+        "bugzilla_issue": "raw_external",
+        "chat_message": "raw_external",
+        "so_post": "raw_external",
     }.get(item_type, "raw_misc")
+
+
+def _extract_email(doc: dict[str, Any], repo: str) -> list[TextUnit]:
+    """Corpus-aware email extraction (OCEAN vs Gmane); see extract_email_for_corpus."""
+    return extract_email_for_corpus(doc, repo)

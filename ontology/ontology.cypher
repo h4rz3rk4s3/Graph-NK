@@ -61,6 +61,47 @@ CREATE CONSTRAINT email_urn IF NOT EXISTS
 // message_id is NOT unique-constrained: it can be missing or duplicated in
 // crawled mail archives; it is indexed below for threading lookups.
 
+// Multi-platform corpus layer v0.8 (FRAMEWORK_DESIGN §4.8)
+CREATE CONSTRAINT platform_id IF NOT EXISTS
+  FOR (p:Platform) REQUIRE p.platform_id IS UNIQUE;
+
+CREATE CONSTRAINT venue_id IF NOT EXISTS
+  FOR (v:Venue) REQUIRE v.venue_id IS UNIQUE;
+
+CREATE CONSTRAINT corpus_id IF NOT EXISTS
+  FOR (c:Corpus) REQUIRE c.corpus_id IS UNIQUE;
+
+CREATE CONSTRAINT conversation_id IF NOT EXISTS
+  FOR (c:Conversation) REQUIRE c.conversation_id IS UNIQUE;
+
+// Every :Artefact (any platform/family) has a globally namespaced record_id
+// equal to its parent_id in the TextUnit stream. It doubles as the parent
+// lookup key for TextUnit projection. Only nodes carrying the :Artefact label
+// are constrained — legacy pre-migration GitHub nodes are excluded until the
+// v0.8 backfill labels them (scripts/migrate_v0.8.cypher).
+CREATE CONSTRAINT artefact_record_id IF NOT EXISTS
+  FOR (a:Artefact) REQUIRE a.record_id IS UNIQUE;
+
+// The v0.8 external artefact families are upserted by MERGE on their OWN label
+// (graph_projector._upsert_chat_artefact etc.), and a constraint on :Artefact
+// alone does NOT accelerate a MERGE (m:ChatMessage {...}) — that would fall back
+// to a full label scan that grows linearly with the corpus (the Phase-0
+// slowdown, CHANGELOG 2026-08-16). Each family therefore carries its own
+// record_id uniqueness constraint. These are the SAME record_ids as the
+// :Artefact constraint (nodes carry both labels), so they add no semantic
+// key — they only give MERGE an O(1) seek path.
+CREATE CONSTRAINT chatmessage_record_id IF NOT EXISTS
+  FOR (m:ChatMessage) REQUIRE m.record_id IS UNIQUE;
+
+CREATE CONSTRAINT jiraissue_record_id IF NOT EXISTS
+  FOR (j:JiraIssue) REQUIRE j.record_id IS UNIQUE;
+
+CREATE CONSTRAINT bugzillaissue_record_id IF NOT EXISTS
+  FOR (b:BugzillaIssue) REQUIRE b.record_id IS UNIQUE;
+
+CREATE CONSTRAINT sopost_record_id IF NOT EXISTS
+  FOR (p:StackOverflowPost) REQUIRE p.record_id IS UNIQUE;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. INDEXES (query hot-paths)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -77,6 +118,13 @@ CREATE INDEX pr_state IF NOT EXISTS           FOR (p:PullRequest)      ON (p.sta
 CREATE INDEX email_message_id IF NOT EXISTS   FOR (e:EmailMessage)     ON (e.message_id);
 CREATE INDEX email_group IF NOT EXISTS        FOR (e:EmailMessage)     ON (e.group);
 CREATE INDEX email_in_reply_to IF NOT EXISTS  FOR (e:EmailMessage)     ON (e.in_reply_to);
+
+// v0.8 multi-platform hot-paths
+CREATE INDEX artefact_platform IF NOT EXISTS  FOR (a:Artefact)         ON (a.platform_id);
+CREATE INDEX artefact_corpus IF NOT EXISTS    FOR (a:Artefact)         ON (a.source_corpus);
+CREATE INDEX artefact_kind IF NOT EXISTS      FOR (a:Artefact)         ON (a.artefact_kind);
+CREATE INDEX artefact_venue IF NOT EXISTS     FOR (a:Artefact)         ON (a.venue_id);
+CREATE INDEX conversation_venue IF NOT EXISTS FOR (c:Conversation)     ON (c.venue_id);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. MERGE TEMPLATES
@@ -230,6 +278,78 @@ CREATE INDEX email_in_reply_to IF NOT EXISTS  FOR (e:EmailMessage)     ON (e.in_
 // MERGE (reply)-[:REPLIES_TO]->(parent);
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 3.14 Multi-platform corpus layer (v0.8)
+// ─────────────────────────────────────────────────────────────────────────────
+// All new corpora write through these templates. Every external-artefact write
+// MUST also set :Artefact (+ family + platform labels via apoc.create.addLabels)
+// and the platform_id / venue_id / corpus_id / source_corpus / artefact_kind /
+// record_id properties — that is the only thing that makes RQ6 platform
+// comparison possible. Existing GitHub / Gmane / OCEAN writes get the same
+// treatment by the projector and by scripts/migrate_v0.8.cypher.
+
+// -- 3.14.1 Platform / Venue / Corpus (cheap, per-artefact idempotent) -------
+// MERGE (p:Platform {platform_id: $platform_id})
+//   ON CREATE SET p.name = $platform_name, p.kind = $platform_kind;
+// MERGE (v:Venue {venue_id: $venue_id})
+//   ON CREATE SET v.platform_id = $platform_id, v.corpus_id = $corpus_id,
+//                 v.external_id = $venue_external_id, v.name = $venue_name;
+// MERGE (p)-[:HAS_VENUE]->(v);
+// MERGE (c:Corpus {corpus_id: $corpus_id})
+//   ON CREATE SET c.name = $corpus_name, c.version = $corpus_version,
+//                 c.citation = $corpus_citation, c.license = $corpus_license,
+//                 c.source_uri = $corpus_uri;
+// MERGE (c)-[:COVERS]->(v);
+
+// -- 3.14.2 Issue-like external artefacts -----------------------------
+// Jira:
+// MERGE (i:JiraIssue {record_id: $record_id})
+//   ON CREATE SET i.project_key = $project_key, i.issue_key = $issue_key,
+//                 i.state = $state, i.issue_type = $issue_type,
+//                 i.priority = $priority, i.resolution = $resolution,
+//                 i.created_at = $created_at, i.platform_id = $platform_id,
+//                 i.venue_id = $venue_id, i.corpus_id = $corpus_id,
+//                 i.source_corpus = $corpus_id, i.artefact_kind = 'jira_issue',
+//                 i.metadata_json = $metadata_json;
+// MERGE (v:Venue {venue_id: $venue_id})-[:CONTAINS]->(i);
+// (Bugzilla identical with label :BugzillaIssue, artefact_kind 'bugzilla_issue',
+//  and product/summary fields.)
+// Labels: CALL apoc.create.addLabels(i, $labels)
+
+// -- 3.14.3 Message-like external artefacts ---------------------------
+// MERGE (m:ChatMessage {record_id: $record_id})
+//   ON CREATE SET m.channel = $channel, m.sequence = $sequence,
+//                 m.sent_at = $created_at, m.platform_id = $platform_id,
+//                 m.venue_id = $venue_id, m.corpus_id = $corpus_id,
+//                 m.source_corpus = $corpus_id, m.artefact_kind = $artefact_kind,
+//                 m.metadata_json = $metadata_json;
+// MERGE (v:Venue {venue_id: $venue_id})-[:CONTAINS]->(m);
+// IF conversation_id present:
+//   MERGE (c:Conversation {conversation_id: $conversation_id})
+//     ON CREATE SET c.platform_id = $platform_id, c.venue_id = $venue_id,
+//                   c.corpus_id = $corpus_id, c.source_label = $conversation_label;
+//   MERGE (v)-[:HAS_CONVERSATION]->(c);
+//   MERGE (c)-[:CONTAINS]->(m);
+// Labels: CALL apoc.create.addLabels(m, $labels)   // e.g. [SlackMessage, MessageArtefact, Artefact]
+
+// -- 3.14.4 Stack Overflow posts ---------------------------------------
+// MERGE (p:StackOverflowPost {record_id: $record_id})
+//   ON CREATE SET p.post_type = $post_type, p.external_id = $external_id,
+//                 p.question_id = $question_id, p.parent_post_id = $parent_post_id,
+//                 p.created_at = $created_at, ...platform/corpus props as above;
+// MERGE (v:Venue {venue_id: $venue_id})-[:CONTAINS]->(p);
+// Labels: CALL apoc.create.addLabels(p, [StackOverflowQuestion|StackOverflowAnswer|
+//                                        StackOverflowComment, PostArtefact, Artefact])
+// ANSWER edge (only when source provides it):
+// MATCH (a:StackOverflowAnswer {record_id: $answer_record_id})
+// MATCH (q:StackOverflowQuestion {record_id: $question_record_id})
+// MERGE (a)-[:ANSWERS]->(q);
+
+// -- 3.14.5 ORPHAN / PARENT MATCH for TextUnits of external artefacts ---
+// TextUnit projection for new parent_types uses record_id directly:
+// MATCH (parent:Artefact {record_id: $parent_record_id})
+// MERGE (u:TextUnit {id: $tu_id}) ... (rest identical to §3.7)
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 4. SANITY-CHECK QUERIES (run after a first ingest)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -249,3 +369,23 @@ CREATE INDEX email_in_reply_to IF NOT EXISTS  FOR (e:EmailMessage)     ON (e.in_
 // 4.5 Orphan check — signals without a TextUnit (should be 0)
 // MATCH (s:Signal) WHERE NOT (:TextUnit)-[:HAS_SIGNAL]->(s)
 // RETURN count(s) AS orphan_signals;
+
+// 4.6 v0.8 — per-platform artefact / TextUnit / Signal counts
+// MATCH (a:Artefact)-[:HAS_TEXT]->(u:TextUnit)
+// OPTIONAL MATCH (u)-[:HAS_SIGNAL]->(s:Signal)
+// RETURN a.platform_id, a.artefact_kind, count(DISTINCT a) AS artefacts,
+//        count(DISTINCT u) AS units, count(s) AS signals
+// ORDER BY a.platform_id, a.artefact_kind;
+
+// 4.7 v0.8 — artefacts missing the shared label set (should be 0 after backfill)
+// MATCH (a:Artefact) WHERE a.platform_id IS NULL OR a.record_id IS NULL
+// RETURN count(a) AS mislabelled_artefacts;
+
+// 4.8 v0.8 — TextUnits whose parent is missing (should be 0)
+// MATCH (u:TextUnit)
+// WHERE u.parent_type IN ['jira_issue','bugzilla_issue','chat_message','so_post']
+//   AND NOT EXISTS { MATCH (:Artefact {record_id: u.parent_id}) }
+// RETURN count(u) AS orphan_external_units;
+
+// 4.9 v0.8 — per-corpus node counts (visual check of which corpora are loaded)
+// MATCH (a:Artefact) RETURN a.source_corpus, count(*) AS n ORDER BY n DESC;

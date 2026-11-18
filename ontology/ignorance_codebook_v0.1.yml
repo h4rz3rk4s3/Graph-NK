@@ -1,0 +1,1172 @@
+version: '0.1'
+built_from:
+- roberts_2013
+- smithson_1989
+- gross_2010
+- wehling_2024
+provenance_note: This codebook is constructed only from primary source literature and its secondary reception,
+  per the RQ4 pre-registration protocol. It has not been adapted, broadened, or extended to fit software-engineering
+  discourse; no SE examples, vocabulary, or category shaping have been introduced. Non-fit codes (RESIDUAL,
+  NOT_NK, UNCODABLE) live in CODING_MANUAL.md, not in this file, since they are not imported taxonomy
+  categories.
+taxonomies:
+- taxonomy_id: roberts_2013
+  citation: 'Roberts, J. (2013). Organizational ignorance: Towards a managerial perspective on the unknown.
+    Management Learning, 44(3), 215-236. https://doi.org/10.1177/1350507612443208'
+  structure: categorical
+  full_text_accessed: true
+  access_note: Full text extracted directly from user-supplied PDF (22 pages), including Table 1 (pp.
+    227-229).
+  categories:
+  - type_id: roberts.unknown_unknowns
+    name: Unknown unknowns
+    scope: imported
+    source_locator: Roberts 2013, p. 218 (definition), pp. 219-220 (elaboration), p. 227 (Table 1)
+    definition_source: A total, unrecognized absence of knowledge — the actor is not aware that the gap
+      exists at all. Roberts imports this term from Gross (2007), Proctor (2008), and Witte et al. (2008),
+      and links it to Smithson's (1989) notion of 'meta-ignorance'.
+    definition_operational: Check whether the text unit expresses a gap in knowledge that the writer could
+      not, at the time, have anticipated or named — i.e. a gap discoverable only in retrospect, once something
+      unexpected has already happened.
+    inclusion_criteria:
+    - The unit describes a surprise, unanticipated event, or consequence that no one involved had foreseen
+      or could plausibly have foreseen.
+    - The unit is written in a retrospective/discovery frame ('we didn't realize until X happened that...')
+      rather than a prospective frame ('we don't know whether...').
+    exclusion_criteria:
+    - The unit expresses a gap the writer explicitly names or anticipates in advance (that is a known
+      unknown, not this).
+    - The unit merely expresses uncertainty about a named, already-identified question.
+    discriminating_questions:
+    - question: Could the actor, at the time, have named what they did not know — even approximately?
+      separates_from:
+      - roberts.known_unknowns
+    - question: Is the gap only visible in hindsight, after an unexpected event revealed it?
+      separates_from:
+      - roberts.errors
+    source_examples:
+    - Roberts notes unknown unknowns can arise from innovation itself, citing the unforeseen scale of
+      consequences following Tim Berners-Lee's original World Wide Web proposal (Roberts 2013, p. 220).
+    near_neighbours:
+    - type_id: smithson.error
+      relation: partial_overlap
+      distinguishing_test: Smithson's 'error' (things you think you know but don't) presupposes a false
+        belief; Roberts' unknown unknowns presuppose no belief at all, false or otherwise.
+    - type_id: wehling.knowledge_of_nonknowledge
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — Wehling's 'unknown unknowns' pole is explicitly the same Kerwin
+        (1993)-derived concept Roberts also cites; both traditions converge on identical terminology and
+        definition.
+    source_vagueness: Roberts states this type of ignorance is 'beyond the anticipation and imagination'
+      of the actor and can typically only be identified retrospectively (p. 220) — the source itself does
+      not give any way to identify an unknown unknown prospectively, which is a structural property of
+      the category, not an omission.
+    definition_confidence: high
+  - type_id: roberts.known_unknowns
+    name: Known unknowns
+    scope: imported
+    source_locator: Roberts 2013, p. 218, pp. 220-221, p. 227 (Table 1)
+    definition_source: Knowledge of the limits of one's own knowledge — the actor knows, with some specificity,
+      what it is that it does not know.
+    definition_operational: Check whether the unit names or points to a specific, identifiable gap in
+      knowledge that the writer is aware of possessing.
+    inclusion_criteria:
+    - The unit explicitly identifies a specific question, fact, or piece of information the writer does
+      not currently have.
+    - The writer demonstrates awareness of the gap's existence, independent of whether it can ever be
+      closed.
+    exclusion_criteria:
+    - The unit expresses ignorance of something the writer could not have named in advance (unknown unknown).
+    - The unit expresses false confidence in something incorrect rather than an acknowledged gap (error).
+    discriminating_questions:
+    - question: Does the writer name or point to a specific fact/question they lack, rather than merely
+        expressing general unease?
+      separates_from:
+      - roberts.unknown_unknowns
+    - question: Is resolving the gap, in principle, only a matter of resource investment (time, money,
+        effort) — as opposed to being structurally unresolvable regardless of resources?
+      separates_from:
+      - roberts.knowable_known_unknowns
+    source_examples:
+    - Roberts gives the anticipated possibility of a nuclear accident accompanying the development of
+      a nuclear power plant as a known unknown — a recognized, named risk, prior to any accident occurring
+      (Roberts 2013, p. 220, citing Chernobyl/Fukushima).
+    near_neighbours:
+    - type_id: roberts.knowable_known_unknowns
+      relation: near_synonym
+      distinguishing_test: Roberts distinguishes them only by resolvability given resources; no operational
+        test for where the line falls is given in the source (source_vagueness applies).
+    - type_id: wehling.knowledge_of_nonknowledge
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — both traditions use the identical Kerwin (1993) 'known unknowns'
+        concept.
+    - type_id: smithson.uncertainty
+      relation: partial_overlap
+      distinguishing_test: Smithson's uncertainty concerns imprecision in information that IS present;
+        Roberts' known unknowns concerns information that is entirely absent but whose absence is recognized.
+    source_vagueness: None significant in the source; this is the most stable, uncontested category across
+      the four traditions (see crosswalk).
+    definition_confidence: high
+  - type_id: roberts.knowable_known_unknowns
+    name: Knowable known unknowns
+    scope: imported
+    source_locator: Roberts 2013, p. 218 (citing Congleton 2001, 'rational ignorance'), p. 222, p. 227
+      (Table 1)
+    definition_source: A known unknown that IS resolvable given sufficient motivation and resource investment
+      — distinguished from a known unknown for which no amount of resources guarantees resolution.
+    definition_operational: Check whether the unit frames a known gap as something the writer or others
+      have deliberately chosen not to invest resources in closing (rather than as fundamentally unresolvable).
+    inclusion_criteria:
+    - The unit names a specific knowledge gap AND frames it as something that could be closed if resources/effort
+      were invested.
+    - There is an implicit or explicit statement that the gap persists because of a choice not to invest
+      (delegation, outsourcing, deprioritization), rather than because closing it is impossible.
+    exclusion_criteria:
+    - The unit presents the gap as unresolvable in principle, regardless of resources (that is roberts.known_unknowns
+      in its stricter/unresolvable sense, or wehling.temporal_durability's 'principled unknowability'
+      pole).
+    - There is no indication the gap could be closed with more resources.
+    discriminating_questions:
+    - question: Does the text suggest the gap could be closed with enough time/money/effort, and that
+        not-closing it is a resource-allocation choice?
+      separates_from:
+      - roberts.known_unknowns
+    source_examples:
+    - Roberts frames specialization and outsourcing as organizational mechanisms that deliberately sustain
+      knowable known unknowns in parts of an organization, so that cognitive capacities can be economized
+      elsewhere (Roberts 2013, p. 222).
+    near_neighbours:
+    - type_id: roberts.known_unknowns
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — Roberts gives no operational test for how much resource investment
+        is required before a known unknown counts as 'knowable'; this is recorded as source_vagueness.
+    source_vagueness: The boundary condition ('given sufficient motivation and resources') is asserted,
+      not operationalised — Roberts does not specify a threshold or test.
+    definition_confidence: medium
+  - type_id: roberts.unknown_knowns
+    name: Unknown knowns
+    scope: imported
+    source_locator: Roberts 2013, p. 218 (citing Witte et al. 2008, p. 253), p. 222, p. 227 (Table 1)
+    definition_source: Failure to recognize knowledge that the actor already possesses, including tacit
+      knowledge — the actor does not know that it knows.
+    definition_operational: Check whether the unit describes knowledge or expertise that was already present
+      (in a person, a document, a system) but was not recognized, used, or drawn upon until it was rediscovered
+      or pointed out.
+    inclusion_criteria:
+    - The unit describes knowledge that existed (in a person, archive, system, or routine) prior to the
+      point at which it is 'discovered' or used.
+    - The failure is one of recognition/retrieval, not of possession — the knowledge was there all along.
+    exclusion_criteria:
+    - The unit describes knowledge that genuinely did not exist anywhere in the organization/community
+      prior to the moment described (that is an absence-type category, not this).
+    - The unit describes an active, deliberate concealment of known information (that is roberts.secrecy).
+    discriminating_questions:
+    - question: Did the knowledge already exist somewhere (a person's memory, a document, a system) before
+        the moment being described, and was the 'problem' simply that nobody realized it was there?
+      separates_from:
+      - roberts.unknown_unknowns
+      - roberts.known_unknowns
+    source_examples:
+    - Roberts notes that knowledge embedded in tacit routines or organizational archives may only be exposed
+      in retrospect once the knowledge has been lost — e.g. when the person who maintained an archive
+      retires and it becomes clear only then what the archive had contained (Roberts 2013, p. 222).
+    near_neighbours:
+    - type_id: roberts.unknown_unknowns
+      relation: orthogonal
+      distinguishing_test: Unknown knowns concern knowledge that objectively existed and was merely unrecognized;
+        unknown unknowns concern the absence of knowledge that never existed in any accessible form.
+    source_vagueness: Roberts quotes Polanyi's (1966) claim that 'all knowledge is tacitly understood,
+      and therefore all knowing ultimately rests on an unknown known' (p. 222) — a universalizing move
+      that, if taken literally, threatens to make the category apply to all knowledge everywhere, undermining
+      its use as a discriminating code. This tension is left unresolved in the source.
+    definition_confidence: medium
+  - type_id: roberts.errors
+    name: Errors
+    scope: imported
+    source_locator: Roberts 2013, p. 218 (citing Witte et al. 2008, p. 253, and Smithson 1989), pp. 222-223,
+      pp. 227-228 (Table 1)
+    definition_source: '''The things you think you know but don''t'' — a false belief held with confidence,
+      arising from either distortion (confusion or inaccuracy, per Smithson) or bounded-rationality processing
+      limits (Simon 1955).'
+    definition_operational: Check whether the unit expresses or reveals a confident but factually incorrect
+      belief — the writer (or someone described) believed something to be true/known that turns out to
+      be false.
+    inclusion_criteria:
+    - The unit states or implies a belief held with confidence.
+    - That belief is shown, or can be inferred, to be incorrect.
+    exclusion_criteria:
+    - The unit expresses awareness of not knowing something (that is a known/unknown-unknown, not an error
+      — the actor here believes they DO know).
+    - The unit describes a deliberate falsehood told to others (Roberts treats this as suppression-type
+      ignorance, not error, which concerns the holder's own false belief).
+    discriminating_questions:
+    - question: Did the actor believe, with confidence, that something was true or known — and was that
+        belief wrong?
+      separates_from:
+      - roberts.known_unknowns
+      - roberts.unknown_unknowns
+    source_examples:
+    - Roberts's Table 1 notes error risk is elevated in 'non-standardized activity' (Roberts 2013, p.
+      227-228 Table 1).
+    near_neighbours:
+    - type_id: smithson.error
+      relation: conflicting
+      distinguishing_test: NONE_POSSIBLE without disambiguation — Smithson's 'Error' is a broad top-level
+        branch covering ALL passive-voice ignorance (including mere absence of information), whereas Roberts's
+        'Errors' denotes specifically a false confident belief. Roberts imports Smithson's terminology
+        but narrows its scope without flagging the narrowing; this is a direct terminological collision
+        between the two taxonomies (see crosswalk).
+    - type_id: smithson.distortion
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — Roberts's 'Errors' is definitionally the outcome of what Smithson
+        calls distortion (confusion/inaccuracy); Roberts explicitly cites Smithson for this.
+    source_vagueness: Roberts's use of the word 'Errors' for a narrow concept (false confident belief),
+      while Smithson uses the same word-family for his entire top-level 'Error' branch (which also includes
+      mere incompleteness/absence), is a source-level terminological collision Roberts does not address.
+    definition_confidence: high
+  - type_id: roberts.taboos
+    name: Taboos
+    scope: imported
+    source_locator: Roberts 2013, p. 218 (citing Witte et al. 2008), pp. 223-224, p. 228 (Table 1)
+    definition_source: Socially constructed ignorance in the form of a social prohibition or ban on certain
+      knowledge, often because it is viewed as dangerous or polluting.
+    definition_operational: Check whether the unit refers to a topic being off-limits, forbidden, or prohibited
+      from discussion/investigation because of a social, cultural, or organizational norm — not because
+      the information is unavailable.
+    inclusion_criteria:
+    - The unit references a topic that is treated as socially or culturally off-limits, dangerous to discuss,
+      or prohibited, independent of whether the underlying information itself is technically accessible.
+    - The prohibition is attributable to a social norm, culture, or convention (of a group, organization,
+      or wider society) rather than an individual psychological reaction.
+    exclusion_criteria:
+    - The unit describes an individual's personal, private avoidance of a painful truth without any wider
+      social prohibition (that is roberts.denials).
+    - The unit describes information being withheld for competitive/legal reasons without a taboo-like
+      social prohibition attached (that is roberts.secrecy).
+    discriminating_questions:
+    - question: Is the topic avoided because a group/culture/organization treats it as forbidden or polluting
+        to know or discuss — as opposed to one person finding it too painful to accept?
+      separates_from:
+      - roberts.denials
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.denials
+      relation: partial_overlap
+      distinguishing_test: Roberts distinguishes taboo (externally/socially imposed prohibition) from
+        denial (internal, individual/group psychological avoidance of painful knowledge via cognitive
+        dissonance) — but gives no test for cases where both operate together (e.g. a socially-reinforced
+        denial).
+    source_vagueness: Roberts does not address the case where a taboo and a denial reinforce each other
+      (a social prohibition that also serves individual psychological avoidance needs) — the source treats
+      them as parallel, separately-caused categories without addressing their potential co-occurrence.
+    definition_confidence: high
+  - type_id: roberts.denials
+    name: Denials
+    scope: imported
+    source_locator: Roberts 2013, p. 218 (citing Witte et al. 2008), pp. 224-225, p. 228 (Table 1)
+    definition_source: The ignoring or repressing of knowledge that is too painful to accept, or that
+      does not fit with one's current understanding of the world; the actor tolerates the resulting cognitive
+      dissonance (Festinger 1957) rather than update their beliefs. Can occur at individual or group level
+      (including organizational 'groupthink', Janis 1972).
+    definition_operational: Check whether the unit shows a writer (or group) rejecting, minimizing, or
+      refusing to accept information that conflicts with their existing beliefs, framed as psychologically
+      or emotionally motivated rather than externally prohibited.
+    inclusion_criteria:
+    - Information that contradicts a currently-held belief is available to the actor, but the actor rejects,
+      minimizes, or avoids updating on it.
+    - The rejection is framed (explicitly or by clear implication) as motivated by discomfort, threat
+      to identity/belief, or unwillingness to accept, rather than by external social prohibition.
+    exclusion_criteria:
+    - The rejection stems from an externally imposed social/organizational prohibition rather than internal
+      psychological resistance (that is roberts.taboos).
+    - The actor simply lacks the information rather than rejecting it once presented.
+    discriminating_questions:
+    - question: Was the conflicting information actually available/presented to the actor, and did they
+        resist accepting it for psychological reasons?
+      separates_from:
+      - roberts.errors
+      - roberts.known_unknowns
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.taboos
+      relation: partial_overlap
+      distinguishing_test: See roberts.taboos entry — distinguished by locus of causation (social prohibition
+        vs. individual/group psychological avoidance), but no test for combined cases.
+    source_vagueness: None additional beyond the taboo/denial boundary noted above.
+    definition_confidence: high
+  - type_id: roberts.secrecy
+    name: Secrecy
+    scope: imported
+    source_locator: Roberts 2013, pp. 225-226, p. 229 (Table 1)
+    definition_source: Ignorance arising from the conscious suppression of knowledge, by individuals or
+      organizations; an organization can be both the suppressor (e.g. trade secrets) and the target (subject
+      to the secrecy of others, e.g. competitors, government).
+    definition_operational: Check whether the unit describes information being deliberately withheld or
+      concealed by an identifiable party (individual, group, organization), where the concealment is a
+      strategic/unilateral act.
+    inclusion_criteria:
+    - Information is deliberately withheld, concealed, or restricted from a party by another identifiable
+      party.
+    - The withholding serves a strategic, competitive, or protective purpose for the withholding party.
+    exclusion_criteria:
+    - The restriction is about information concerning the withholding party's own person or private sphere,
+      sanctioned reciprocally by social/legal norms (that is roberts.privacy — Roberts's 'multilateral'
+      distinction).
+    - The information is simply unavailable/absent rather than actively concealed by anyone.
+    discriminating_questions:
+    - question: Is there an identifiable party actively withholding the information from another, as a
+        strategic act (as opposed to a general socially-sanctioned right to restrict access to oneself)?
+      separates_from:
+      - roberts.privacy
+    source_examples:
+    - Roberts gives trade secrets and discriminatory practices as examples of strategically valuable secrecy
+      (Roberts 2013, p. 229, Table 1).
+    near_neighbours:
+    - type_id: roberts.privacy
+      relation: near_synonym
+      distinguishing_test: Roberts's own distinguishing criterion is that privacy is 'multilateral in
+        nature' (a reciprocally recognized right) while secrecy is unilateral/strategic — this is asserted
+        but not further operationalised with an independent test beyond the label itself.
+    source_vagueness: Roberts's 'multilateral' vs. unilateral distinction between secrecy and privacy
+      is stated once (p. 223) without elaboration on borderline cases (e.g. a mutually agreed non-disclosure
+      arrangement between two parties, which is arguably both multilateral and strategic).
+    definition_confidence: high
+  - type_id: roberts.privacy
+    name: Privacy
+    scope: imported
+    source_locator: Roberts 2013, pp. 226-227, p. 229 (Table 1)
+    definition_source: Ignorance arising from an individual's or group's ability to restrict others' access
+      to themselves or to information about themselves; described as 'multilateral in nature' and typically
+      sanctioned by social norms, organizational policy, or law.
+    definition_operational: Check whether the unit describes a person or group's socially/legally sanctioned
+      right to withhold information specifically about themselves, rather than a strategic act of withholding
+      information about something external.
+    inclusion_criteria:
+    - The withheld information concerns the withholding party's own person, identity, or personal circumstances.
+    - The withholding is framed as a sanctioned right (social norm, policy, or law) rather than a unilateral
+      strategic choice.
+    exclusion_criteria:
+    - The withheld information concerns something other than the withholding party's own person (that
+      is roberts.secrecy).
+    - The withholding is framed as a strategic/competitive act rather than an exercise of a recognized
+      right.
+    discriminating_questions:
+    - question: Is the withheld information specifically about the withholding party's own person, and
+        is the withholding recognized/sanctioned as a right rather than a strategic maneuver?
+      separates_from:
+      - roberts.secrecy
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.secrecy
+      relation: near_synonym
+      distinguishing_test: See roberts.secrecy — Roberts's own test ('multilateral' character) is asserted
+        rather than independently operationalised.
+    source_vagueness: As with secrecy, the 'multilateral' criterion is not elaborated with a concrete
+      decision procedure.
+    definition_confidence: medium
+- taxonomy_id: smithson_1989
+  citation: 'Smithson, M. (1989). Ignorance and Uncertainty: Emerging Paradigms. New York: Springer-Verlag.
+    Companion article: Smithson, M. (1993). Ignorance and science: Dilemmas, perspectives, and prospects.
+    Knowledge: Creation, Diffusion, Utilization, 15(2), 133-156.'
+  structure: categorical
+  full_text_accessed: false
+  access_note: 'Neither primary source was accessed in full. (1) Smithson 1993 ''Ignorance and Science''
+    (doi 10.1177/107554709301500202): fetch_article_fulltext returned oa_status=''closed'' -- Unpaywall,
+    Semantic Scholar, PMC, and CrossRef TDM all reported no open-access location; only the abstract was
+    retrievable. (2) Smithson 1989 book: not accessed as a complete text, but a digitized excerpt (apparently
+    OCR''d from the book''s opening chapter, including an inline page-break marker ''8'' and a garbled
+    rendering of the book''s Figure 1.1 tree diagram) was found hosted at vdoc.pub and is treated below
+    as a primary-text fragment for the passages it contains (distortion, incompleteness/absence/uncertainty).
+    In addition, the taxonomy was corroborated via: (a) Michael Smithson''s own first-person restatement
+    of the taxonomy published in 2022 (i2insights.org / RealKM), which gives verbatim definitions and
+    examples for irrelevance, untopicality, taboo, undecidability, ambiguity, and vagueness in his own
+    words (a tertiary but author-authored source, not the 1989/1993 originals); (b) a co-authored later
+    book chapter by Smithson (''Understanding Uncertainty'', ANU Press, in Bammer et al. context) that
+    restates the distortion/incompleteness split and explicitly cites back to Smithson 1989; and (c) multiple
+    independent secondary/tertiary sources (an ''Agnocracy'' journal article, a 2019 Synthese article
+    on negative expertise, a Springer book chapter ''Do We Get to Know the Unknown?'') that all converge
+    on the same tree structure. No independent source supplied a definition of ''probability'' as an ignorance-type
+    in Smithson''s own words -- the 1989 excerpt itself explicitly defers detailed treatment of probability/vagueness/ambiguity
+    at the point where it lists them (''I will delay further dissection of this part of the typology for
+    now''). Exact 1989 page numbers could only be pinned down for two points: p.9 for the overall Error/Irrelevance
+    diagram (per a secondary source''s citation) and p.8, inferred from an inline OCR page marker in the
+    vdoc.pub excerpt, for the incompleteness/absence/uncertainty passage. All other page numbers are UNVERIFIED
+    against the original book.'
+  categories:
+  - type_id: smithson.error
+    name: Error
+    scope: imported
+    parent: null
+    source_locator: Smithson 1989, p. 9 (per secondary citation, UNVERIFIED against original pagination)
+    definition_source: 'Faithful paraphrase, no SE framing. One of two top-level branches of ignorance:
+      the ''passive voice'' / state of ignorance — being ignorant of something, as distinct from deliberately
+      ignoring it. Subdivided into distortion and incompleteness.'
+    definition_operational: Use only as a ROOT/branch code if a coder needs a coarse pass; in practice
+      coders should code at the leaf level (distortion/confusion/inaccuracy/incompleteness/absence/uncertainty/probability/vagueness/ambiguity)
+      — this branch node is retained for T1 completeness and crosswalk purposes, not as a primary coding
+      target.
+    inclusion_criteria:
+    - The unit expresses a state of not-knowing that the actor did not choose or actively bring about
+      (contrast with irrelevance, an active avoidance).
+    exclusion_criteria:
+    - The unit expresses a deliberate, active avoidance of a topic (that is smithson.irrelevance).
+    discriminating_questions:
+    - question: Is the ignorance something that happened TO the actor (a state), or something the actor
+        actively brought about by not attending to a matter (an act)?
+      separates_from:
+      - smithson.irrelevance
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.errors
+      relation: conflicting
+      distinguishing_test: NONE_POSSIBLE without disambiguation — see roberts.errors near_neighbours entry;
+        Roberts narrows Smithson's broad branch label to a specific 'false confident belief' meaning.
+    source_vagueness: Smithson's own ordinary-language term ('error' = a mistake) is narrower than his
+      technical use of the term as the label for the entire passive-ignorance branch (which includes mere
+      absence of information, not just mistaken belief) — a self-acknowledged terminological tension per
+      the secondary source characterizing this branch.
+    definition_confidence: medium
+  - type_id: smithson.irrelevance
+    name: Irrelevance
+    scope: imported
+    parent: null
+    source_locator: Smithson 1989, p. 9 (per secondary citation); definition restated by Smithson in his
+      own words in a 2022 essay
+    definition_source: 'The other top-level branch: the ''active voice'' / act of ignorance — deliberately
+      not attending to, excluding, or ignoring matters, in contrast with simply lacking knowledge of them.
+      Subdivided into untopicality, taboo, and undecidability.'
+    definition_operational: Root/branch node; coders should code at the leaf level (untopicality/taboo/undecidability).
+    inclusion_criteria:
+    - The unit shows the actor treating a matter as not worth attending to, out of bounds, or not a live
+      question — an active exclusion rather than a passive gap.
+    exclusion_criteria:
+    - The unit expresses a passive state of not-knowing with no element of active exclusion (that is smithson.error).
+    discriminating_questions:
+    - question: Is the actor actively treating the matter as something to disregard, exclude, or not pursue
+        — rather than simply lacking information about it?
+      separates_from:
+      - smithson.error
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.knowable_known_unknowns
+      relation: partial_overlap
+      distinguishing_test: Roberts's category concerns a resource-allocation choice not to invest in closing
+        a KNOWN gap; Smithson's irrelevance concerns a broader active-exclusion stance that need not involve
+        a named, resource-tradeoff-framed gap. No sharp test is given by either source for intermediate
+        cases.
+    source_vagueness: Smithson's own gloss ('avoiding things we believe that we don't need or want to
+      know or that we shouldn't know') bundles at least three distinct motivational stances (don't need
+      / don't want / shouldn't) under one label; these are only disambiguated at the level of the three
+      subtypes, not at this branch level.
+    definition_confidence: medium-high
+  - type_id: smithson.distortion
+    name: Distortion
+    scope: imported
+    parent: smithson.error
+    source_locator: Smithson 1989 (exact page UNVERIFIED); restated verbatim by Smithson in a later co-authored
+      chapter ('Understanding Uncertainty', ANU Press)
+    definition_source: 'The branch of error arising from wrongly-formed knowledge (as opposed to missing
+      knowledge): ''a systematic bias or inaccuracy ... or confusion (mistaking one thing for another)''.
+      Dichotomized into inaccuracy (distortion in degree) and confusion (wrongful substitution in kind).'
+    definition_operational: Check whether the unit expresses a belief or claim that is present but WRONG
+      in form (misidentified or mis-estimated), as opposed to simply missing.
+    inclusion_criteria:
+    - A specific claim or belief is present in the unit.
+    - That claim/belief is, or is shown to be, incorrect in its content (not merely uncertain in confidence).
+    exclusion_criteria:
+    - The unit expresses missing information rather than a wrong claim (that is smithson.incompleteness).
+    discriminating_questions:
+    - question: Is there a specific, present claim that is wrong (distortion), or is information simply
+        absent/imprecise (incompleteness)?
+      separates_from:
+      - smithson.incompleteness
+    - question: Is the error one of mistaking one thing for another in kind (confusion), or a matter of
+        degree/magnitude (inaccuracy)?
+      separates_from:
+      - smithson.confusion
+      - smithson.inaccuracy
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.errors
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — Roberts's 'Errors' category is explicitly derived from Smithson's
+        distortion concept.
+    source_vagueness: The 1989 text phrases the inaccuracy/confusion split as 'distortion in degree' vs
+      'wrongful substitution in kind' without giving criteria for operationalizing degree-vs-kind beyond
+      numeric-estimation examples.
+    definition_confidence: medium-high
+  - type_id: smithson.confusion
+    name: Confusion
+    scope: imported
+    parent: smithson.distortion
+    source_locator: Smithson 1989 (exact page UNVERIFIED); definition given in Smithson's own words in
+      a 2022 essay
+    definition_source: Mistaking one thing for another — a wrongful substitution in kind, e.g. misidentifying
+      an object or fact as being something other than what it is.
+    definition_operational: Check whether the unit shows one specific thing (object, fact, cause) being
+      mistaken for a categorically different one.
+    inclusion_criteria:
+    - A specific entity, fact, or cause is misidentified as a different, specific entity/fact/cause.
+    exclusion_criteria:
+    - The error is a matter of magnitude/degree on a single dimension rather than a categorical substitution
+      (that is smithson.inaccuracy).
+    discriminating_questions:
+    - question: Is X mistaken for a categorically different Y (confusion), or is a quantity/degree simply
+        off (inaccuracy)?
+      separates_from:
+      - smithson.inaccuracy
+    source_examples: []
+    near_neighbours: []
+    source_vagueness: None noted beyond the general degree/kind distinction discussed under distortion.
+    definition_confidence: medium-high
+  - type_id: smithson.inaccuracy
+    name: Inaccuracy
+    scope: imported
+    parent: smithson.distortion
+    source_locator: Smithson 1989 (exact page UNVERIFIED); definition given in Smithson's own words in
+      a 2022 essay
+    definition_source: Mis-estimating something — a systematic bias, under-estimation, or over-estimation
+      along a quantitative dimension; distortion in degree rather than in kind.
+    definition_operational: Check whether the unit gives a quantitative or gradable estimate that is off,
+      without the underlying referent itself being mistaken for something else.
+    inclusion_criteria:
+    - A quantitative or gradable claim is present.
+    - The claim is systematically too high or too low relative to the correct value, while correctly identifying
+      WHAT is being estimated.
+    exclusion_criteria:
+    - The error involves misidentifying the referent itself, not just its magnitude (that is smithson.confusion).
+    discriminating_questions:
+    - question: Is the right thing being estimated, just with a wrong magnitude (inaccuracy), or is the
+        wrong thing being referred to altogether (confusion)?
+      separates_from:
+      - smithson.confusion
+    source_examples: []
+    near_neighbours: []
+    source_vagueness: None noted beyond the general degree/kind distinction discussed under distortion.
+    definition_confidence: medium-high
+  - type_id: smithson.incompleteness
+    name: Incompleteness
+    scope: imported
+    parent: smithson.error
+    source_locator: Smithson 1989, p. 8 (inferred from inline OCR page-break marker in a digitized excerpt
+      of the book)
+    definition_source: The branch of error arising from missing or uncertain knowledge, as opposed to
+      wrongly-formed knowledge. Smithson notes it 'has received considerable attention from philosophers
+      ... quite possibly because it seems more corrigible than distortion' and dichotomizes it, by analogy
+      with distortion, into absence (incompleteness in kind) and uncertainty (incompleteness in degree).
+    definition_operational: Check whether the unit expresses a gap where information is simply missing
+      or imprecise, without an accompanying wrong claim being asserted.
+    inclusion_criteria:
+    - No specific wrong claim is asserted (contrast with distortion).
+    - Information relevant to a question is either wholly missing (absence) or present only in imprecise/indeterminate
+      form (uncertainty).
+    exclusion_criteria:
+    - A specific, wrong claim is present (that is smithson.distortion).
+    discriminating_questions:
+    - question: Is a wrong claim actually being made (distortion), or is information simply missing/imprecise
+        with no false claim asserted (incompleteness)?
+      separates_from:
+      - smithson.distortion
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.known_unknowns
+      relation: partial_overlap
+      distinguishing_test: Roberts's known unknowns require the actor to be AWARE of the gap; Smithson's
+        incompleteness is a state describable independent of the actor's awareness of it (a third-party/analyst-level
+        judgment is enough).
+    source_vagueness: Smithson himself flags that this branch 'has been subdivided more minutely' elsewhere
+      in the literature than his own dichotomy captures, and explicitly defers detailed treatment of its
+      subcategories at this point in the text ('I will delay further dissection of this part of the typology
+      for now').
+    definition_confidence: high
+  - type_id: smithson.absence
+    name: Absence
+    scope: imported
+    parent: smithson.incompleteness
+    source_locator: Smithson 1989, p. 8 (inferred from inline OCR page-break marker in digitized excerpt)
+    definition_source: 'Incompleteness in kind: outright absence of information — information that is
+      simply missing, as opposed to present-but-uncertain.'
+    definition_operational: Check whether the unit describes information that is entirely missing (not
+      merely imprecise) relative to a question.
+    inclusion_criteria:
+    - A question or topic is identifiable, and no information addressing it is present at all in the unit
+      or its immediate context.
+    exclusion_criteria:
+    - Information IS present but imprecise/indeterminate rather than wholly missing (that is smithson.uncertainty).
+    discriminating_questions:
+    - question: Is there literally no information on the point (absence), or is there SOME information
+        that is merely imprecise (uncertainty)?
+      separates_from:
+      - smithson.uncertainty
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.unknown_unknowns
+      relation: partial_overlap
+      distinguishing_test: Roberts's unknown unknowns require the actor be unaware the gap exists; Smithson's
+        absence is agnostic about the actor's awareness — an absence can be a known unknown or an unknown
+        unknown depending on awareness, which Smithson's category alone does not distinguish.
+    source_vagueness: No further internal distinctions for absence are given in the passages accessed;
+      treated as a single, unsubdivided category.
+    definition_confidence: high
+  - type_id: smithson.uncertainty
+    name: Uncertainty
+    scope: imported
+    parent: smithson.incompleteness
+    source_locator: Smithson 1989, p. 8 (inferred from inline OCR page-break marker in digitized excerpt)
+    definition_source: 'Incompleteness in degree: information is present but imprecise or indeterminate.
+      Smithson states uncertainty ''includes such concepts as probability, vagueness, and ambiguity,''
+      then explicitly defers further dissection (''I will delay further dissection of this part of the
+      typology for now'').'
+    definition_operational: Check whether the unit contains information that IS present on a point but
+      is imprecise, hedged, or indeterminate — use only as an intermediate/branch code; prefer coding
+      at probability/vagueness/ambiguity when a specific form is identifiable.
+    inclusion_criteria:
+    - Some information addressing the question is present.
+    - That information is imprecise, hedged, ranged, or otherwise indeterminate rather than absent or
+      definite.
+    exclusion_criteria:
+    - No information at all is present (that is smithson.absence).
+    - The information given is definite/precise but wrong (that is smithson.distortion).
+    discriminating_questions:
+    - question: Is information present but imprecise (uncertainty), or is nothing present at all (absence)?
+      separates_from:
+      - smithson.absence
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.known_unknowns
+      relation: partial_overlap
+      distinguishing_test: See smithson.incompleteness — same overlap logic applies at this narrower level.
+    source_vagueness: The 1989 excerpt accessed explicitly defers detailed definition of probability,
+      vagueness, and ambiguity at the point they are first listed as members of this set. A garbled OCR
+      rendering of the book's own Figure 1.1 appears to show the term 'Fuzziness' in the position where
+      the running text lists 'ambiguity' — given poor OCR quality this discrepancy between figure and
+      prose could not be resolved and is not treated as evidence of a distinct or renamed category. A
+      later co-authored Smithson chapter (citing Smithson 1999, 2008b — not 1989) adds a fourth member,
+      'conflict', to this list; this is a post-1989 extension and is NOT included as an original member
+      of the set.
+    definition_confidence: high
+  - type_id: smithson.probability
+    name: Probability
+    scope: imported
+    parent: smithson.uncertainty
+    source_locator: UNVERIFIED — listed as a member of the uncertainty triad in the 1989 excerpt accessed,
+      but not individually defined there or anywhere else located
+    definition_source: Listed by Smithson as one of three (1989) forms of uncertainty, alongside vagueness
+      and ambiguity. No definition specific to Smithson's own taxonomy (beyond the everyday statistical
+      sense) was found in any source accessed.
+    definition_operational: 'Treat as: information is expressed in the form of a stated likelihood, chance,
+      or statistical estimate rather than a categorical claim. Given the absence of a source-specific
+      definition, apply the everyday statistical sense conservatively and flag low confidence in any resulting
+      code.'
+    inclusion_criteria:
+    - The unit expresses a likelihood, chance, or statistical estimate framing of a claim (e.g. 'probably',
+      'X% chance', 'likely').
+    exclusion_criteria:
+    - The unit expresses an interval/range without probabilistic framing (that is smithson.vagueness).
+    - The unit expresses multiple discrete possible readings without a likelihood attached (that is smithson.ambiguity).
+    discriminating_questions:
+    - question: Is a likelihood/chance being expressed (probability), or a range on a continuous dimension
+        without an attached likelihood (vagueness)?
+      separates_from:
+      - smithson.vagueness
+    source_examples: []
+    near_neighbours:
+    - type_id: smithson.vagueness
+      relation: partial_overlap
+      distinguishing_test: NONE_POSSIBLE at high confidence — a secondary source notes only that 'statistics
+        primarily operates in the area of incompleteness, across probability and some kinds of vagueness'
+        without giving Smithson's own boundary test between the two.
+    source_vagueness: 'This is the single least-verifiable leaf category in the entire codebook: the 1989
+      passage found explicitly postpones defining probability, vagueness, and ambiguity individually at
+      the point they are introduced, and no other accessed source supplies a definition specific to Smithson''s
+      technical usage.'
+    definition_confidence: low
+  - type_id: smithson.vagueness
+    name: Vagueness
+    scope: imported
+    parent: smithson.uncertainty
+    source_locator: UNVERIFIED (definition drawn from Smithson's 2022 first-person restatement, not directly
+      confirmed against the 1989/1993 originals)
+    definition_source: Refers to an interval on some quantitative dimension — e.g. giving a range rather
+      than a precise value for a duration.
+    definition_operational: Check whether the unit expresses a claim as a range or interval on a continuous
+      dimension, rather than a single precise value or a discrete set of alternatives.
+    inclusion_criteria:
+    - A quantitative or gradable claim is expressed as a range/interval (e.g. 'a few days to a week')
+      rather than a point value.
+    exclusion_criteria:
+    - The claim expresses discrete alternative readings/meanings rather than a continuous interval (that
+      is smithson.ambiguity).
+    - The claim is a single precise but possibly wrong value (that is smithson.inaccuracy).
+    discriminating_questions:
+    - question: Is a continuous range being given (vagueness), or are there multiple discrete, qualitatively
+        distinct possible readings (ambiguity)?
+      separates_from:
+      - smithson.ambiguity
+    source_examples: []
+    near_neighbours:
+    - type_id: smithson.ambiguity
+      relation: partial_overlap
+      distinguishing_test: Vagueness = continuous-dimension interval; ambiguity = discrete alternative
+        readings. Test is stated in the 2022 restatement but not verified against the 1989/1993 originals.
+    source_vagueness: Definition sourced from Smithson's 2022 restatement, not from a page directly verified
+      in the 1989 book or 1993 article, which explicitly deferred defining this term at first mention.
+      Plausibly a faithful later elaboration, but exact original wording is unconfirmed.
+    definition_confidence: medium
+  - type_id: smithson.ambiguity
+    name: Ambiguity
+    scope: imported
+    parent: smithson.uncertainty
+    source_locator: UNVERIFIED (definition drawn from Smithson's 2022 first-person restatement, not directly
+      confirmed against the 1989/1993 originals)
+    definition_source: Refers to a situation with multiple distinct possible states or meanings, such
+      that a single statement admits more than one discrete reading — contrasted with vagueness (an interval
+      on a continuous dimension rather than discrete alternative states).
+    definition_operational: Check whether the unit admits two or more qualitatively distinct, discrete
+      readings/interpretations, none of which is clearly the intended one.
+    inclusion_criteria:
+    - The unit can be read in at least two distinct, mutually exclusive ways.
+    - No single reading is clearly privileged by the surrounding text.
+    exclusion_criteria:
+    - Only one reading is possible, but its precision is limited to a range (that is smithson.vagueness).
+    discriminating_questions:
+    - question: Are there multiple discrete possible readings (ambiguity), or one reading with a fuzzy/ranged
+        value (vagueness)?
+      separates_from:
+      - smithson.vagueness
+    source_examples: []
+    near_neighbours: []
+    source_vagueness: 'Same caveat as vagueness: sourced from the 2022 restatement rather than a verified
+      page in the 1989/1993 originals, which deferred defining this term at first mention.'
+    definition_confidence: medium
+  - type_id: smithson.untopicality
+    name: Untopicality
+    scope: imported
+    parent: smithson.irrelevance
+    source_locator: Smithson 1989 (exact page UNVERIFIED, passage found in digitized excerpt); definition
+      restated by Smithson in his own words in 2022
+    definition_source: 'The most straightforward kind of irrelevance: matters people feel they do not
+      need or want to know. Glossed in the 1989 text as concerning ''the intuitions people carry with
+      them and negotiate with others about how their cognitive domains fit together'', with topical consistency
+      described as an unspoken rule of ordinary conversation.'
+    definition_operational: Check whether the unit treats a topic as simply not germane or not worth raising
+      in the current context, without any element of prohibition or unresolvability.
+    inclusion_criteria:
+    - A topic is passed over or excluded as not relevant to the matter at hand, without an accompanying
+      claim that it is forbidden or undecidable.
+    exclusion_criteria:
+    - The exclusion is because the topic is prohibited/forbidden (that is smithson.taboo).
+    - The exclusion is because the topic cannot in principle be resolved either way (that is smithson.undecidability).
+    discriminating_questions:
+    - question: Is the topic excluded simply because it's seen as off-point/not needed here (untopicality),
+        or because it's forbidden (taboo), or because it's unresolvable (undecidability)?
+      separates_from:
+      - smithson.taboo
+      - smithson.undecidability
+    source_examples:
+    - Smithson notes that individuals who cross perceived topic boundaries — 'geniuses ... who see connections
+      between matters that appear irrelevant' — complicate any fixed boundary of what counts as untopical
+      (per the digitized 1989 excerpt).
+    near_neighbours:
+    - type_id: roberts.knowable_known_unknowns
+      relation: orthogonal
+      distinguishing_test: Roberts's category concerns a resource/investment decision about a KNOWN gap;
+        untopicality concerns a relevance judgment that need not involve any named gap at all.
+    source_vagueness: Framed relationally/socially (negotiated intuitions about domain fit, conversational
+      norms) rather than given a sharp necessary-and-sufficient definition; the source itself notes the
+      boundary is complicated by individuals who see cross-domain connections others do not.
+    definition_confidence: high
+  - type_id: smithson.taboo
+    name: Taboo
+    scope: imported
+    parent: smithson.irrelevance
+    source_locator: UNVERIFIED (definition drawn from Smithson's 2022 first-person restatement, not directly
+      confirmed against the 1989/1993 originals)
+    definition_source: Matters forbidden to be known, discussed, or attended to — enforced either by a
+      powerful authority (e.g. classified information) or by cultural/social norms (e.g. privacy norms).
+    definition_operational: Check whether the unit treats a topic as forbidden, off-limits, or something
+      one is not supposed to raise — attributable to an authority or a social/cultural norm.
+    inclusion_criteria:
+    - A topic is explicitly or implicitly marked as forbidden or not-to-be-discussed.
+    - The prohibition is attributable to an authority (formal rule, policy, law) or a social/cultural
+      norm.
+    exclusion_criteria:
+    - The topic is merely deemed irrelevant/not-needed with no element of prohibition (that is smithson.untopicality).
+    - The topic is unresolvable rather than forbidden (that is smithson.undecidability).
+    discriminating_questions:
+    - question: Is there an identifiable prohibition (rule, authority, norm) making the topic off-limits,
+        as opposed to it simply being seen as beside the point?
+      separates_from:
+      - smithson.untopicality
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.taboos
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — Roberts's 'Taboos' category is the same concept applied to
+        an organizational setting; both traditions use socially/culturally enforced prohibition as the
+        defining criterion.
+    source_vagueness: Definition sourced from Smithson's 2022 restatement rather than a page verified
+      in the 1989/1993 originals. It bundles two potentially distinct enforcement mechanisms (formal/authority-based
+      vs. informal/normative prohibition) under one label without further subdivision.
+    definition_confidence: medium
+  - type_id: smithson.undecidability
+    name: Undecidability
+    scope: imported
+    parent: smithson.irrelevance
+    source_locator: UNVERIFIED (definition drawn from Smithson's 2022 first-person restatement, not directly
+      confirmed against the 1989/1993 originals)
+    definition_source: Matters that, in principle, cannot be determined to be true or false.
+    definition_operational: Check whether the unit frames a question as one that cannot, in principle,
+      be settled either way — not merely difficult, but structurally unresolvable.
+    inclusion_criteria:
+    - A specific question/claim is identifiable.
+    - The unit frames it as impossible to resolve as true or false in principle, not merely as currently
+      unresolved or hard.
+    exclusion_criteria:
+    - The question is simply unaddressed/not raised (that is smithson.untopicality).
+    - The question is difficult but resolvable in principle given more resources (compare roberts.knowable_known_unknowns,
+      a different taxonomy's related but distinct concept).
+    discriminating_questions:
+    - question: Is the question being framed as UNRESOLVABLE IN PRINCIPLE, or merely as not-yet-resolved
+        or not worth pursuing?
+      separates_from:
+      - smithson.untopicality
+      - roberts.known_unknowns
+    source_examples: []
+    near_neighbours:
+    - type_id: wehling.temporal_durability
+      relation: partial_overlap
+      distinguishing_test: Wehling's 'principled unknowability' pole names a comparable structural unresolvability,
+        but frames it along a durability/eventual-resolution axis rather than a true/false-determinacy
+        axis; Smithson's category is about logical/practical undecidability of a truth value, Wehling's
+        is about whether resolution will ever occur. No single test cleanly separates a case that is both.
+    source_vagueness: The restated definition ('in principle, cannot be determined to be true or false')
+      does not specify whether 'in principle' means logical/formal undecidability, practical unresolvability,
+      or both — the exact 1989/1993 scoping could not be verified.
+    definition_confidence: medium
+- taxonomy_id: gross_2010
+  citation: 'Gross, M. (2010). Ignorance and Surprise: Science, Society, and Ecological Design. MIT Press.'
+  structure: categorical
+  full_text_accessed: false
+  access_note: 'The 2010 MIT Press book could not be retrieved in full text through any available channel
+    (no open-access location found via Unpaywall/Semantic Scholar/PMC/CrossRef-TDM; MIT Press direct.mit.edu
+    and mitpress.mit.edu landing pages return only the publisher blurb and jacket endorsements, not chapter
+    text). The book''s designated conceptual predecessor, Gross, M. (2007) ''The Unknown in Process: Dynamic
+    Connections of Ignorance, Non-knowledge and Related Concepts'', Current Sociology 55(5): 742-759,
+    was also NOT retrievable in full text (closed access; only its abstract was obtained). NOTE: the DOI
+    supplied in the task instructions, 10.1177/0011392107077645, does not resolve in CrossRef at all;
+    the correct DOI for this article, found via web search, is 10.1177/0011392107079928 -- fetch_article_fulltext
+    was retried against the correct DOI and still failed to obtain full text (closed access, no TDM link,
+    no PMC/OA copy). Consequently every category below is reconstructed exclusively from secondary sources:
+    (1) a plain-language explainer of Gross (2007)''s ''house of the unknown'' scheme written by Michael
+    Smithson (i2insights.org, 2022), a named ignorance-studies scholar, describing ''ignorance'', ''nonknowledge'',
+    and ''negative knowledge'' as used by Gross (2007) -- this is a secondary paraphrase of the 2007 article,
+    not the article itself, and carries no page numbers; (2) a book review of the 2010 book in American
+    Journal of Sociology 116(6) (2011): 2022-2024, which reproduces one verbatim quoted sentence from
+    the book at p. 76 concerning surprise, error, and ''nescience''; (3) a citing academic work (ResearchGate
+    record 346624361) that quotes Gross (2010: 68) defining ''nescience'' as ''the complete absence of
+    knowledge'' and states it lies ''outside the mapping'' of the other terms, and additionally paraphrases
+    (without page cite) that nescience is a retrospective/hindsight-only category; (4) a book chapter
+    on agnotology (Springer, ''Agnotology: Ignorance and Absence...'') that paraphrases Gross (2010) as
+    clarifying Merton''s (1987) ''specified ignorance'' via the terms nescience, non-knowledge, and negative
+    knowledge, and quotes the book''s opening line ''Ignorance and surprise belong together'' at p. 1
+    -- this quote is corroborated verbatim by the MIT Press and Amazon publisher blurbs for the book,
+    though those do not carry a page number themselves. No source accessed provided a systematic, page-referenced
+    walkthrough of the full 2010 category structure (e.g., whether nescience/non-knowledge/negative knowledge
+    form an explicit diagrammed typology in the book, and how/whether the 2007 ''house of the unknown''
+    diagram is carried over unchanged). The task brief''s suggested terms ''active non-knowledge'' vs
+    ''passive non-knowledge'' were NOT found anywhere in the retrieved literature as Gross''s own labels;
+    this pairing is treated as unverified and is NOT included as a category (see unverifiable_claims).'
+  categories:
+  - type_id: gross.ignorance
+    name: Ignorance
+    scope: imported
+    source_locator: UNVERIFIED — no page number found in any accessed source; reconstructed from a secondary
+      paraphrase of the 2007 predecessor scheme
+    definition_source: In Gross's 2007 scheme, as summarized by a secondary source (not a direct quote),
+      'ignorance' functions as the superordinate cover term for conscious not-knowing — 'the unknowns
+      that we're aware of' — under which more specific forms (non-knowledge, negative knowledge) are differentiated.
+      It is UNCONFIRMED whether the 2010 book preserves this superordinate role unchanged.
+    definition_operational: Treat as a coarse ROOT code only, for units that clearly express conscious
+      awareness of not-knowing something but that cannot be assigned to a more specific Gross subtype
+      below. Given the low confidence of this category's own definition, use sparingly and flag any use
+      for review.
+    inclusion_criteria:
+    - The unit clearly expresses conscious awareness of a gap in knowledge.
+    - The unit cannot be more specifically assigned to gross.non_knowledge, gross.negative_knowledge,
+      or gross.nescience.
+    exclusion_criteria:
+    - The unit expresses complete absence of knowledge with no awareness at all (that is closer to gross.nescience,
+      per secondary paraphrase).
+    discriminating_questions:
+    - question: Is this awareness of not-knowing further specified as resolvable-in-principle (non-knowledge)
+        or irreducible (negative knowledge) — if so, code the more specific type instead.
+      separates_from:
+      - gross.non_knowledge
+      - gross.negative_knowledge
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.known_unknowns
+      relation: partial_overlap
+      distinguishing_test: Both denote conscious awareness of a gap; Gross's category (as reconstructed)
+        is a broader umbrella term whose internal structure could not be independently verified, so no
+        fine-grained test can be given (NONE_POSSIBLE at present evidence level).
+    source_vagueness: This entire category rests on a single third-party plain-language explainer of the
+      2007 article; no page number, no direct quote, and no confirmation that this superordinate role
+      survives unchanged into the 2010 book was found. Confidence is low for this reason alone, independent
+      of any genuine ambiguity in Gross's own writing.
+    definition_confidence: low
+  - type_id: gross.non_knowledge
+    name: Non-knowledge (Nichtwissen)
+    scope: imported
+    source_locator: UNVERIFIED — no page number found; described only in secondary paraphrase of both
+      the 2007 article and the 2010 book
+    definition_source: 'Ignorance that is sufficiently specified that it could, in principle, be eradicated
+      or overcome — a known unknown for which a route to resolution is at least conceivable. A secondary
+      paraphrase states Gross uses this term to clarify Merton''s (1987) ''specified ignorance'': non-knowledge
+      is ''the ignorance of a discipline which knows where the unknowns are'' (e.g. a scientific hypothesis
+      is treated as a form of specified ignorance, premised on a presumed, nameable unknown).'
+    definition_operational: Check whether the unit names a specific, resolvable-in-principle unknown,
+      framed as something a discipline/actor knows how to go about investigating (e.g. a stated open question,
+      hypothesis, or planned investigation).
+    inclusion_criteria:
+    - A specific unknown is named.
+    - The unit frames it as something with a conceivable route to resolution (an investigation, test,
+      or method that could close it).
+    exclusion_criteria:
+    - The unknown is framed as irreducible/unresolvable regardless of method (that is gross.negative_knowledge).
+    - No specific unknown is named at all (that is gross.nescience, per secondary paraphrase — a nescience
+      is discoverable only in hindsight, if at all).
+    discriminating_questions:
+    - question: Is there a NAMED unknown with a conceivable path to resolving it (non-knowledge), or is
+        the unknown framed as fundamentally irreducible (negative knowledge)?
+      separates_from:
+      - gross.negative_knowledge
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.known_unknowns
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE at current evidence — both denote a named, resolvable-in-principle
+        gap; without page-verified primary text for Gross, no independent test beyond terminological overlap
+        can be offered.
+    - type_id: wehling.knowledge_of_nonknowledge
+      relation: partial_overlap
+      distinguishing_test: Wehling's 'known unknowns' pole is a comparable concept but framed as a point
+        on a spectrum of awareness rather than a resolvability-focused category; the two may often co-occur
+        without a clean separating test.
+    source_vagueness: No page-cited primary quote was located in either the 2007 article or the 2010 book.
+      The relationship drawn to Merton's 'specified ignorance' is itself a secondary paraphrase of the
+      book's argument, not a verbatim quotation, so how precisely Gross's own wording matches this gloss
+      is uncertain.
+    definition_confidence: low
+  - type_id: gross.negative_knowledge
+    name: Negative knowledge
+    scope: imported
+    source_locator: UNVERIFIED — no page number found
+    definition_source: Knowledge about what cannot be known — distinguished from non-knowledge by being
+      irreducible rather than resolvable in principle. The term originates with Karin Knorr-Cetina (1999);
+      secondary sources describe Gross as adopting and integrating it into his own scheme (in both the
+      2007 article and, per a later citation, the 2010 book) to mark the boundary between reducible and
+      irreducible forms of the unknown.
+    definition_operational: Check whether the unit explicitly frames a gap as one that will never be resolved
+      or cannot be resolved by any conceivable investigation — a claim ABOUT the limits of knowability,
+      not merely an unresolved question.
+    inclusion_criteria:
+    - The unit makes a claim about the boundary or limits of what can be known on a topic, not merely
+      that something is currently unknown.
+    exclusion_criteria:
+    - The unit frames the gap as resolvable given effort/investigation (that is gross.non_knowledge).
+    discriminating_questions:
+    - question: Does the unit claim the gap is IN PRINCIPLE unresolvable (negative knowledge), or merely
+        not yet resolved (non-knowledge)?
+      separates_from:
+      - gross.non_knowledge
+    source_examples: []
+    near_neighbours:
+    - type_id: wehling.temporal_durability
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — both concern principled/irreducible unresolvability of an unknown;
+        without page-verified primary text for Gross's own wording, the two cannot be independently distinguished
+        beyond noting they derive from different theoretical lineages (Knorr-Cetina via Gross vs. Wehling's
+        own dimension).
+    source_vagueness: Because 'negative knowledge' is explicitly a borrowed term (from Knorr-Cetina, not
+      coined by Gross), the available secondary material does not clarify exactly how much Gross's own
+      usage diverges from Knorr-Cetina's, nor what page-level definition appears in the 2010 book specifically
+      as opposed to the 2007 article.
+    definition_confidence: low
+  - type_id: gross.nescience
+    name: Nescience
+    scope: imported
+    source_locator: Gross 2010, p. 68 (per secondary citation); Gross 2010, p. 76 (verbatim quote reproduced
+      in a book review)
+    definition_source: A citing work paraphrases Gross (2010, p. 68) as understanding nescience as 'the
+      complete absence of knowledge', placing it categorically outside the non-knowledge/negative-knowledge
+      mapping — i.e. it is not itself a specifiable or nameable unknown. The same source paraphrases (without
+      page cite) that actors can become aware of a nescience only in hindsight, at best. A 2011 American
+      Journal of Sociology book review reproduces a verbatim sentence from p. 76 linking nescience to
+      the retrospective revelation, via surprise, of an error.
+    definition_operational: Check whether the unit describes a gap that was not just unresolved but entirely
+      un-nameable beforehand — discovered only retrospectively, typically via an unexpected event or outcome
+      that revealed the gap after the fact.
+    inclusion_criteria:
+    - 'The unit is written in a retrospective/discovery frame: a gap becomes visible only once an unexpected
+      outcome has already occurred.'
+    - Before that outcome, there is no indication anyone could have named or anticipated the gap.
+    exclusion_criteria:
+    - The gap was named or anticipated in advance in some form (that is gross.non_knowledge).
+    discriminating_questions:
+    - question: Could this gap have been named or anticipated by anyone before the surprising outcome
+        occurred?
+      separates_from:
+      - gross.non_knowledge
+    source_examples: []
+    near_neighbours:
+    - type_id: roberts.unknown_unknowns
+      relation: near_synonym
+      distinguishing_test: NONE_POSSIBLE — both denote a total, retrospectively-discovered absence of
+        knowledge with no prior awareness; terminological overlap with Roberts's 'unknown unknowns' appears
+        near-total based on available (secondary) description of Gross's usage.
+    - type_id: gross.surprise
+      relation: partial_overlap
+      distinguishing_test: Per the p. 76 quote, surprise is the triggering EVENT/PROCESS through which
+        a nescience is revealed; nescience is the underlying gap itself. A unit describing the triggering
+        event vs. the gap it reveals may need both codes or a judgment call about which is foregrounded.
+    source_vagueness: The p. 68 definition is itself a secondary paraphrase, not a verbatim quote, so
+      the exact wording Gross uses on that page is unconfirmed. One citing source further notes nescience
+      carries a distinct theological/medieval lineage ('absolute or intransitive ignorance') that Gross
+      repurposes rather than originates — a shift in meaning from the term's historical usage that introduces
+      some definitional slippage.
+    definition_confidence: medium
+  - type_id: gross.surprise
+    name: Surprise
+    scope: imported
+    source_locator: Gross 2010, p. 1 (quote reproduced identically across multiple secondary sources)
+    definition_source: 'The book''s opening line, quoted identically by the publisher (MIT Press/Amazon
+      jacket copy) and by a secondary academic chapter with an explicit page citation: "Ignorance and
+      surprise belong together" (p. 1). Surprises can make actors aware of their own prior ignorance;
+      an event that defies prediction or risk assessment is treated as a potential route to new, previously
+      non-knowledge/nescient content.'
+    definition_operational: Check whether the unit describes an outcome or event that was unexpected/defied
+      prediction, and whether that event is framed as the moment a prior gap in knowledge became visible.
+    inclusion_criteria:
+    - An event or outcome is described as unexpected, unpredicted, or defying prior risk assessment.
+    - The event is framed (explicitly or by clear implication) as revealing something that was not known
+      before.
+    exclusion_criteria:
+    - The unit describes an expected, predicted outcome (no element of surprise).
+    - The unit describes the underlying gap itself without reference to a triggering event (that is closer
+      to gross.nescience or gross.non_knowledge).
+    discriminating_questions:
+    - question: Is the focus on the triggering unexpected EVENT itself (surprise), or on the underlying
+        GAP the event revealed (nescience/non-knowledge)?
+      separates_from:
+      - gross.nescience
+      - gross.non_knowledge
+    source_examples: []
+    near_neighbours:
+    - type_id: gross.nescience
+      relation: partial_overlap
+      distinguishing_test: See gross.nescience — surprise is the revealing event/process, nescience is
+        the revealed gap; a single unit reporting both may need dual coding or a foregrounding judgment.
+    source_vagueness: '''Surprise'' functions in the book more as a companion process/outcome tied to
+      the other categories (per the p. 76 quote on nescience) than as a cleanly defined discrete category
+      in its own right; no accessed source presents a standalone definitional sentence for ''surprise''
+      beyond this relational framing.'
+    definition_confidence: medium
+- taxonomy_id: wehling_2024
+  citation: Wehling, P. (2024). Nichtwissen – ein ungewöhnlicher Schlüsselbegriff der Umweltsoziologie.
+    In M. Sonnberger et al. (Eds.), Handbuch Umweltsoziologie (pp. 671-687). Springer Fachmedien Wiesbaden.
+    https://doi.org/10.1007/978-3-658-37218-7_58
+  structure: dimensional
+  full_text_accessed: true
+  access_note: Full text extracted directly from user-supplied book PDF (978-3-658-37218-7.pdf), chapter
+    pp. 671-687 (PDF pages 658-674 in the physical page numbering used by the extraction). The chapter
+    itself explicitly refers to a fuller elaboration of the same three-dimension scheme in Wehling 2006
+    (Im Schatten des Wissens?, S. 116 ff.) which we do NOT have primary access to; page-numbers for that
+    earlier, fuller source are UNVERIFIED and corroborated only via secondary web sources (a Peter Lang
+    chapter quoting Wehling 2006:116ff, and a philou.rwth-aachen.de summary), consistent with but not
+    identical to this chapter's condensed restatement.
+  source_framing: 'Wehling explicitly rejects earlier typologies of ignorance variants (citing Smithson
+    1989, Faber et al. 1992, Kerwin 1993) as either having unclear systematics or reducing to a binary
+    contrast of purportedly clear ideal types (e.g. explicitly-intended vs entirely-unintended ignorance).
+    He proposes instead three dimensions along which non-knowledge is socially perceived and evaluated,
+    explicitly designed to capture intermediate forms and gradations rather than rigid types (source_locator:
+    chapter p. 676 / ''Formen und Varianten des Nichtwissens'', section 3.1).'
+  relationship_to_other_taxonomies_noted_by_source: Wehling explicitly frames his three dimensions as
+    a response to, and improvement upon, prior typological attempts he names as Smithson (1989), Faber
+    et al. (1992), and Kerwin (1993) (p. 676) — i.e., the source itself positions this scheme in implicit
+    tension with Smithson's categorical approach. This is preserved here as documented tension, not resolved
+    or merged.
+  dimensions:
+  - dimension_id: wehling.knowledge_of_nonknowledge
+    name: Wissen über das Nichtwissen (Knowledge of the non-knowledge)
+    source_locator: Wehling 2024, chapter p. 676 (section 3.1, first dimension)
+    definition_operational: Differentiates non-knowledge by what and how much is known about what is not
+      known. A person can know very precisely what they do not know (e.g. a colleague's exact birthdate)
+      or can be entirely 'clueless' as to what escapes their knowledge.
+    permitted_values:
+    - value: known_unknowns
+      label: Known unknowns (bekannt, was man nicht weiß)
+      source_locator: p. 676, citing Kerwin 1993
+    - value: unknown_unknowns
+      label: Unknown unknowns (völlig ahnungslos)
+      source_locator: p. 676, citing Kerwin 1993
+    - value: intermediate_vague_or_partial
+      label: Vague/partially-conscious non-knowledge (vage geahntes oder nur partiell bewusstes Nichtwissen)
+      source_locator: 'p. 676: ''Dazwischen liegt ein breites Spektrum von unscharfen Übergangsformen'''
+    source_vagueness: The source explicitly states this dimension is a spectrum with a 'wide range of
+      blurred transitional forms' between the two poles, and does NOT provide criteria for distinguishing
+      degrees of 'vagueness' within that middle range. Wehling notes the political volatility of the unknown-unknowns
+      pole (citing its use to justify the 2003 Iraq war) as a reason the category resists neutral application.
+    definition_confidence: medium
+  - dimension_id: wehling.intentionality
+    name: Intentionalität des Nichtwissens (Intentionality of the non-knowledge)
+    source_locator: Wehling 2024, chapter p. 677 (section 3.1, second dimension)
+    definition_operational: Differentiates non-knowledge by whether and to what degree it can be attributed
+      to the action or omission of social actors. Explicitly NOT limited to explicit, conscious intent
+      to not-know; also covers 'weaker' forms such as low epistemic interest or prematurely discontinued
+      inquiry as socially attributable grounds for non-knowledge.
+    permitted_values:
+    - value: attributable_intentional
+      label: Attributable / (at least weakly) intentional non-knowledge (zurechenbares Nicht-wissen-Wollen)
+      source_locator: p. 677
+    - value: weak_attributable
+      label: Weakly attributable non-knowledge — low epistemic interest, prematurely abandoned inquiry
+        (geringes Erkenntnisinteresse, vorschnell abgebrochene Erkenntnisbemühungen)
+      source_locator: p. 677
+    - value: unavoidable_non_attributable
+      label: Unavoidable, non-attributable non-knowledge ('beim besten Willen' nicht vorhersehbar, weder
+        vermeidbar noch schuldhaft zurechenbar)
+      source_locator: p. 677
+    source_vagueness: Wehling states directly that whether specific actors can be assigned legal, moral,
+      or political responsibility for non-knowledge and its consequences is 'regularly highly contested'
+      (per the secondary-corroborated 2006 elaboration; the 2024 chapter itself illustrates this only
+      via the climate-change/greenhouse-effect historical example, pp. 677, without giving a decision
+      rule).
+    definition_confidence: medium
+  - dimension_id: wehling.temporal_durability
+    name: Zeitliche Dauerhaftigkeit des Nichtwissens (Temporal durability of the non-knowledge)
+    source_locator: Wehling 2024, chapter p. 677 (section 3.1, third dimension)
+    definition_operational: Differentiates non-knowledge by whether and over what time horizon it can
+      (presumably) be converted into knowledge — ranging from a merely temporary 'not-yet-knowing' (Noch-nicht-Wissen)
+      to a principled, insurmountable 'inability-to-know' (Nicht-wissen-Können / Niemals-wissen-Können),
+      with many intermediate gradations (e.g. long-persisting but not fundamentally irresolvable non-knowledge).
+    permitted_values:
+    - value: not_yet_known
+      label: Not-yet-knowing (Noch-nicht-Wissen) — temporary, presumed resolvable by research
+      source_locator: p. 677
+    - value: long_persisting_resolvable
+      label: Long-persisting but not fundamentally unresolvable non-knowledge (lange anhaltendes, aber
+        nicht grundsätzlich unauflösbares Nichtwissen)
+      source_locator: p. 677
+    - value: principled_unknowability
+      label: Principled inability-to-know (prinzipiell unüberwindliches Nicht-wissen-Können / Niemals-wissen-Können)
+      source_locator: p. 677
+    source_vagueness: Wehling notes that Western-modern societies default to assuming all non-knowledge
+      is eventually resolvable through targeted research, and that claims of principled unknowability
+      are often dismissed as premodern/religious/metaphysical residue — yet he gives a concrete counter-example
+      (practical infeasibility of testing all interactions among >100,000 industrially used chemical substances,
+      citing Scheringer 2018, p. 677) as a case of research-practically (not metaphysically) grounded
+      principled unknowability. No sharp operational boundary is given between 'long-persisting' and 'principled
+      unknowability' beyond this illustrative case.
+    definition_confidence: medium

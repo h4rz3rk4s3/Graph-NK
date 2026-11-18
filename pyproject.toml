@@ -20,6 +20,7 @@ dependencies = [
     "pydantic-settings>=2.4",
     "fasttext-langdetect>=1.0",
     "python-dateutil>=2.9",
+    "openpyxl>=3.1",
 ]
 
 [project.optional-dependencies]

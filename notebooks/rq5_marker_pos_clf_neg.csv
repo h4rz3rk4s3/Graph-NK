@@ -1,535 +1,413 @@
 unit,text,rules,is_genuine_nk,error_type,notes
-commit:15e4aa558008d489069c5ba3c7ee0ea1be23dc0c:commit_message,"(PE-3516) Remove unnecessary debian templates
-
-Having a postinst with just DEBHELPER in it is accomplished by not having the
-file at all. Similarly, the prerm file is functionally the same file that
-debhelper will generate once it is installing the init scripts for the debian
-package. This commit removes those files.",['affix.prefix.un'],,,
-commit:35de5abcf65d21846645284322be3d6cbead3516:commit_message,(PE-37713) Remove useless copy of additional directory to resources dir,['affix.suffix.less'],,,
-commit:1d3ea2547c8c7bde052cc0611620eda132112da2:commit_message,"(SERVER-1412) Allow build scripts to be included in staging tarball
-
-This commit adds support for creating an  dir
-in a project's jar.  If found, ezbake will copy all of the files
-found in this directory into the staging directory, so that they
-will be included in the tarball that is sent up to the packaging
-system.
-
-These files will *not* be included in the final packages, but they
-can be referen",['morph.syn.embedded_question'],,,
-commit:bd3773483cc4d2832facc07a63ec480fa91f5f27:commit_message,"(EZ-97) Output fail log message for Debian when start fails
-
-This commit changes the logic for interpreting the result of a start
-operation to log an exit code of 1 as a ""failure"" instead of as a
-""success"".  Previously, the logic would erroneously log ""OK"" to output
-even though the start command had actually failed.",['morph.syn.embedded_question'],,,
-commit:19743503674b4ec177787811a02ad4399a18be4b:commit_message,"(EZ-39) Update ezbake to use java 8 when available on debian
-
-Ubuntu's vivid release will include a java 8 package, as will debian's
-release after jessie. This commit adds java8-runtime-headless as an
-option if java7 is not available.",['morph.syn.embedded_question'],,,
-commit:709d584b9db93b2cb05246e7bfb8b3ed8afbded3:commit_message,"(EZ-34) Allow ezbake to set apt/yum repo_name for packaging
-
-In order to ship projects such as puppetserver 2.0 to a repo other than
-main/products, ezbake needs to be wired up to do so. This commit adds an
-ezbake key called repo-target which will set the correct keys in
-project_data.yaml to ensure this can happen.",['morph.syn.embedded_question'],,,
-pr:OpenVoxProject/ezbake:61:comment_body:6,"I raised https://github.com/OpenVoxProject/ezbake/pull/103, which makes testing easier",['morph.syn.embedded_question'],,,
-commit:435c705cb32c85a2d782d3182b1f40a145d719c6:commit_message,(maint) Remove unneccesary PATH comments from debian/rules,['affix.prefix.un'],,,
-commit:202807206051f9895e64e77384e98ba7d6385b71:commit_message,"Merge pull request #545 from underscorgan/maint/master/publish-container-readme
-
-(maint) Publish container readme when new container is pushed",['morph.syn.embedded_question'],,,
-commit:f697d678b490e8aa0a08c77f577c612923998c2e:commit_message,"(maint) Use pushd/popd instead of -c for sles init scripts
-
--c did not behave as expected. Sles used the directory specified as a
-chroot and then tried to find the daemon (/opt/puppet/bin/java) within
-the directory, where it wouldn't exist. This commit updates the proc
-calls to remove the -c, and replaces the one in the start function with
-a pushd/popd. The use of pushd means that the shell has to",['morph.syn.embedded_question'],,,
-commit:23c5ec11ff154e9c30779694225a13a7c9f7cc98:commit_message,"Merge pull request #52 from waynr/maint-nonzero-exit-status-on-fail
-
-(MAINT) Return nonzero exit status if parameters incorrect.","['morph.syn.embedded_question', 'affix.prefix.non', 'affix.prefix.in']",,,
-commit:91349fadb8068035b41819aeac90f39950835d74:commit_message,"(PDB-5622) Select Java 11+ on Platform 8
-
-Does not change PE package builds.
-
-Add a puppet-platform-version argument to EZBake defaulting to 7 (which
-maintains the current dependency list) when building for Puppet Platform
-8 select newer more appropriate JDK's for each platform. Fails for
-unrecognized Platform versions so that we remember to select appropriate
-JDKs.
-
-Selecting JDK 11 for SLES 12 m","['morph.syn.embedded_question', 'affix.prefix.un']",,,
-commit:d72c2314a1bfa901ff5c0dad49fee99f0c9a7455:commit_message,"Remove extra debian defaults file.
-
-Seems to be unnecessary. Also removes references to it in the project_data.yaml
-mustache.
-
-Signed-off-by: Wayne <wayne.com>","['morph.evid.inferential_seem', 'affix.prefix.un']",,,
-commit:e0581cc05c011eca84762e09d43354dd14b923c9:commit_message,"(EZ-100) Terminate java process if start script times out
-
-This commit adds logic to the start script to terminate the Java
-background process and purge the associated pidfile if the service
-has not been started by the time the start timeout has been reached.",['morph.syn.embedded_question'],,,
-commit:dcb5cfb6a0740331d78cf6bc784e167e38760635:commit_message,"Merge pull request #588 from jpartlow/issue/main/replats-150-skip-runas-when-service-user
-
-(REPLATS-150) Skip efforts to run as user when already service user",['morph.syn.embedded_question'],,,
-commit:66a24de64ef0fbe7850e5e41b0a21edc7702a8bb:commit_message,"(maint) Remove el5 from build list
-
-EL 5 does not have a sufficient version of java for puppet server or
-puppetdb. Because of this, we should not be building or shipping
-packages for this platform.",['morph.mod.deontic'],,,
-pr:OpenVoxProject/ezbake:36:body,"This fixes a regression from b2de7c7a2e7704491a08665a9f53ded8009aa109 where we removed the reload script. Now that we don't fork anymore, we can just rely on , which is a variable provided by systemd.
-
-see https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#ExecReload=",['morph.syn.embedded_question'],,,
-commit:11ad3c0277548b010690c2d61eda535aa96aa96c:commit_message,"(EZ-44) Set sudo HOME for foreground
-
-This commit changes executions of commands via sudo from the foreground
-subcommand to be done with a -H option.  The -H option causes the HOME
-environment variable for the process running in sudo to be set to that
-of the default home directory for the target user.  The -H overrides the
-default behavior on Ubuntu, which is to preserve the HOME variable value
-fo",['morph.syn.embedded_question'],,,
-commit:3c9337d15be2acac9af36b2567567067e1b41225:commit_message,"(EZ-99) Added procps as an explicit package dependency for pgrep
-
-This commit adds procps as an explicit package dependency.  procps
-provides pgrep, which is used by a number of the init scripts.",['morph.syn.embedded_question'],,,
-commit:7584bd6997f34afaa50520493cde55bdd320e699:commit_message,"(maint) Update PE packaging to lay out FS correctly
-
-Previously the confdir and datadir would be incorrect in ezbake PE
-installations. This commit updates them to use real_name for the confdir
-and datadir, so /etc/puppetlabs/pe-classifier becomes
-/etc/puppetlabs/classifier and /opt/puppet/share/pe-classifier becomes
-/opt/puppet/share/classifier, which is correct for PE.","['morph.syn.embedded_question', 'affix.prefix.in']",,,
-commit:ff03c310f1f6c985ba75774178e8be93164b0328:commit_message,"Merge pull request #403 from aperiodic/maint-nodeploy-env-variable
-
-(EZ-108) Don't deploy if  set",['morph.syn.embedded_question'],,,
-commit:9b02de50283144839ea90a9ef608f0f0f4235edd:commit_message,"(EZ-97) Add missing check for pid status after kill in aborted start
-
-This commit adds one extra  check to the logic in the
-start script which confirms whether an attempt to kill the Java process
-for an aborted start was successful.  Without this check, an erroneous
-""Java process not killed"" trace message might be written even if the
-process actually was killed.","['morph.syn.embedded_question', 'morph.mod.epistemic_maymight']",,,
-commit:1335712b5b2050f1348f0585d790bf3a7a59eda4:commit_message,"(SERVER-344) Choose best method to become puppet
-
-Previously, only the su command was used to switch to the puppet user
-and launch Puppet server in the foreground. This does not work on some
-systems using SELinux. This commit attempts to use the runuser command
-instead if it is installed and the user is running as root, otherwise
-sudo or su is used.",['morph.syn.embedded_question'],,,
-commit:773441fb2bc3393ca0246b3623fd57c6b0edad6a:commit_message,"(maint) Ensure terminus provides and obsoletes are valid rpm versions
-
-With the introduction of maven timestamps into the version string, the
-provides and obsoletes for the termini packages have invalid versions,
-which is generating warnings during the build. For example:
-
-This commit addresses that problem but subbing . for - in all of the
-terminus versions strings, which will ensure that it is a","['morph.syn.embedded_question', 'affix.prefix.in']",,,
-commit:04814a18426b1f4f6144998f0660b56942dc699b:commit_message,(MAINT) Clean up unnecessary action arguments,['affix.prefix.un'],,,
-commit:578d4ca3e0072bed1cf4285b3701ae224b4391fa:commit_message,"Fix error capturing return value in debian pe init script
-
-Somehow two lines got joined here. The assignment to RETVAL is supposed to be
-on its own line to capture the exit code of start-stop-daemon.",['morph.hedge.approximator_somehow'],,,
-pr:OpenVoxProject/ezbake:24:body,"In https://github.com/OpenVoxProject/ezbake/pull/2/commits/6b3ad939736bb8d0f0a22a715f398a49a678a8d3 we introduced a new configuration option for . To get this working, we need to add it to ezbake itself. Otherwise the variable won't exist and we cannot use it in templates:
-
-
-
-(see the whitespace after  where the java path should be.","['morph.syn.embedded_question', 'morph.mod.deontic']",,,
-pr:OpenVoxProject/ezbake:27:comment_body:8,"It's not required. But in case my hack here doesn't catch the java bin, or we are on a platform where we don't have an explicit java version, we end up with /usr/bin/java and that works for 80% of the situations.",['morph.syn.embedded_question'],,,
-commit:d2ad06508bed85d7d886678c3563948903659faf:commit_message,"(EZ-48) Add support for debian systemd
-
-This commit updates both the PE and foss build pipelines to correctly
-install systemd scripts for packages built with EZBake. It also cleans
-up some of the logic in the {pre,post}{inst,rm} debian scripts.
-
-This only upgrades Ububtu Xenial to systemd, even though it really
-should include Debian Jessie. We disable the service in the prerm, which
-prevents us fr","['morph.mod.deontic', 'morph.syn.embedded_question']",,,
-commit:f7b5fe8b407a1934a66ff9be5ef2394ac8f0b6fd:commit_message,"(EZ-97) Echo error message when process exits during reload or HUP fails
-
-This commit adds an echo statement if a process exits during a reload
-attempt or a HUP signal cannot be sent to the process.  The commit also
-replaces 'set -e' with 'set +e' to allow for the exit code for a 'kill
--0 <pid>' to be inspected rather than having the script just exit for a
-non-zero value.",['morph.syn.embedded_question'],,,
-commit:c36a1dd86bb993543176ac547f606c762faa5ba8:commit_message,"(maint) Fix bad version check for sles/systemd
-
-The check for whether or not a sles system was systemd was checking for
-os_version <= 12, but sles 12 is systemd. This was resulting in sles 12
-packages missing init scripts.",['morph.syn.embedded_question'],,,
-commit:e59643f5dc6bce1cb5ba2f58c728b09736a026c4:commit_message,"(maint) fix postinst action for RedHat FOSS
-
-This is the companion commit to 570838b, but applied to the foss redhat
-spec template.  Matches an unbalanced if.","['morph.syn.embedded_question', 'affix.prefix.un']",,,
-commit:01f78204ea9af33f4f6d6da8e5e2fe900c748a4f:commit_message,"(CPR-515) Allow separate tasks for install vs upgrade
-
-Currently, the postinstall tasks from the packaged project
-are executed unconditionally, both on install as well as
-upgrades. This can cause issues, as in the case with puppetserver
-potentially overwriting config values if the user has changed them
-from the package defaults.
-
-This adds an addtional set of tasks that can be executed in the
-pack","['morph.syn.embedded_question', 'affix.prefix.un']",,,
-commit:bcb5026b7482077303a12d19385755fac3fda7fb:commit_message,"(EZ-21) Lay down logrotate for ezbake packages
-
-Ezbake packages can generate a lot of logs, so this commit adds
-automatic log rotation for anything in the /var/log/$project directory.
-Unfortunately, logrotate scripts are terrible because between certain
-versions a line is required in the configuration, without which errors
-are generated, but that is not recognized on earlier versions of
-logrotate.",['morph.syn.embedded_question'],,,
-commit:067b797fc20f453bd1334ce5a75e5d0b9ab18add:commit_message,"(maint) Fix release for final versions
-
-The method to determine the release number was correctly setting the
-release for SNAPSHOT builds but was errantly setting it to the version
-if this was not a SNAPSHOT build. This fixes that method to return 1 for
-non-SNAPSHOT builds, since we don't support custom release numbers.",['morph.syn.embedded_question'],,,
-pr:OpenVoxProject/ezbake:4:comment_body:2,Rebase should fix tests,['morph.mod.deontic'],,,
-commit:e234fec7ccefe7a8f188c48170653457d30e3a14:commit_message,"Merge remote-tracking branch 'upstream/master' into stable
-
-* upstream/master: (109 commits)
-  (SERVER-1723) Use /dev/urandom for foreground subcommand
-  (maint) Remove cprice404 as maintainer
-  (maint) Ticket number typo
-  Version 1.1.7-SNAPSHOT
-  Version 1.1.6
-  (maint) Update changelog for 1.1.6
-  (CPR-401) Require 'which'
-  Version 1.1.6-SNAPSHOT
-  Version 1.1.5
-  (maint) Update changelog for ",['morph.syn.embedded_question'],,,
-pr:OpenVoxProject/ezbake:122:body,"#### Pull Request (PR) description
-
-The v7 release of  introduced a major change where it will refuse to check out repository state that may be mutated by the pull request. This commit explicitly sets  on the checkout step of the workflow as  has logic for finding the pull request and cherry-picking commits out of it.
-
-
-#### This Pull Request (PR) fixes the following issues","['morph.syn.embedded_question', 'morph.mod.epistemic_maymight']",,,
-commit:90dcd5d502c19158ca4f13c154c16fcff02eeda3:commit_message,"Eliminate net-tools dependency
-
-ezbake-functions.sh.erb uses the deprecated netstat from the
-deprecated net-tools package. But I can't find any uses of the
-functions in ezbake-functions.sh.erb, so let's remove it. The
-functions were used in the wrappers which were eliminated in #5.
-
-Fixes #13.
-
-Signed-off-by: Tim Meusel <tim.de>",['morph.syn.embedded_question'],,,
-commit:068f06e5086e4fe0026abf8d33838076c4c8774c:commit_message,"(EZ-100) Use START_TIMEOUT var as default for start timeout if set
-
-This commit uses the START_TIMEOUT environment variable as the default
-for start timeout if set in the service's sysconfig/default file.",['morph.syn.embedded_question'],,,
-commit:8e0c3e5c4ba69022af32b32eac5634b79a86889a:commit_message,"(MAINT) Add explicit nrepl references
-
-There appears to be a bug in leiningen where it will exclude
-tools.nrepl from an uberjar if it is a transitive dependency of
-your project (as opposed to a first-class dependency listed in
-the project.clj file that you are building the uberjar from).
-
-See https://github.com/technomancy/leiningen/issues/1762 .
-
-This commit adds an explicit dependency to all of ","['morph.evid.inferential_seem', 'morph.syn.embedded_question']",,,
-commit:f9de8c42da74af5301260dd50e324c21e5dc7455:commit_message,"(EZ-132) Change Java runtime OOM and logfile behavior
-
-I think this should be all that's needed. I changed
-
-  -XX:OnOutOfMemoryError=""kill -9 %p""
-to
-  -XX:+CrashOnOutOfMemoryError
-
-CrashOnOutOfMemoryError has been around since Java 8, so this should work with all our products.
-
-I also added:
-
-    -XX:ErrorFile=""${app_logdir}/${real_name}_err_pid%p.log""","['morph.mod.deontic', 'morph.hedge.shield_think']",,,
-commit:2071979f08fabe87895012b0febc1ce6c2bd0676:commit_message,"Merge pull request #412 from melissa/ticket/master/RE-8726-allow-ship-to-nonfinal-repo
-
-(RE-8726) Allow nonfinal repo definition",['affix.prefix.non'],,,
-commit:6fefa17c9fce91537829e82173386ea1f49abe5e:commit_message,"(maint) Fail fast when unrecognized RHEL version
-
-Previously this was failing at the rpmbuild stage when it provided an
-empty java dependency to the package build command.","['morph.syn.embedded_question', 'affix.prefix.un']",,,
-commit:87dcc4da73a9607ba807246c2e53adc84628f416:commit_message,"Merge pull request #530 from mwaggett/ticket/master/re-12093-remove-dead-code
-
-(RE-12093) Remove unused files",['affix.prefix.un'],,,
-pr:OpenVoxProject/ezbake:2:body,"This is https://github.com/puppetlabs/ezbake/pull/627 opened against OpenVoxProject. I have only done an initial rebase without resolving all the issues.
-
-I'll add inline notes with where we need to have further discussion.",['morph.syn.embedded_question'],,,
-commit:de0e320700351bea48e018394a4eec69f753ae25:commit_message,"(maint) Fail early, fail often
-
-Set -ex for the controller script so we quit if anything fails.",['morph.syn.embedded_question'],,,
-commit:72523d322c6e2964ac553ba8bcaa1455b172a0be:commit_message,"Merge pull request #64 from cprice404/maint/master/PE-4762-change-ini-files-to-conf
-
-(PE-4762) Change ini files to conf, remove unneeded settings",['affix.prefix.un'],,,
-commit:10a4ed96076035ea2762b0c0994e142b7bad4dbb:commit_message,"(PE-11368) Use real_name in logrotate files
-
-In the new FS, both pe-puppet-server and puppet-server put their logs in
-/var/log/puppetlabs/puppet-server (or console-services or puppetdb).
-Previously the logrotate files referenced project in the directory
-instead of real name, which would lead to logrotate trying to rotate a
-non-existent directory such as /var/log/puppetlabs/pe-puppet-server.
-This c",['morph.syn.embedded_question'],,,
-commit:34f93bdda1301f1ff90a0e5e33e270b7837a33d0:commit_message,"(EZ-50) Update permissions on ezbake-functions.sh
-
-Currently this gets installed as '0774', which is a littl unusual
-and causes rpmlint to complain.
-
-This updates to 0750.","['morph.syn.embedded_question', 'affix.prefix.un']",,,
-commit:0f993fe5a8cd881908019e06a5b962e29013de68:commit_message,"(RE-5033) Remove obsoletes/provides for termini
-
-Due to an odd issue with PuppetDB, when PuppetDB 2.3.z and PuppetDB
-3.0.0 are in the same repository (e.g. PC1) you can not install
-PuppetDB 2.3.z because the terminus package is oboleted and therefore
-brings in the 3.0.0 version of temini. That means you can't really run
-2.3.5. This is bad since the tests for PuppetDB 2.3.z test against the
-AIO and",['morph.syn.embedded_question'],,,
-commit:99df400259e5570703554bc834bb366155f57c91:commit_message,"Revert ""(maint) Fix issue where postinst steps don't make it into packaging""
-
-This reverts commit af64cf32d828790c7057470a99ca4ddb64a7d4ef.",['morph.syn.embedded_question'],,,
-commit:af64cf32d828790c7057470a99ca4ddb64a7d4ef:commit_message,(maint) Fix issue where postinst steps don't make it into packaging,['morph.syn.embedded_question'],,,
-commit:4b2d3675a4788c4becd67020edfc38dc6cd07580:commit_message,"Update build.rake
-
-the 'build?token=' access method does not work in the latest jenkins core version.
-But using the other original case where JENKINS_USER_AUTH=<LDAP username>:<token>
-should work","['morph.syn.embedded_question', 'morph.mod.deontic', 'morph.syn.question_answer']",,,
-pr:OpenVoxProject/ezbake:5:comment_body:7,"This introduced a regression. The systemd units now have:
-
-
-
-Turns out: Variable interpolation isn't support for the first arg of . the unit will fail with:
-
-
-
-It doesn't matter if the variable is in quotes or not. from  on IRC:
-
-
-
-I will fix this in https://github.com/OpenVoxProject/ezbake/pull/2/",['morph.syn.embedded_question'],,,
-commit:1be11d7efafb4e5b46859f66d4a22ad70507d6d1:commit_message,"(PDB-1455) Fix pe/foss inconsistencies and bug with using ruby detection in spec/rules.erb
-
-This patch solves an initial bug with ruby detection, but also attempts to find
-other cases where PE and FOSS differ by removing as much variation as well.
-
-Lots of incosistencies and bugs were found in this exercise:
-
-* Users created using old FOSS based homedirs
-* Removal of log files for FOSS was removin","['morph.syn.embedded_question', 'morph.mod.deontic', 'affix.prefix.in', 'affix.prefix.un']",,,
-commit:39bd4e4e6d4e7096055835bfeb09f6ede1d34d41:commit_message,"(maint) Deploy snapshot & list deployed version
-
-When staging a SNAPSHOT version of a project, EZBake will deploy
-a snapshot artifact to the configured snapshots repository to ensure we
-have a maven artifact for the build, and the full snapshot version of
-the deployed artifacts will be listed as the version in EZBake's
-manifest and project_data.yaml.",['morph.syn.embedded_question'],,,
-commit:ec90b8ceacdf80453ef30c9735419c2beb33b21e:commit_message,"(PDB-1455) Correct termini install.sh rubylibdir fallback autodetection
-
-The autodetection routine for AIO pathed Puppet rubylibdir wasn't working.
-This showed up when we tried to point our PuppetDB source based tests at a
-the ezbake upgrade branch.
-
-This patch adds the Puppet 4/AIO path to PATH when trying to call ruby to
-figure out where the terminus belongs.
-
-Signed-off-by: Ken Barber <ken.sh>",['morph.syn.embedded_question'],,,
-pr:OpenVoxProject/ezbake:62:body,"This reverts commit e43660e2363c45d7a35d4ef36246f8866764f5d9.
-
-e43660e2363c45d7a35d4ef36246f8866764f5d9 added a denylist for needrestart to ignore openvoxdb/openvoxserver. Both services write files into /tmp/, which triggered service restarts, that were not required.
-
-Since
-https://github.com/puppetlabs/ezbake/pull/623/commits/bf1a75d757b0f5e6ed7db1ddde7dc13e4984649c, both services use the Pr",['morph.syn.embedded_question'],,,
-commit:0d03169b2ebc107bba914295a6297eaafad081a3:commit_message,"(SERVER-2602) Do not manage egd
-
-This setting is of little value in Java 8+ and we've seen no difference
-anecdotally between explicitly configuring /dev/urandom as a source vs
-using the JVMs defaults.
-
-We will be explicitly setting this to /dev/random for FIPS enabled
-builds, however we will do so via the JAVA_ARGS variable. FOSS users who
-would like to manage their egd source should use JAVA_ARGS",['morph.mod.deontic'],,,
-commit:aa6861dc16562d13fa5888c070a636d2ac6e14a2:commit_message,"(SERVER-3) Update EL init scripts to invoke the daemon from INSTALL_DIR
-
-On el systems, if the service is invoked using init.d directly, while in
-a root owned directory, it will fail to run several external commands
-during startup. This isn't a problem for debian because we pass in a
-directory to run from that will be accessible to the service user. This
-commit implements the same behavior for EL ","['morph.syn.embedded_question', 'morph.mod.deontic', 'morph.mod.epistemic_must_be']",,,
-commit:3c613d3002c4a1d5ea1afef0bd812f016acef422:commit_message,"(QENG-903) Fix preinsts and install-deb-sysv-init
-
-Previously  was installing the redhat init script.
-
-Also,  and  were simply concatenating
-the strings in the  which I never noticed until attempting
-to install from ezbake on a debian machine.
-
-Signed-off-by: Wayne <wayne.com>",['morph.syn.embedded_question'],,,
-commit:653385eb3ff0eabe34c25924e1ffc4f78c428961:commit_message,"(EZ-110) Retain qualifying coordinate info when snapshot version expanded
-
-Previously, work was done to expand SNAPSHOT versions to the version of
-the actual artifact previously deployed to a repository.  In the process
-of expansion, any qualifying info on the coordinate, e.g., any
-exclusions, was lost.  The resulting uberjar which was built would still
-honor the qualifying info, however, the ezba","['morph.syn.embedded_question', 'morph.mod.deontic']",,,
-commit:b153669d32bbebbce3a1ed5309149adf669327ee:commit_message,"Merge pull request #291 from underscorgan/0.3.21-prep
-
-(maint) 0.3.21 release prep",['affix.prefix.under'],,,
-commit:c6b942f590940c0cf60e04cf09b7a23ff0990d18:commit_message,"(RE-12082) Revert libuser changes
-
-This commit reverts the changes made to address PE-24606. We encountered
-installation failure when bumping puppetserver to a version of ezbake with
-these changes. There were several issues with this work, the largest of which
-being the fact that there is no libuser package for sles and there is a bug in
-libuser1, a dependency of libuser, for debian 8 (jessie) and","['morph.syn.embedded_question', 'affix.prefix.un']",,,
-commit:0147ccde42027e0d76a6eb7b675b07af26f0c5e3:commit_message,"(maint) Add docker container for ezbake builds
-
-This commit adds artifacts needed to build and test an ezbake container.
-This should help with development and testing, both internal to Puppet
-and for external contributors.",['morph.mod.deontic'],,,
-pr:OpenVoxProject/ezbake:91:body,"The tmpfiles configuration file isn't required anymore, since we set PrivateTmp=true in the systemd unit (introduced in 900b4eee0dfda861fd99934ce5f1532c411ab373).
-
----
-
-The  directory contains only two files:
-
-
-
-We don't package /usr/lib/tmpfiles.d/*.conf anymore. And the changelog.gz is autogenerated by fpm afterwards. That means that in our packaging directory, there is no . If we force ",['morph.syn.embedded_question'],,,
-commit:1b260eaa519d110a07670ebe73002aa66111f90f:commit_message,"(maint) Correct jar name in the systemd service file
-
-Previously, the service file referred to $project.jar, which is a
-holdover from previous versions of ezbake. ezbake.rb contains
-uberjar_name, which is the full filename of the installed jar, which
-will almost certainly never be the same as project.",['morph.syn.embedded_question'],,,
-commit:08b1476592973bee78c4c708e5d76b6341d2be05:commit_message,(maint) Remove additional unused debian files,['affix.prefix.un'],,,
-commit:9fd20f834007be8e8684737f69a80f4ab9e2c6e8:commit_message,"Drop Debian 11 & 12 support
-
-They don't have Java 21, which is required for OpenVox 9.
-
-Signed-off-by: Tim Meusel <tim.de>",['morph.syn.embedded_question'],,,
-commit:d5a08db673bf57dd072421654196754524644b05:commit_message,(SERVER-1742) Restart functions should not try to start if stop fails,"['morph.mod.deontic', 'morph.syn.embedded_question']",,,
-pr:OpenVoxProject/ezbake:109:title,fpm.rb: Remove unused systemd option & Amazon 2023: Switch to Java 25,['affix.prefix.un'],,,
-commit:b6168be5c82b6dd90b3aa4b48063c05926704e6b:commit_message,"Merge pull request #443 from underscorgan/maint/master/bash-fix
-
-(maint) Fix empty if in bash controller",['morph.syn.embedded_question'],,,
-commit:6dc0b82f68fee8d24a2809d5b1810a45a9cd8814:commit_message,(maint) Update comment for when this should actually be fixed,"['morph.syn.embedded_question', 'morph.mod.deontic']",,,
-commit:00953990baf2692969df8839410f309d31f5632d:commit_message,"(PE-36861) Fix needrestart conf file
-
-Turns out needrestart doesn't merge the values in the conf file automatically, so whichever is loaded last is what is used. This modifies it to use 'push' to enforce this merging behavior.
-
-See https://github.com/liske/needrestart/issues/124",['morph.syn.embedded_question'],,,
-commit:790cf750ea04a7bfb7e78c7012b96f6896ae51e3:commit_message,"(maint) Cleanup foss packaging templates
-
-This fixes some issues with the foss packaging templates, in general
-merging where possible from the PE templates.",['morph.syn.embedded_question'],,,
-commit:01490cfaab960f23d7d4901d55d7ab254e131c5d:commit_message,"Merge branch 'stable'
-
-* stable:
-  Merge pull request #193 from shrug/maint/master/pe-8274
-  (MAINT) Updated changelog for 0.2.5
-  (SERVER-344) Remove quotes around sudo command
-  (SERVER-344) Remove hardcoded puppet user
-  (SERVER-344) Remove unnecessary redirects
-  (SERVER-344) Choose best method to become puppet
-  Version 0.2.5-SNAPSHOT
-  Version 0.2.4
-  (MAINT) Updated changelog
-  (MAINT) Corr","['affix.prefix.un', 'affix.prefix.in']",,,
-commit:db74b11e18f6f6de72297f0ed526585dc210b62b:commit_message,"Merge pull request #415 from underscorgan/tickets/master/re-4844-merge-templates
-
-(RE-4844) Merge FOSS/PE ezbake templates",['affix.prefix.under'],,,
-pr:OpenVoxProject/ezbake:106:body,"We support/test against Java 21 and 25 in our openvoxdb/openvox-server pipelines. Our packages depend on either of those versions. Where possible, we want to use Java 25. This also adds Debian 14 / Ubuntu 26.10 to the list. They are still in development, but it's already clear that they will ship Java 25 as well. See individual commits for details.","['morph.syn.embedded_question', 'affix.prefix.in']",,,
-commit:e5a4105a5ab0a329fe010b09291be043ece176c9:commit_message,"Don't hardcode PE in the proj naming
-
-Now that project is being automatically prefixed with PE when desired,
-hardcoding it in the control and rules is no longer necessary. This
-commit removes them.",['morph.syn.embedded_question'],,,
-pr:OpenVoxProject/ezbake:6:body,"OpenVox only supports platform 7 and 8, and we don't really need to worry about ancient el8 being weird. We build OpenVox with Java 11, so make this the base version, and ideally use 17 when available.",['morph.syn.embedded_question'],,,
-commit:5ba62cc32846c3064708e62ff0ced2e941c3cee2:commit_message,"Merge pull request #124 from cprice404/maint/master/SERVER-33-increase-default-permgen
-
-(SERVER-33) Increase default max permgen",['affix.prefix.in'],,,
-commit:ee4b88339c3f43cc147b3f51f5f8f7d630a716a8:commit_message,"(EZ-97) Kill background Java process if start script terminated
-
-This commit will trap HUP, INT, and TERM signals sent to the start
-script.  If any is trapped, the associated Java process that the start
-script spawned will be terminated.  This is done so that if a 'restart'
-is issued while a start is already in process, the Java process for the
-first start attempt will be cleaned up before the sec","['morph.syn.embedded_question', 'morph.mod.epistemic_maymight']",,,
-commit:c3e926ee84aafd474257b5c884d032d0c3131c71:commit_message,"Merge pull request #253 from shrug/master
-
-(re-4765) vardir should use real_name",['morph.mod.deontic'],,,
-commit:e8334295b6a86cd2303e8639eafca08f7a02f270:commit_message,"(EZ-108) Don't deploy if  set
-
-Change the  action to avoid deploying to the snapshots repository
-if the  environment variable is set to any value
-(including  or  or ), and mention this in the README",['morph.syn.embedded_question'],,,
-commit:0fbf29e63545dcb2efb454e2e19a8010b4ff4e63:commit_message,"(PE-3063) add manifest info
-
-This commit adds manifest info (about which packages are
-bundled) to the rpm/deb package descriptions, and to
-a file on disk.",['morph.syn.embedded_question'],,,
-commit:79eadbcc3bcee9fb38e2d31f0d21de1dc249ecc6:commit_message,"(SERVER-1772) Update ezbake.manifest with uberjar info
-
-Update generate-manifest-file to include dependency information for any
-additional uberjars that have been included in the project.
-
-Changes the function from using a formatted string to an arguably better
-mustache template, since mustache is already used elsewhere in ezbake",['morph.hedge.adverbial_perhaps'],,,
-pr:OpenVoxProject/ezbake:22:body,"The  directory contains only two files:
-
-
-
-Since https://github.com/OpenVoxProject/ezbake/pull/5, we don't package /usr/lib/tmpfiles.d/puppetserver.conf anymore. And the changelog.gz is autogenerated by fpm afterwards. That means that in our packaging directory, there is no . If we force fpm to package it, it will raise an error.
-
-This change was tested in https://github.com/OpenVoxProject/o",['morph.syn.embedded_question'],,,
-commit:08d0efec4e93960c67e434ce27278b69af8da51d:commit_message,"Fix some version strings for compatibility
-
-The packaging tools were making some regex-y assumptions
-about how we'd format our version strings.  My previous
-stuff for SNAPSHOT versions did not comply with these
-assumptions; this commit should hopefully fix that.","['morph.syn.embedded_question', 'morph.mod.deontic']",,,
-commit:ffc5349c50e8f5a890d4856e822c4491a18bd53f:commit_message,"(EZ-97) Terminate start / reload waiting loop if process dies
-
-This commit changes the start and reload commands to exit immediately if
-the service process dies while waiting for the command's action to
-complete.  Previously, the commands would continue to loop unnecessarily
-for up to the configured start_timeout (for start) or start_timeout / 10
-(for reload) before exiting with an error.",['morph.syn.embedded_question'],,,
-commit:fe6d06b6bec480f34902905f6cbd744a788140c0:commit_message,"(maint) add tzdata-java as dependency on el-7 and above platforms
-
-With the release of openjdk-headless 11.0.20.0.8-2.el8 tzdata-java
-is no longer included as a dependency of openjdk. This causes startup
-failures in puppetserver when it isn't present.  This adds an explicit
-dependency on the package, which is small, and is required.",['morph.syn.embedded_question'],,,
-commit:a58215f3219bb1b76459046751411654b4a2694b:commit_message,"Bump tk-ws-jetty9 to 0.7.2 for pe-jvm-puppet
-
-This was using 0.5.2 which is pretty old, and also had an incompatible
-dependency on schema.","['morph.syn.embedded_question', 'affix.prefix.in']",,,
-pr:OpenVoxProject/ezbake:3:body,"This is a copy of the PR to puppetlabs ezbake at https://github.com/puppetlabs/ezbake/pull/627. Additionally, this removes some more logic around determining Java version vs. Puppet Platform version, since we are only using this for OpenVox 7 and 8 and they should both use the same Java versions now.
-
-Original work by",['morph.mod.deontic'],,,
-pr:OpenVoxProject/ezbake:29:title,unit file: fix uninitialized LOG_APPENDER variable,['affix.prefix.un'],,,
-commit:8adc15af6e50decce3b42a81c52a5872321ef82a:commit_message,"(PE-6748) Update trapperkeeper-webserver-jetty9 dependency for pe-console-services
-
-Bump to 0.9.0 of tk-w-j9 which has a fix for the poodle sslv3 security issue.",['morph.syn.embedded_question'],,,
-commit:b328a318a7815fcc61abf3401ceb883dc8d43dee:commit_message,"Merge pull request #254 from kbarber/pdb-1455
-
-(PDB-1455) Fix some more terminus/FOSS bugs & inconsistencies",['affix.prefix.in'],,,
-commit:3dfa33c230c7455c7011238d4c5dadc1cbf37c1b:commit_message,"(MAINT) Update tk-jetty9 to 1.1.0 for FOSS puppetserver
-
-Without this patch FOSS puppet server builds 0.9.0 of tk-jetty9 in the
-uberjar.  This is a problem because FOSS puppet server should be using
-1.1.0 of tk-jetty9",['morph.mod.deontic'],,,
-commit:2eb83b3c843127f38e35c15f4043b694f981c9e3:commit_message,Fix tests after inclusion of package-name,['affix.prefix.in'],,,
-commit:c1e000e5e3a8ae23be0eeea1f01d2217a1fa6bbb:commit_message,"(maint) Update artifact cleanup so we're taking advantage of reuse
-
-Accidentally was cleaning up the artifact directory in fpm.rb, which was
-cleaning it up after each platform. Move that cleanup into the rake task
-so that it's done after all platforms have been built.",['morph.syn.embedded_question'],,,
-issue:OpenVoxProject/ezbake:23:body,"In https://github.com/OpenVoxProject/ezbake/pull/5 we introduced a regression.
-
-The systemd units now have:
-
-Turns out: Variable interpolation isn't support for the first arg of . the unit will fail with:
-
-It doesn't matter if the variable is in quotes or not. from  on IRC:
-
-I will fix this in https://github.com/OpenVoxProject/ezbake/pull/2/",['morph.syn.embedded_question'],,,
+email:urn:uuid:02b91669-9c86-4f94-ada3-d5d5825d750b:paragraph:3,Incremental codecs  (2006-02-21),['affix.prefix.in'],,,
+pr:python/cpython:121315:comment_body:33,":robot: New build scheduled with the buildbot fleet by  for commit 52606d1529006ff849db06be0df5a2303cf620cf :robot:
+
+If you want to schedule another build, you need to add the <kbd>:hammer: test-with-buildbots</kbd> label again.",['morph.syn.embedded_question'],,,
+email:urn:uuid:462d50e4-abe7-49c4-bbc2-df2f94910e74:paragraph:2,"Then you may want to avoid going to zero-power while a program is
+holding the device file open.  After all, the program might issue a
+CDROMEJECT ioctl.",['morph.mod.epistemic_maymight'],,,
+email:urn:uuid:c665ed1b-f565-42dc-8509-914820456d46:paragraph:2,"The extra print is just for a blank line to terminate the headers. After
+that it should just work.",['morph.mod.deontic'],,,
+pr:python/cpython:129672:comment_body:4,The buildbot failure does not seem related,['morph.evid.inferential_seem'],,,
+email:urn:uuid:865e26f3-4816-4340-90df-f12d14499502:paragraph:1,"I apologize that it has taken me so long to respond. I had a hdd crash
+which I am in the process of recovering from. If emails to
+2zGai0TD8IC0pxML.com bounced, that is the reason why.
+
+The data is in files. Mostly Word documents and excel spreadsheets. The
+SSN map I have is a plain text file that has a format like this:
+
+ssn-xx-xxxx     new-id-xxxx",['morph.syn.embedded_question'],,,
+email:urn:uuid:bba9e541-069b-4c56-8aca-15b663086e5c:paragraph:1,"Hi, I'm running QGIS 2.4.0-Chugiak on a Windows & machine, and I'm new to QGIS.
+
+I'm trying run a model that has three algorithms, two of which are run in ""parallel"" and a third that uses the outputs from form the first two. I specified that that third The first algorithm runs fine but when it gets to the second it bombs with the message:
+        C:\PROGRA~1\QGISCH~1\bin>exit
+        Converting ou",['morph.syn.embedded_question'],,,
+email:urn:uuid:58371232-8be1-46f3-b1e9-f154dc37f0b2:paragraph:1,"This wires up the existing generic huge-vmap feature, which allows
+ioremap() to use PMD or PUD sized block mappings.",['morph.syn.embedded_question'],,,
+email:urn:uuid:143d0d1b-484b-485f-96e4-cd4beb47bf54:paragraph:1,"Just a quick note to let you know I've committed work on this [0] and it
+functions for my PostgreSQL/PostGIS project layers, as well as others.
+Pre-2.0 projects should now open with data defined fields still correctly
+mapped. I also implemented the field name-based properties for
+QgsPalLabeling and updated several tools.
+
+Please test with some of your pre-vector api project files and let me know
+i","['morph.mod.deontic', 'morph.syn.embedded_question', 'morph.hedge.adverbial_perhaps', 'morph.mod.epistemic_maymight', 'affix.prefix.in']",,,
+pr:python/cpython:149729:body,"Fixes #149728.
+
+## Cause
+
+ clears  at the end of its body, before  runs . Between those two events,  is set and , but  is still missing. The fast path in  returns the module without taking the import lock once it sees , so under free-threaded CPython a second thread can observe this window.  on that thread does , falls into a lazy , runs the same  line, fast-paths again, and recurses to . See ","['morph.evid.inferential_suggest', 'affix.prefix.in', 'affix.prefix.un']",,,
+issue:python/cpython:89189:body,"BPO | [45026](https://bugs.python.org/issue45026)
+--- | :---
+Nosy | , , , -storchaka, 
+PRs | <li>python/cpython#27986</li><li>python/cpython#28176</li>
+Files | <li>[three-way-comparison.log](https://bugs.python.org/file50306/three-way-comparison.log ""Uploaded as text/plain at 2021-09-27.14:46:46 by "")</li>
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and mig",['morph.mod.epistemic_maymight'],,,
+pr:python/cpython:135367:comment_body:25,"Just my comment: we're not required to take the fastest route here, since we may not have a heavy load on the email module. Still wish to hear more comments before we resolve this :)",['morph.mod.epistemic_maymight'],,,
+issue:python/cpython:107869:body,"# Bug report
+
+## Checklist
+- [X] I am confident this is a bug in CPython, not a bug in a third-party project
+- [ ] I have searched the CPython issue tracker, and am confident this bug has not been reported before
+
+## A clear and concise description of the bug
+Selecting an SVG file using askopenfilenames, in Windows 10, with explorer dialog box options set to show ""Icons"", results in the sel",['morph.syn.embedded_question'],,,
+email:urn:uuid:48a46601-f7bb-42ab-903a-c9d71ca2dd15:paragraph:3,"That is a sample code of wiki.
+I have a file 'main.py' and several sub-folders.
+After I execute 'pythonw setup.py py2exe', I see 2 folders, 'dist' & 'build'
+which is the same as py2exe.
+I open the 'dist' folder and see a file 'main'. Then I double-click the
+'main' and appeared the error message.","['morph.syn.embedded_question', 'morph.evid.inferential_seem']",,,
+pr:python/cpython:93931:comment_body:2,All commit authors signed the Contributor License Agreement. <br/> [](https://cpython-clabot.herokuapp.com/signed-contributor-license-agreement?version=96a49432b8b111ec9bf5bfe9ad6c72c4),['morph.syn.question_answer'],,,
+email:urn:uuid:ccbf06dd-9099-42c6-8f71-7808a9738ae0:paragraph:2,Only override netfs->primary_index when registering success.,['morph.syn.embedded_question'],,,
+commit:f4c54ff5cd57533f2c655a4fefb7b726341cbc8d:commit_message,"What's New in 3.3: reorder modules
+
+Remove also duplicate functions in the ""os"" module section",['morph.syn.embedded_question'],,,
+issue:python/cpython:89161:body,"BPO | [44998](https://bugs.python.org/issue44998)
+--- | :---
+Nosy | , -deily, -devel
+
+<sup>*Note: these values reflect the state of the issue at the time it was migrated and might not reflect the current state.*</sup>
+
+<details><summary>Show more details</summary><p>
+
+GitHub fields:
+
+bugs.python.org fields:
+
+</p></details>",['morph.mod.epistemic_maymight'],,,
+pr:python/cpython:113630:comment_body:3,"This is an attempt without hacking type slots.
+
+Problem: It is possible that accessing metaclasses cause a crash with bad arguments (e.g. ), which this PR does not tackle.
+
+cc PEP 687 experts: -aasland",['morph.syn.embedded_question'],,,
+issue:python/cpython:86903:comment_body:3,"So the distinction between simple and complex is to define what goes into . As long as we don't disturb that I think it's fine not to evaluate anything. (There's also the effect on what's considered a local variable, inside functions.)","['morph.syn.embedded_question', 'morph.hedge.shield_think', 'affix.prefix.in']",,,
+issue:python/cpython:129222:comment_body:8,"Mimalloc has substantial modifications from upstream. Daan Leijen was working on changes to mimalloc to support the features needed by free-threaded CPython upstream, but it's probably going to take a while. Even then, it will require CPython specific build configuration -- it's never going to be something where you can just drop in a shared library provided by the OS.","['morph.hedge.adverbial_perhaps', 'morph.syn.embedded_question']",,,
+email:urn:uuid:edbbb62e-cf69-4468-8904-6ac0bb8e20f0:paragraph:1,"ed
+
+What is the build/make command to reproduce the above failur",['morph.syn.embedded_question'],,,
+email:urn:uuid:a7d0ebac-f16e-411f-b0f9-1e3dcecb4042:subject,"Re: revisiting the ""What am I running on?"" question",['morph.syn.embedded_question'],,,
+pr:python/cpython:110092:body,"Fix test_asyncio timeouts: don't measure the maximum duration, a test should not measure a CI performance. Only measure the minimum duration when a task has a timeout or delay. Add CLOCK_RES to test_asyncio.utils.
+
+
+
+* Issue: gh-110088","['morph.mod.deontic', 'morph.syn.embedded_question']",,,
+email:urn:uuid:a3176097-d96e-480d-9e34-6b51c06754db:paragraph:1,"Enable users to mark the shadow mbr as done without completely
+deactivating the shadow mbr feature. This may be useful on reboots,
+when the power to the disk is not disconnected in between and the shadow
+mbr stores the required boot files. Of course, this saves also the","['morph.mod.epistemic_maymight', 'morph.syn.embedded_question']",,,
+email:urn:uuid:2291b6f6-2b22-4ac5-8dbc-fab15a028f62:paragraph:1,")
+
+import math
+while math.isnan(r) :
+
+will do what you're looking for.
+
+If you're using python 3.5 or higher, you can also use math.nan instead
+of float('nan'","['morph.syn.embedded_question', 'morph.evid.inferential_seem']",,,
+commit:17485bf6f93034003555456810cdaaae6eac6eee:commit_message,Issue #16588: Silence unused-but-set warnings in Python/thread_pthread.h,['affix.prefix.un'],,,
+email:urn:uuid:4b139fc4-7edd-4889-9a2d-48e1ede86ae0:paragraph:3,"(and of course, if statements are just as acceptable in that example
+as try/except -- though try/except is often handier than if/else in
+this sort of case)
+
+Or this, using the standard idiom to have a module work also as a
+script:","['morph.syn.embedded_question', 'morph.hedge.approximator_kind_of']",,,
+pr:python/cpython:31544:body,"Bug Report
+
+Compiling python 3.7.3 statically fails with the following error:
+
+gcc -pthread -fPIC -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -std=c99 -Wextra -Wno-unused-result -Wno-unused-parameter -Wno-missing-field-initializers -Werror=implicit-function-declaration -DPy_LIMITED_API=0x03050000 -I./Include -I. -I/usr/include/x86_64-linux-gnu -I/usr/local/include -I/home/m","['morph.syn.embedded_question', 'morph.evid.inferential_seem', 'affix.prefix.un', 'affix.prefix.non']",,,
+pr:python/cpython:146195:comment_body:10,"Yea, I posted before looking at the code, and before coffee :)
+Thank you for the fix!",['morph.evid.inferential_seem'],,,
+email:urn:uuid:bd783c5b-1367-44de-a5c4-cdd1275927bd:paragraph:3,"The arguments (which I've shortened with three dots) are the same as
+currently for the select() method: what attributes to fetch, what
+rectangle, whether to fetch geometries and whether to use intersection",['morph.syn.embedded_question'],,,
+email:urn:uuid:7715e5d3-784d-4552-8bc8-761311cfbd97:paragraph:2,"commit c1a9eeb938b5433947e5ea22f89baff3182e7075 upstream.
+
+When a disfunctional timer, e.g. dummy timer, is installed, the tick core
+tries to setup the broadcast timer.
+
+If no broadcast device is installed, the kernel crashes with a NULL pointer
+dereference in tick_broadcast_setup_oneshot() because the function has no
+sanity check.",['morph.syn.embedded_question'],,,
+commit:b829dea0cd8ca8f784d3064b8b4c1b744d3c7b70:commit_message,Make indentation consistent,['affix.prefix.in'],,,
+issue:python/cpython:111795:comment_body:2,"I have created this issue as requested, forked the repository, debugged the code, fixed it and created the pull request back to you.
+Since this is my first Pull Request to this project feel free to advise if something is not exactly as you'd like to have it.
+ wrong behavior was a problem to me and I've created this issue (and the solution in the linked PR) for it.
+I double checked and created T","['morph.syn.embedded_question', 'affix.prefix.in']",,,
+email:urn:uuid:95ec81a2-0fd0-47c5-abc9-3a4878d23c8f:subject,2.6.30 Xen merge plan (what's in xen.git),['morph.syn.embedded_question'],,,
+email:urn:uuid:575e4c83-f2fa-4466-ab96-59bde18178fa:subject,"Re: QGIS hangs when trying to add stops in color 
+	ramp",['morph.syn.embedded_question'],,,
+issue:python/cpython:80527:body,"BPO | [36346](https://bugs.python.org/issue36346)
+--- | :---
+Nosy | , , , , , -melotti, , -storchaka, , , -islington, , 
+PRs | <li>python/cpython#12409</li><li>python/cpython#19653</li><li>python/cpython#20878</li><li>python/cpython#20879</li><li>python/cpython#20927</li><li>python/cpython#20932</li><li>python/cpython#20933</li><li>python/cpython#20934</li><li>python/cpython#20941</li><li>python/c",['morph.mod.epistemic_maymight'],,,
+email:urn:uuid:d5600a67-b675-4260-abb6-8986dfad3f20:paragraph:3,"fields if nothing is data-defined yet.
+- Add ability to set relevant fields to NULL (instead of just 0).
+- Show expression output for label Text and make non-editable if using
+expression.
+- Add Apply button and function, allowing dialog to stay open after
+changes (tracking/reverting undo stack for Cancel operation).
+- Add ability to select features, not just labels, to adjust aspects
+of hidden lab",['morph.syn.embedded_question'],,,
+email:urn:uuid:b5bd1621-ca49-4dcb-b3bc-799758d34945:paragraph:4,"*QGIS Sponsorship is valid for one year.
+
+A current list of donors who have made contributions large and small
+to the project can be seen here:
+
+http://qgis.org/en/sponsorship/donors.html
+
+If you would like to make a donation or sponsor our project, please
+visit http://www.qgis.org/en/sponsorship.html . QGIS is Free software
+and you are under no obligation to do so.
+
+Visual tour of the new release",['morph.syn.embedded_question'],,,
+pr:python/cpython:128648:comment_body:9,"Yes. But once there are no external references to the object  any more the garbage collector removes the objects. (the cache is on the object , not on the singledispatchmethod itself or the class)
+
+In the current main the caching is done on the  which keeps the generated methods alive.",['morph.syn.embedded_question'],,,
+issue:python/cpython:133653:comment_body:5,Something like,['rhetor.comparison.something_like'],,,
+email:urn:uuid:46172f11-f05c-4bc7-a6a2-16d567301d79:subject,"Re: [PATCH 10/13] Do not try to disable hpet if it hasn't been 
+	initialized before",['morph.syn.embedded_question'],,,
+email:urn:uuid:8c09167a-626b-4ff7-b804-ce844661051b:paragraph:1,It's on the bottom of every email you get from the list. It says unsubscribe and then the link to the mailing list management page.,['affix.prefix.un'],,,
+pr:python/cpython:95596:body,"Restores the 3.10 behavior for inheriting  involving multiple inheritance of C extension classes.
+
+* Issue: gh-92678",['affix.prefix.in'],,,
+issue:python/cpython:83635:title,"when \\u in byte_string ,byte_string.decode('raw_unicode_escape') maybe has problem","['morph.syn.embedded_question', 'morph.hedge.adverbial_maybe']",,,
+email:urn:uuid:5c095e19-f36c-434a-ab7c-9522d39749e5:paragraph:1,"The misunderstanding was based on being told that dot prefixed keyrings
+were protected, but in fact the only dot prefix code was here in
+key_get_type_from_user().
+
+The concept of dot prefixing should probably be documented either in the
+code and/or documentation.  At this point, both types and keyring names
+are reserved.","['morph.mod.deontic', 'morph.hedge.adverbial_perhaps']",,,
+email:urn:uuid:0125f6fa-ef0a-4862-a643-6f9b5100b760:paragraph:2,"' Some constants
+Const L_NoHardLinkCreated = ""Unable to create hard link""",['affix.prefix.un'],,,
+email:urn:uuid:9ef1b569-5797-4a58-be85-7cd1e34d64a3:paragraph:1,"I noticed the following check in smk_ptrace_rule_check():
+
+                if (tracer_known->smk_known == tracee_known->smk_known)",['morph.syn.embedded_question'],,,
+pr:python/cpython:150938:comment_body:3,"thanks , this looks more clean 👍",['morph.evid.inferential_seem'],,,
+pr:python/cpython:129927:comment_body:9,":robot: New build scheduled with the buildbot fleet by -aasland for commit 2ae9c189917b5cc0fd896c672997abec4f4bb7e7 :robot:
+
+Results will be shown at:
+
+https://buildbot.python.org/all/#/grid?branch=refs%2Fpull%2F129927%2Fmerge
+
+If you want to schedule another build, you need to add the <kbd>:hammer: test-with-refleak-buildbots</kbd> label again.",['morph.syn.embedded_question'],,,
+issue:python/cpython:89188:comment_body:2,"At least the PyASCIIObject struct in [Include/cpython/unicodeobject.h](https://github.com/python/cpython/blob/main/Include/cpython/unicodeobject.h) uses bit fields. Various preprocessor macros like PyUnicode_IS_ASCII() and PyUnicode_KIND() access this struct's bit field.
+
+This is problematic because according to the C specification, the storage of bit fields is unspecified and may vary from comp","['lex.unspecified', 'lex.undefined_behavior', 'morph.mod.epistemic_maymight', 'morph.mod.deontic', 'morph.mod.epistemic_must_be', 'morph.syn.embedded_question', 'morph.hedge.adverbial_maybe', 'affix.prefix.un', 'affix.prefix.in']",,,
+email:urn:uuid:0073fe59-240e-4916-943a-1c58ff63dcd7:paragraph:13,"Read the SipHash paper if you're interested in learning more:
+ https://131002.net/siphash/siphash.pdf",['morph.syn.embedded_question'],,,
+email:urn:uuid:5b746ff8-3cc5-4bc7-a446-d831d44f979f:paragraph:1,"For basic list you can just use  [1]. wxGUI is using more
+complex approach implemented in UpdateGRASSAddOnCommands function [2]. One
+reason for higher complexity is handling calls of Python scripts on MS
+Windows (which would use some code review).
+
+[1]
+https://trac.osgeo.org/grass/browser/grass/trunk/gui/wxpython/core/toolboxes.py?rev=64678#L475
+[2]
+https://trac.osgeo.org/grass/browser/grass/trunk","['morph.syn.embedded_question', 'morph.syn.question_answer']",,,
+pr:python/cpython:134965:comment_body:4,":robot: New build scheduled with the buildbot fleet by -storchaka for commit ce88d2168cf2f3663e0810caf1061de40d3ee41a :robot:
+
+Results will be shown at:
+
+https://buildbot.python.org/all/#/grid?branch=refs%2Fpull%2F134965%2Fmerge
+
+If you want to schedule another build, you need to add the <kbd>:hammer: test-with-buildbots</kbd> label again.",['morph.syn.embedded_question'],,,
+email:urn:uuid:c674e73e-9fb6-4360-8692-3b2aafd62e9f:paragraph:1,"That's the length of the command line, where parameters might still be 
+in the form *.*, ie. pre-splitting and pre-expansion. After converting 
+to argv format (which I believe is done by a C runtime function), that 
+will be in different memory with presumably its own limits.","['morph.syn.embedded_question', 'morph.mod.epistemic_maymight', 'morph.hedge.adverbial_perhaps', 'morph.hedge.shield_think']",,,
+email:urn:uuid:0734692f-a479-4196-848e-a0959bfb4a18:paragraph:2,"During the association, the regulatory is updated by country IE
+that reaps the previously found beacons. The impact is that
+after a STA disconnects *or* when for any reason a regulatory
+domain change happens the beacon hint flag is not cleared
+therefore preventing future beacon hints to be learned.
+This is important as a regulatory domain change or a restore
+of regulatory settings would set back t","['morph.syn.embedded_question', 'morph.neg.scoped_epistemic']",,,
+email:urn:uuid:28e4e1a1-f63b-4f3e-99d3-2b051e87da09:paragraph:2,"you need libstdc++.so.6 from the gcc version 4.1.3 (probably > 4), which
+normally is installed on opensuse 10.2 and was used to compile QGIS as well.","['morph.hedge.adverbial_perhaps', 'morph.syn.embedded_question']",,,
+issue:python/cpython:132910:body,"# Bug report
+
+### Bug description:
+
+The auto-indent feature in python 3.13.x shell breaks copy-paste of code on Windows.
+Expected behavior: Copying properly formatted python code and pasting it into the shell works
+Observed behavior: The auto-indenter adds additional indentation to every single line, effectively doubling the desired indentation, thus breaking the code
+
+### CPython versions tested ",['affix.prefix.in'],,,
+email:urn:uuid:35a90a1d-6f3b-4764-a19b-7d155d6e31db:paragraph:1,"Implement an ARM delay timer to be used for udelay(). This allows us to
+skip the delay loop calibration at boot.
+
+With this patch udelay() is now independent of CPU frequency changes.
+This is a good thing on Meson8, Meson8b and Meson8m2 because changing
+the CPU frequency requires running the CPU clock off the XTAL while
+changing the PLL or it's dividers. After changing the CPU clocks we need
+to wa",['affix.prefix.in'],,,
+email:urn:uuid:7f7c30ec-2cec-4e42-bd0e-2e231bbbb851:paragraph:1,"I'm having some problems compiling qgis2 on a ubuntu 12.04 machine.
+
+When trying to configure with ccmake I get the error:",['morph.syn.embedded_question'],,,
+email:urn:uuid:3c067b12-5bef-4ade-a353-b0f1a571851a:paragraph:1,"When FSGSBASE enabled, ptracer's FS/GS selector update
+fetches FS/GS base from GDT/LDT. This emulation of FS/GS
+segment loading provides backward compatibility for the
+legacy ptracers.
+
+When ptracer sets FS/GS selector, its base is going to be
+(accordingly) reloaded as the tracee resumes. This is without
+FSGSBASE. With FSGSBASE, FS/GS base is preserved regardless
+of its selector. Thus, emulating F",['morph.syn.embedded_question'],,,
+email:urn:uuid:9bc2a53e-7989-4443-83c4-17c3fb9e732a:paragraph:1,I guess you have run into the limitation of __update_cache() not supporting highmem pages. That could be caused by an omission in my patch that forgets to clear the PG_dcache_dirty flag in flush_icache_page. I will submit an incremental patch for this.,"['lex.guess_v', 'morph.hedge.shield_think', 'affix.prefix.in']",,,
+issue:python/cpython:135551:title,Change how sorting picks minimum run length,['morph.syn.embedded_question'],,,
+pr:python/cpython:26490:comment_body:2,"Hello, and thanks for your contribution!
+
+I'm a bot set up to make sure that the project can legally accept this contribution by verifying everyone involved has signed the [PSF contributor agreement](https://www.python.org/psf/contrib/contrib-form/) (CLA).
+
+## Recognized GitHub username
+
+We couldn't find a [bugs.python.org](https://bugs.python.org/) (b.p.o) account corresponding to the following G","['morph.mod.epistemic_maymight', 'morph.evid.inferential_seem', 'morph.syn.embedded_question']",,,
+email:urn:uuid:8c5900ba-b6d5-4c12-aad9-d6536ebfda91:paragraph:2,"This is transmit, and the packets can only come from the Linux
+    TCP stack, not some external entity.
+
+    You're being way too anal here, and adding these checks to
+    drivers would be just a lot of rediculious bloat. [sic]
+
+Therefore, there are *no* checks for bad TCP and IP header sizes, nor
+any semantic changes.  The drivers should function exactly as existing,
+although usage of int should ",['morph.mod.deontic'],,,
+email:urn:uuid:6f7155e1-1a01-4427-b226-04d0efc14b5d:paragraph:5,"// MADV_FREE is specifically designed for use by malloc(), but only
+// FreeBSD supports it; in linux we fall back to the somewhat inferior
+// MADV_DONTNEED.","['morph.hedge.approximator_somehow', 'affix.prefix.in']",,,
+pr:python/cpython:152860:body,"A FETCH response may contain additional or unsolicited data, so the
+message is not always data[0][1].
+(cherry picked from commit 50ae0be74988564fb09746a49eb4b8f8e740f3c3)
+
+Co-authored-by: Serhiy Storchaka <storchaka.com>
+Co-authored-by: Claude Opus 4.8 (1M context) <noreply.com>
+
+* Issue: gh-79964","['morph.mod.epistemic_maymight', 'affix.prefix.un']",,,
+issue:python/cpython:68612:body,"BPO | [24424](https://bugs.python.org/issue24424)
+--- | :---
+Nosy | , , -storchaka
+Files | <li>[minidom.insertBefore.patch](https://bugs.python.org/file39674/minidom.insertBefore.patch ""Uploaded as text/plain at 2015-06-10.13:29:15 by Robert Haschke""): simple patch for this issue</li><li>[minidom.insertBefore.patch](https://bugs.python.org/file43414/minidom.insertBefore.patch ""Uploaded as text/pla","['morph.mod.epistemic_maymight', 'affix.prefix.un']",,,
+email:urn:uuid:07ecefc6-9e0d-47f4-a53c-42f29c45b6e8:paragraph:1,"The qscintilla2 transition may be responsible for this, it was just
+updated in Debian unstable which requires rebuild of all its reverse
+dependencies. That probably hasn't happened yet for the upstream qgis
+packages.
+
+https://release.debian.org/transitions/html/auto-qscintilla2.html
+https://bug.debian.org/789447","['morph.mod.epistemic_maymight', 'morph.syn.embedded_question', 'morph.hedge.adverbial_perhaps', 'morph.tense.past_nk_notyet', 'affix.prefix.un']",,,
+email:urn:uuid:875d0f46-092a-4369-b8c7-3e7f8cc41a32:paragraph:7,"The advantage I see above is that, when take_over_work() is running, we wont 
+race with functions like flush_workqueue() (threads still frozen at that
+point) and hence we avoid hacks like migrate_sequence. This will also
+let functions like flush_workqueue() easily access cpu_online_map as
+below -without- any special locking/hacks (which I consider a great
+benefit for programmers).
+
+flush_workqueue",['morph.syn.embedded_question'],,,
+pr:python/cpython:126841:comment_body:5,"Most changes to Python [require a NEWS entry](https://devguide.python.org/core-developers/committing/#updating-news-and-what-s-new-in-python). Add one using the [blurb_it](https://blurb-it.herokuapp.com) web app or the [blurb](https://pypi.org/project/blurb/) command-line tool.
+
+If this change has little impact on Python users, wait for a maintainer to apply the  label instead.",['morph.syn.embedded_question'],,,
+email:urn:uuid:f632caf9-390e-4c05-89e4-40b47132585b:paragraph:5,This is what it looks like now:,"['morph.syn.embedded_question', 'morph.evid.inferential_seem', 'rhetor.comparison.something_like']",,,
+commit:e7f2186f994f84e050b869559132d28d4fe26614:commit_message,"Issue #16495: remove extraneous NULL encoding check from bytes_decode().
+
+The NULL encoding check in bytes_decode() was unnecessary because this case
+is already taken care of by the call to _Py_normalize_encoding() inside
+PyUnicode_Decode().",['affix.prefix.un'],,,
+pr:python/cpython:97723:body,"* Don't parse content as arg in the impl-detail directive
+
+This does not change the (untranslated) output,
+but ensures that the doctree node metadata is correct.
+which fixes gh-97607 with the text not being translated.
+It also simplifies the code and logic
+and makes it consistant with the docutils built-in directives.
+
+* Remove unused branch from impl-detail directive handling no-content c","['morph.syn.embedded_question', 'morph.hedge.adverbial_maybe', 'affix.prefix.un']",,,
+commit:dfde0d465071e9a261ddf02d333401f4c7ada579:commit_message,"Issue #12363: increase the timeout of siginterrupt() tests
+
+Move also the ""ready"" trigger after the installation of the signal handler and
+the call to siginterrupt().
+
+Use a timeout of 5 seconds instead of 3. Two seconds are supposed to be enough,
+but some of our buildbots are really slow (especially the FreeBSD 6 VM).",['lex.suppose_v'],,,
+issue:python/cpython:135618:comment_body:4,"I also tested this on latest main branch on commit 03017a8cc2242d881a3042b1eb9084c9bae9f85d with the following commands (**note that this is without the  flag, but with similar steps as in the initial post**):
+
+And ran it with:
+
+Please note that you also didn't detail how you exitted the REPL. In my case, exitting it via CTRL+D signal also doesn't show any leaks.",['morph.syn.embedded_question'],,,
+issue:python/cpython:130160:comment_body:9,"yes, sounds nice! Thanks!",['morph.evid.inferential_seem'],,,
+email:urn:uuid:b2f5e6c9-37aa-4a3c-aac6-baf5ca0de006:paragraph:12,"make
+
+This will compile both debug and release version. To make just a one of them
+use ""make debug"" or ""make release"" respectively.
+
+Note: debug version uses debug version of Qt library thus if linking fails
+on not founding library QtSvgd4 (or similar), you need to compile them
+as described in section for Qt.
+
+Running: (optional)",['morph.syn.embedded_question'],,,
+email:urn:uuid:e71f8379-629d-4d35-af18-f707dca063c7:paragraph:1,You may be able to use os.popen(),['morph.mod.epistemic_maymight'],,,
+pr:python/cpython:139861:title,[3.13] gh-139391: properly handle  in  when called from a non-main thread (GH-139392),['morph.syn.embedded_question'],,,
+issue:python/cpython:133740:comment_body:8,Looks like this is the problem:,"['morph.evid.inferential_seem', 'rhetor.comparison.something_like']",,,
+email:urn:uuid:38cb36fd-e515-43d1-8a94-13a8249f250b:paragraph:2,"Segmentation fault
+
+Stepping through the module which pdb tells me where is crahes:",['morph.syn.embedded_question'],,,
+email:urn:uuid:b6813fb2-cbfd-4840-8557-8f3422246de5:paragraph:1,"What the architecture declares is the same as what can be found in
+asm-generic/vga.h. So use that header instead.",['morph.syn.embedded_question'],,,
+commit:0b2304786bc0b2e0aa06154b40ace0e8bcefc90f:commit_message,Issue #21443: Show how to change log level for asyncio. (Merge 3.6->3.7),['morph.syn.embedded_question'],,,
+email:urn:uuid:ee70eacd-2eec-4f7d-b489-b3731eed0c0a:paragraph:3,"And look at how the perf output looks like.
+
+For all those runs, you need hardware supporting any of these options
+and the running kernel should each time be built with a different
+optimization option.
+
+This will show us whether differently optimized kernels show any
+performance difference.
+
+And then you can go and try other benchmarks like kernbench, hackbench,
+etc, whatever your favourite search","['morph.evid.inferential_seem', 'morph.syn.embedded_question', 'morph.mod.deontic', 'rhetor.comparison.something_like']",,,
+pr:python/cpython:120412:body,"* Remove ""()"" when refer to a class as a type.
+* Use :func: when refer to a callable.
+* Fix reference to the datetime.astimezone() method.
+(cherry picked from commit 92c9c6ae147e1e658bbc8d454f8c7b2c4dea31d1)
+
+Co-authored-by: Serhiy Storchaka <storchaka.com>
+
+* Issue: gh-120345
+
+
+
+
+----
+📚 Documentation preview 📚: https://cpython-previews--120412.org.readthedocs.build/",['morph.syn.embedded_question'],,,
+email:urn:uuid:ecaae979-be04-4075-a348-0b1383bfda43:paragraph:3,"The return value of close is the return value of the command run. If you
+need to read stdout and stderr of your command or write to its stdin, use
+popen2, popen3, popen4 from the os-module.",['morph.syn.embedded_question'],,,
+pr:python/cpython:136643:comment_body:34,Sorry for the lack of response. I'm currently at EuroPython and pretty busy with other things. I'll have a look on Saturday during the sprints.,['lex.lack_of'],,,
+email:urn:uuid:8e78f537-9fef-42ea-80cf-44b85907d085:subject,RE: [OT} How to un-GPL parts of a GPL'd module.,['morph.syn.embedded_question'],,,
+email:urn:uuid:c68f8498-5c5f-4c29-ace8-a26f6567c0cc:subject,"How to display WMS legend (getLegendGraphic-request) in
+	QGIS",['morph.syn.embedded_question'],,,
+email:urn:uuid:aafb1e9f-8b85-4014-b672-71ffc72a4d32:paragraph:1,"If your projection is EPSG:4326, units are in degrees. So your buffer in 
+QGIS is not 100m, but 100°. You have to reproject your data to a CRS 
+that has metres as units, like UTM for your part of the world.",['morph.syn.embedded_question'],,,
+email:urn:uuid:29975a55-b3df-46af-a743-e6268e442dac:paragraph:4,".     The lines come out in arbitrary order, depending on which files",['morph.syn.embedded_question'],,,
+issue:python/cpython:123018:body,"# Bug report
+
+### Bug description:
+
+While testing python3 ptests (i.e. those contained in Lib/test/) in Yocto for 3.12.5, it was noted that test_write_read_limited_history() fails if Python was configured to use libedit/editline (default) instead of readline. 
+
+With readline they pass, but due to licensing differences the former is preferred for default use. Ideally, the tests should not fai","['morph.syn.embedded_question', 'morph.mod.deontic']",,,
+commit:127660bcdb28294c3817f955cabd85afb6828ffc:commit_message,"GH-109975: Copyedit 3.13 What's New: Improved Modules (#123132)
+
+Co-authored-by: Hugo van Kemenade <hugovk.noreply.github.com>",['morph.syn.embedded_question'],,,
+pr:python/cpython:125005:comment_body:12,All commit authors signed the Contributor License Agreement. <br/> [](https://cpython-clabot.herokuapp.com/signed-contributor-license-agreement?version=96a49432-b8b1-11ec-9bf5-bfe9ad6c72c4),['morph.syn.question_answer'],,,
+email:urn:uuid:97ef1be0-4ebd-4da3-b573-6157ddc1a978:paragraph:1,"It seems to me that there is no need to have this map at all.
+Python is an introspective language, so you can easily discover object's
+properties at run time by name. Here is my version of your program:",['morph.evid.inferential_seem'],,,
+email:urn:uuid:1f9344f0-3cf4-4dc1-b531-4bd66b41e099:paragraph:5,A pointer in a ABI structure looks wrong.,['morph.evid.inferential_seem'],,,
+email:urn:uuid:19f54f57-13be-4717-94f7-1f178dca287a:paragraph:3,"Results have been estimated based on internal Intel analysis and are provided
+for informational purposes only. Any difference in system hardware or software
+design or configuration may affect actual performance.",['morph.mod.epistemic_maymight'],,,
+issue:python/cpython:127435:comment_body:5,I see. I'll package all unpackaged statements in all modules today. Stay tuned :),['affix.prefix.un'],,,
+email:urn:uuid:1027b7b2-9cf9-49e8-ac7a-5e3d950ed09e:subject,[PATCH 1/4] dell-laptop: Update information about wireless control,['affix.suffix.less'],,,

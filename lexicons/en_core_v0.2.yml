@@ -18,144 +18,117 @@
 version: "0.2"
 language: "en"
 curator: "TBD"
-last_modified: "2026-04-22"
+last_modified: "2026-10-07"
 sources:
-  - "Janich & Simmerling (2013). Do I know what I don't know?"
-  - "Janich & Simon (2017). Nichtwissen und Unsicherheit in Naturwissenschaften und Mathematik"
-  - "Müller & Stegmüller (2019). Corpus-linguistic approaches to uncertainty."
-  - "Simmerling & Janich (2015). Rhetorical functions of a 'language of uncertainty' in the mass media."
-  - "Lakoff (1973). Hedges: A study in meaning criteria and the logic of fuzzy concepts. doi:10.1007/bf00262952"
-  - "Prince, Frader & Bosk (1982). On hedging in physician-physician discourse."
-  - "Hyland (1998). Hedging in Scientific Research Articles."
-  - "Rubin (2007). Stating with certainty or stating with doubt. doi:10.3115/1614108.1614144"
-  - "Bongelli & Zuczkowski et al. — Knowing/Unknowing/Believing (KUB) epistemic stance."
-  - "Aikhenvald (2004). Evidentiality."
-  - "Channell (1994). Vague Language."
+# ── Journal / conference papers (primary citations)
+  - "Janich, Rhein & Simmerling (2010). Do I know what I don’t know? The Communication of Non-Knowledge and Uncertain Knowledge in Science. Fachsprache 32(3-4), 86–99. doi:10.24989/fs.v32i3-4.1392"
+  - "Simon & Janich (2023). Konstitution von Nichtwissen und Unsicherheit im Sprachgebrauch – ein programmatischer Systematisierungsversuch. Fachsprache 45(1-2), 5–27. doi:10.24989/fs.v45i1-2.2235"
+  - "Müller (2023). Corpus Approaches to Analysing Uncertainty and Ignorance in Academic Discourse. Fachsprache 45(1-2), 28–47. doi:10.24989/fs.v45i1-2.2232"
+  - "Roberts (2012). Organizational ignorance: Towards a managerial perspective on the unknown. Management Learning 44(3), 215–236. doi:10.1177/1350507612443208"
+  - "Bongelli, Riccioni, Burro & Zuczkowski (2019). Writers’ uncertainty in scientific and popular biomedical articles. A comparative analysis of the British Medical Journal and Discover Magazine. PLOS ONE 14(9), e0221933. doi:10.1371/journal.pone.0221933"
+  - "Bongelli, Zuczkowski & Riccioni (2023). The Italian Epistemic Disclaimer Non so [I Don’t Know] in a Corpus of Gynaecological Interactions. Languages 8(4), 226. doi:10.3390/languages8040226"
+  - "Zuczkowski & Stemberger (2024). When clients (or psychotherapists) say I don’t know: unknowledge or uncertainty?. Gestalt Theory 46(2-3), 315–334. doi:10.2478/gth-2024-0022"
+  - "Weatherall (2011). I don’t know as a Prepositioned Epistemic Hedge. Research on Language and Social Interaction 44(4), 317–337. doi:10.1080/08351813.2011.619310"
+  - "Rubin (2007). Stating with certainty or stating with doubt: intercoder reliability results for manual annotation of epistemically modalized statements. Human Language Technologies 2007: The Conference of the North American Chapter of the Association for Computational Linguistics; Companion Volume, Short Papers on XX - NAACL ’07, 141–144. doi:10.3115/1614108.1614144"
+  - "Rubin (2010). Epistemic modality: From uncertainty to certainty in the context of information seeking as interactions with texts. Information Processing &amp; Management 46(5), 533–540. doi:10.1016/j.ipm.2010.02.006"
+  - "Salager-Meyer (1994). Hedges and textual communicative function in medical English written discourse. English for Specific Purposes 13(2), 149–170. doi:10.1016/0889-4906(94)90013-2"
+  - "Hyland (1996). Writing Without Conviction? Hedging in Science Research Articles. Applied Linguistics 17(4), 433–454. doi:10.1093/applin/17.4.433"
+  - "Hyland (2005). Stance and engagement: a model of interaction in academic discourse. Discourse Studies 7(2), 173–192. doi:10.1177/1461445605050365"
+  - "Kärkkäinen (2006). Stance taking in conversation: From subjectivity to intersubjectivity. Text &amp; Talk - An Interdisciplinary Journal of Language, Discourse Communication Studies 26(6), 699–731. doi:10.1515/text.2006.029"
+  - "Aijmer (2009). Seem and evidentiality. Functions of Language 16(1), 63–88. doi:10.1075/fol.16.1.05aij"
+  - "Ebert, Castor, Novielli & Serebrenik (2019). Confusion in Code Reviews: Reasons, Impacts, and Coping Strategies. 2019 IEEE 26th International Conference on Software Analysis, Evolution and Reengineering (SANER), 49–60. doi:10.1109/saner.2019.8668024"
+  - "Ebert, Castor, Novielli & Serebrenik (2021). An exploratory study on confusion in code reviews. Empirical Software Engineering 26(1). doi:10.1007/s10664-020-09909-5"
+  # ── Books / chapters (kept where no paper version exists, or as originating framework)
+  - "Janich, Rhein & Simon (2023). 14. Nichtwissen und Unsicherheit in Naturwissenschaften und Mathematik. Handbuch Sprache in Mathematik, Naturwissenschaften und Technik, 355–378. doi:10.1515/9783110296259-015"
+  - "Müller & Stegmeier (2019; online 2018). Investigating Risk, Uncertainty and Normativity Within the Framework of Digital Discourse Analysis: Renewable Energies in Climate Change Discourse. Researching Risk and Uncertainty, 309–335. doi:10.1007/978-3-319-95852-1_13"
+  - "Prince, Frader & Bosk (1982). On hedging in physician-physician discourse. In R. J. Di Pietro (ed.), Linguistics and the Professions, 83–97. Ablex."
+  - "Zuczkowski, Bongelli & Riccioni (2017). Epistemic Stance in Dialogue: Knowing, Unknowing, Believing. Dialogue Studies. doi:10.1075/ds.29"
+  - "Aikhenvald (2004). Evidentiality. Oxford University Press."
 
 entries:
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # RETAINED FROM v0.1 (unchanged unless noted)
-  # ═══════════════════════════════════════════════════════════════════════════
-
   # ── prototype: epistemic state ──────────────────────────────────────────
-  - {id: "uncertain",  lemma: "uncertain",  pos: "ADJ",  category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Janich & Simon 2017",                 weight: 0.9, status: "active"}
-  - {id: "unclear",    lemma: "unclear",    pos: "ADJ",  category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Janich & Simon 2017",                 weight: 0.9, status: "active"}
-  - {id: "doubt_n",    lemma: "doubt",      pos: "NOUN", category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Janich & Simon 2017",                 weight: 0.85, status: "active"}
-  - {id: "doubt_v",    lemma: "doubt",      pos: "VERB", category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Janich & Simon 2017",                 weight: 0.85, status: "active"}
-  - {id: "ignorance",  lemma: "ignorance",  pos: "NOUN", category: "prototype", subcategory: "epistemic_state", polarity: "pejorative", source: "Roberts 2013; Janich & Simmerling 2013", weight: 0.8, status: "active"}
-  - {id: "unknown",    lemma: "unknown",    pos: "ADJ",  category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Janich & Simmerling 2013",            weight: 0.85, status: "active"}
-  - {id: "vague",      lemma: "vague",      pos: "ADJ",  category: "prototype", subcategory: "imprecision",     polarity: "pejorative", source: "Janich & Simmerling 2013",            weight: 0.8, status: "active"}
-  - {id: "ambiguous",  lemma: "ambiguous",  pos: "ADJ",  category: "prototype", subcategory: "imprecision",     polarity: "neutral",    source: "Janich & Simmerling 2013",            weight: 0.8, status: "active"}
+  - {id: "uncertain",  lemma: "uncertain",  pos: "ADJ",  category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Simon & Janich 2023; Janich, Rhein & Simon 2023",                  status: "active"}
+  - {id: "unclear",    lemma: "unclear",    pos: "ADJ",  category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Simon & Janich 2023; Janich, Rhein & Simon 2023",                  status: "active"}
+  - {id: "doubt_n",    lemma: "doubt",      pos: "NOUN", category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Simon & Janich 2023; Janich, Rhein & Simon 2023",                  status: "active"}
+  - {id: "doubt_v",    lemma: "doubt",      pos: "VERB", category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Simon & Janich 2023; Janich, Rhein & Simon 2023",                  status: "active"}
+  - {id: "ignorance",  lemma: "ignorance",  pos: "NOUN", category: "prototype", subcategory: "epistemic_state", polarity: "pejorative", source: "Roberts 2013; Janich, Rhein & Simmerling 2010",                    status: "active"}
+  - {id: "unknown",    lemma: "unknown",    pos: "ADJ",  category: "prototype", subcategory: "epistemic_state", polarity: "neutral",    source: "Janich, Rhein & Simmerling 2010",                                  status: "active"}
+  - {id: "vague",      lemma: "vague",      pos: "ADJ",  category: "prototype", subcategory: "imprecision",     polarity: "pejorative", source: "Janich, Rhein & Simmerling 2010",                                  status: "active"}
+  - {id: "ambiguous",  lemma: "ambiguous",  pos: "ADJ",  category: "prototype", subcategory: "imprecision",     polarity: "neutral",    source: "Janich, Rhein & Simmerling 2010",                                  status: "active"}
 
   # ── shared_feature: lack-of / gap ───────────────────────────────────────
-  - {id: "lack_of",    lemma: "lack of",    pos: "PHRASE", category: "shared_feature", subcategory: "absence_of_X",       polarity: "pejorative", source: "Müller & Stegmüller 2019", weight: 0.6, status: "active", requires_context: "epistemic head noun (lack of knowledge/evidence/clarity)"}
-  - {id: "missing",    lemma: "missing",    pos: "ADJ",    category: "shared_feature", subcategory: "absence_of_X",       polarity: "neutral",    source: "Müller & Stegmüller 2019", weight: 0.5, status: "candidate"}
-  - {id: "unresolved", lemma: "unresolved", pos: "ADJ",    category: "shared_feature", subcategory: "pending_resolution", polarity: "neutral",    source: "Müller & Stegmüller 2019", weight: 0.6, status: "active"}
+  - {id: "lack_of",    lemma: "lack of",    pos: "PHRASE", category: "shared_feature", subcategory: "absence_of_X",       polarity: "pejorative", source: "Müller 2023; Müller & Stegmeier 2019", status: "active", requires_context: "epistemic head noun (lack of knowledge/evidence/clarity)"}
+  - {id: "missing",    lemma: "missing",    pos: "ADJ",    category: "shared_feature", subcategory: "absence_of_X",       polarity: "neutral",    source: "Müller 2023; Müller & Stegmeier 2019", status: "active"}
+  - {id: "unresolved", lemma: "unresolved", pos: "ADJ",    category: "shared_feature", subcategory: "pending_resolution", polarity: "neutral",    source: "Müller 2023; Müller & Stegmeier 2019", status: "active"}
 
-  # ── fixed_phrase: visibility / gap metaphors (also in rhetorical — intentional) ──
-  - {id: "blind_spot",     lemma: "blind spot",     pos: "PHRASE", category: "fixed_phrase", subcategory: "visibility_metaphor", polarity: "pejorative", source: "Simmerling & Janich 2015", weight: 0.85, status: "active"}
-  - {id: "knowledge_gap",  lemma: "knowledge gap",  pos: "PHRASE", category: "fixed_phrase", subcategory: "gap_phrase",          polarity: "pejorative", source: "Simmerling & Janich 2015", weight: 0.85, status: "active"}
+  # --- first-person predicates of NOT-KNOWING ---
+  #- {id: "no_idea",       lemma: "no idea",              pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB); Rubin 2007; Rubin 2010", status: "candidate"}
+  #- {id: "no_clue",       lemma: "no clue",              pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB); Rubin 2007", status: "candidate"}
+  #- {id: "not_sure",      lemma: "not sure",             pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB); Prince et al. 1982", status: "candidate"}
+  - {id: "unsure",        lemma: "unsure",               pos: "ADJ",    category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB); Rubin 2007", status: "active"}
+  #- {id: "dont_know",     lemma: "don't know",           pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2023; Zuczkowski & Stemberger 2024 (KUB 'Unknowing'); Weatherall 2011", status: "candidate"}
+  - {id: "hard_to_tell",  lemma: "hard to tell",         pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB); Rubin 2007", status: "active"}
+  - {id: "hard_to_say",   lemma: "hard to say",          pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB); Rubin 2007", status: "active"}
+  - {id: "who_knows",     lemma: "who knows",            pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB)", status: "active"}
+  #- {id: "cant_tell",     lemma: "can't tell",           pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB)", status: "candidate"}
+  #- {id: "not_clear_to_me", lemma: "not clear to me",    pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB)", status: "candidate"}
+  - {id: "confused",      lemma: "confused",             pos: "ADJ",    category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli et al. 2019 (KUB); Ebert et al. 2019; Ebert et al. 2021", status: "active", requires_context: "1st-person subject"}
+  - {id: "clueless",      lemma: "clueless",             pos: "ADJ",    category: "prototype", subcategory: "not_knowing", polarity: "pejorative", source: "Bongelli et al. 2019 (KUB)", status: "active"}
+  - {id: "idk",           lemma: "idk",                  pos: "X",      category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "SE register; Bongelli et al. 2023 (KUB 'Unknowing')", status: "active"}
 
-  # ── C-10 CORRECTION: demoted NK-adjacent terms (hazard/defect/dispute, NOT NK) ──
-  # Kept for co-occurrence studies but require an epistemic context and marked candidate.
-  - {id: "risk",        lemma: "risk",        pos: "NOUN", category: "shared_feature", subcategory: "decision_under_uncertainty", polarity: "neutral",    source: "Janich & Simon 2017 (demoted, see MARKER_REVIEW C-10)", weight: 0.3, status: "candidate", requires_context: "epistemic framing; not mere hazard"}
-  - {id: "controversy", lemma: "controversy", pos: "NOUN", category: "shared_feature", subcategory: "disagreement",               polarity: "neutral",    source: "Janich & Simmerling 2013 (demoted → disagreement, not NK)", weight: 0.3, status: "candidate"}
-  - {id: "error_n",     lemma: "error",       pos: "NOUN", category: "shared_feature", subcategory: "defect",                     polarity: "pejorative", source: "SE pilot (demoted C-10)", weight: 0.2, status: "candidate", requires_context: "'unknown/mysterious error' — defect alone is not NK"}
-  - {id: "bug",         lemma: "bug",         pos: "NOUN", category: "shared_feature", subcategory: "defect",                     polarity: "pejorative", source: "SE pilot (demoted C-10)", weight: 0.2, status: "candidate", requires_context: "co-occur with epistemic cue"}
+  # --- NOT-USED, FULLY MOVED TO MORPO --- epistemic lexical verbs / plausibility shields ---
+  #- {id: "guess_v",   lemma: "guess",   pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Prince et al. 1982; Salager-Meyer 1994; Hyland 1996; Kärkkäinen 2006", status: "candidate", requires_context: "1st-person: 'I guess'"}
+  #- {id: "suppose_v", lemma: "suppose", pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Prince et al. 1982; Salager-Meyer 1994", status: "candidate", requires_context: "1st-person"}
+  #- {id: "assume_v",  lemma: "assume",  pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Hyland 1996; Hyland 2005", status: "candidate", requires_context: "1st-person"}
+  #- {id: "suspect_v", lemma: "suspect", pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Hyland 1996; Hyland 2005", status: "candidate", requires_context: "1st-person"}
+  #- {id: "reckon_v",  lemma: "reckon",  pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Hyland 1996 (informal register)", status: "candidate", requires_context: "1st-person"}
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — M-1: first-person predicates of NOT-KNOWING (KUB 'Unknowing'; Rubin doubt)
-  # Fixed phrases; the scoped verb-based versions live in morpho_syntactic_v0.2.
-  # ═══════════════════════════════════════════════════════════════════════════
-  - {id: "no_idea",       lemma: "no idea",              pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "Bongelli & Zuczkowski KUB; Rubin 2007", weight: 0.95, status: "active"}
-  - {id: "no_clue",       lemma: "no clue",              pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB; Rubin 2007", weight: 0.95, status: "active"}
-  - {id: "not_sure",      lemma: "not sure",             pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB; Prince et al. 1982", weight: 0.9, status: "active"}
-  - {id: "unsure",        lemma: "unsure",               pos: "ADJ",    category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB; Rubin 2007", weight: 0.9, status: "active"}
-  - {id: "dont_know",     lemma: "don't know",           pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB 'Unknowing'", weight: 0.9, status: "active"}
-  - {id: "hard_to_tell",  lemma: "hard to tell",         pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB; Rubin 2007", weight: 0.85, status: "active"}
-  - {id: "hard_to_say",   lemma: "hard to say",          pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB; Rubin 2007", weight: 0.85, status: "active"}
-  - {id: "who_knows",     lemma: "who knows",            pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB", weight: 0.8, status: "active"}
-  - {id: "cant_tell",     lemma: "can't tell",           pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB", weight: 0.85, status: "active"}
-  - {id: "not_clear_to_me", lemma: "not clear to me",    pos: "PHRASE", category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB", weight: 0.85, status: "active"}
-  - {id: "confused",      lemma: "confused",             pos: "ADJ",    category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "KUB", weight: 0.7, status: "active", requires_context: "1st-person subject"}
-  - {id: "clueless",      lemma: "clueless",             pos: "ADJ",    category: "prototype", subcategory: "not_knowing", polarity: "pejorative", source: "KUB", weight: 0.75, status: "candidate"}
-  - {id: "idk",           lemma: "idk",                  pos: "X",      category: "prototype", subcategory: "not_knowing", polarity: "neutral", source: "SE register (KUB 'Unknowing')", weight: 0.9, status: "active"}
 
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — M-2: epistemic lexical verbs / plausibility shields (Prince; Hyland; Lakoff)
-  # Lemmas; 1st-person + complement-clause scope enforced in morpho_syntactic_v0.2.
-  # ═══════════════════════════════════════════════════════════════════════════
-  - {id: "guess_v",   lemma: "guess",   pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Prince et al. 1982; Hyland 1998", weight: 0.6, status: "active", requires_context: "1st-person: 'I guess'"}
-  - {id: "suppose_v", lemma: "suppose", pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Prince et al. 1982", weight: 0.6, status: "active", requires_context: "1st-person"}
-  - {id: "assume_v",  lemma: "assume",  pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Hyland 1998", weight: 0.6, status: "active", requires_context: "1st-person"}
-  - {id: "suspect_v", lemma: "suspect", pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Hyland 1998", weight: 0.6, status: "active", requires_context: "1st-person"}
-  - {id: "reckon_v",  lemma: "reckon",  pos: "VERB", category: "prototype", subcategory: "plausibility_shield", polarity: "neutral", source: "Hyland 1998 (informal register)", weight: 0.6, status: "candidate", requires_context: "1st-person"}
-  # NB: 'I think' / 'I believe' are handled as scoped patterns in morpho_syntactic_v0.2
-  # (bare 'think'/'believe' are too polysemous for a lexical rule — see MARKER_REVIEW C-1 logic).
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — M-5: SE-native realisations of NK (scope: derived; validate then type)
-  # ═══════════════════════════════════════════════════════════════════════════
-  # reproducibility / observation gaps
-  - {id: "flaky",              lemma: "flaky",             pos: "ADJ",    category: "shared_feature", subcategory: "non_deterministic_behaviour", polarity: "pejorative", source: "SE pilot", weight: 0.8, status: "active"}
-  - {id: "cannot_reproduce",   lemma: "cannot reproduce",  pos: "PHRASE", category: "shared_feature", subcategory: "repro_gap",                  polarity: "neutral",    source: "SE pilot", weight: 0.85, status: "active"}
-  - {id: "no_repro",           lemma: "no repro",          pos: "PHRASE", category: "shared_feature", subcategory: "repro_gap",                  polarity: "neutral",    source: "SE pilot", weight: 0.85, status: "active"}
-  - {id: "works_on_my_machine",lemma: "works on my machine",pos: "PHRASE", category: "fixed_phrase",   subcategory: "repro_gap",                  polarity: "neutral",    source: "SE idiom", weight: 0.9, status: "active"}
-  - {id: "heisenbug",          lemma: "heisenbug",         pos: "NOUN",   category: "shared_feature", subcategory: "non_deterministic_behaviour", polarity: "pejorative", source: "SE idiom", weight: 0.85, status: "active"}
-  - {id: "intermittent",       lemma: "intermittent",      pos: "ADJ",    category: "shared_feature", subcategory: "non_deterministic_behaviour", polarity: "neutral",    source: "SE pilot", weight: 0.6, status: "candidate"}
-  # opacity
-  - {id: "black_box",          lemma: "black box",         pos: "PHRASE", category: "fixed_phrase",   subcategory: "opacity",                    polarity: "neutral",    source: "SE idiom; Simmerling & Janich 2015 (container)", weight: 0.75, status: "active"}
-  - {id: "magic",              lemma: "magic",             pos: "NOUN",   category: "shared_feature", subcategory: "opacity",                    polarity: "neutral",    source: "SE idiom", weight: 0.5, status: "candidate", requires_context: "'some magic', 'it's magic' — not 'magic number/method'"}
-  - {id: "voodoo",             lemma: "voodoo",            pos: "NOUN",   category: "shared_feature", subcategory: "opacity",                    polarity: "pejorative", source: "SE idiom", weight: 0.7, status: "candidate"}
-  - {id: "cargo_cult",         lemma: "cargo cult",        pos: "PHRASE", category: "fixed_phrase",   subcategory: "opacity",                    polarity: "pejorative", source: "SE idiom", weight: 0.75, status: "candidate"}
-  # specification / documentation gaps
-  - {id: "undefined_behaviour",lemma: "undefined behaviour",pos: "PHRASE", category: "shared_feature", subcategory: "spec_gap",                   polarity: "pejorative", source: "SE pilot", weight: 0.85, status: "active"}
-  - {id: "undefined_behavior", lemma: "undefined behavior",pos: "PHRASE", category: "shared_feature", subcategory: "spec_gap",                   polarity: "pejorative", source: "SE pilot (US spelling)", weight: 0.85, status: "active"}
-  - {id: "unspecified",        lemma: "unspecified",       pos: "ADJ",    category: "shared_feature", subcategory: "spec_gap",                   polarity: "neutral",    source: "SE pilot", weight: 0.7, status: "active"}
-  - {id: "underspecified",     lemma: "underspecified",    pos: "ADJ",    category: "shared_feature", subcategory: "spec_gap",                   polarity: "neutral",    source: "SE pilot (rescued from under- blocklist, C-8)", weight: 0.75, status: "active"}
-  - {id: "implementation_defined", lemma: "implementation-defined", pos: "ADJ", category: "shared_feature", subcategory: "spec_gap",           polarity: "neutral",    source: "SE idiom", weight: 0.7, status: "candidate"}
-  - {id: "undocumented",       lemma: "undocumented",      pos: "ADJ",    category: "shared_feature", subcategory: "doc_gap",                    polarity: "neutral",    source: "SE pilot", weight: 0.7, status: "active"}
-  # code-comment NK markers (relevant when commit diffs / inline comments ingested)
-  - {id: "todo",               lemma: "TODO",              pos: "X",      category: "shared_feature", subcategory: "code_comment_marker",        polarity: "neutral",    source: "SE idiom", weight: 0.4, status: "candidate"}
-  - {id: "fixme",              lemma: "FIXME",             pos: "X",      category: "shared_feature", subcategory: "code_comment_marker",        polarity: "pejorative", source: "SE idiom", weight: 0.5, status: "candidate"}
-  - {id: "hack_marker",        lemma: "HACK",              pos: "X",      category: "shared_feature", subcategory: "code_comment_marker",        polarity: "pejorative", source: "SE idiom", weight: 0.4, status: "candidate"}
-  # abbreviated hedges (register-specific)
-  - {id: "iirc",               lemma: "iirc",              pos: "X",      category: "prototype",      subcategory: "plausibility_shield",        polarity: "neutral",    source: "SE register (Prince shield)", weight: 0.8, status: "active"}
-  - {id: "afaik",              lemma: "afaik",             pos: "X",      category: "prototype",      subcategory: "attribution_shield",         polarity: "neutral",    source: "SE register (Prince shield)", weight: 0.8, status: "active"}
-  - {id: "afaict",             lemma: "afaict",            pos: "X",      category: "prototype",      subcategory: "attribution_shield",         polarity: "neutral",    source: "SE register", weight: 0.8, status: "active"}
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — M-3: evidential / attribution markers (Aikhenvald 2004; Prince attribution)
-  # ═══════════════════════════════════════════════════════════════════════════
-  - {id: "apparently",  lemma: "apparently",  pos: "ADV",    category: "prototype", subcategory: "evidential_inferential", polarity: "neutral", source: "Aikhenvald 2004; Prince et al. 1982", weight: 0.7, status: "active"}
-  - {id: "seemingly",   lemma: "seemingly",   pos: "ADV",    category: "prototype", subcategory: "evidential_inferential", polarity: "neutral", source: "Aikhenvald 2004", weight: 0.7, status: "active"}
-  - {id: "supposedly",  lemma: "supposedly",  pos: "ADV",    category: "prototype", subcategory: "evidential_reportative", polarity: "neutral", source: "Aikhenvald 2004", weight: 0.7, status: "active"}
-  - {id: "reportedly",  lemma: "reportedly",  pos: "ADV",    category: "prototype", subcategory: "evidential_reportative", polarity: "neutral", source: "Aikhenvald 2004", weight: 0.7, status: "candidate"}
-  - {id: "according_to",lemma: "according to",pos: "PHRASE", category: "prototype", subcategory: "evidential_reportative", polarity: "neutral", source: "Prince et al. 1982 (attribution)", weight: 0.5, status: "candidate"}
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — M-6: boosters / certainty markers (Hyland 2005; Rubin certainty pole)
-  # polarity: certainty  →  NON-NK. Kept for contrastive stance / RQ5 mixed cases.
-  # ═══════════════════════════════════════════════════════════════════════════
-  - {id: "obviously",  lemma: "obviously",  pos: "ADV", category: "prototype", subcategory: "booster", polarity: "certainty", source: "Hyland 2005; Rubin 2007", weight: 0.0, status: "active"}
-  - {id: "clearly",    lemma: "clearly",    pos: "ADV", category: "prototype", subcategory: "booster", polarity: "certainty", source: "Hyland 2005", weight: 0.0, status: "active"}
-  - {id: "definitely", lemma: "definitely", pos: "ADV", category: "prototype", subcategory: "booster", polarity: "certainty", source: "Hyland 2005", weight: 0.0, status: "active"}
-  - {id: "certainly",  lemma: "certainly",  pos: "ADV", category: "prototype", subcategory: "booster", polarity: "certainty", source: "Hyland 2005; Rubin 2007", weight: 0.0, status: "active"}
-  - {id: "of_course",  lemma: "of course",  pos: "PHRASE", category: "prototype", subcategory: "booster", polarity: "certainty", source: "Hyland 2005", weight: 0.0, status: "active"}
-  - {id: "no_doubt",   lemma: "no doubt",   pos: "PHRASE", category: "prototype", subcategory: "booster", polarity: "certainty", source: "Hyland 2005; Rubin 2007", weight: 0.0, status: "active"}
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — M-7: vague language / general extenders (Channell 1994; Lakoff 1973)
-  # ═══════════════════════════════════════════════════════════════════════════
-  - {id: "and_so_on",     lemma: "and so on",     pos: "PHRASE", category: "shared_feature", subcategory: "general_extender", polarity: "neutral", source: "Channell 1994", weight: 0.4, status: "candidate"}
-  - {id: "or_something",  lemma: "or something",  pos: "PHRASE", category: "shared_feature", subcategory: "general_extender", polarity: "neutral", source: "Channell 1994", weight: 0.5, status: "candidate"}
-  - {id: "or_whatever",   lemma: "or whatever",   pos: "PHRASE", category: "shared_feature", subcategory: "general_extender", polarity: "neutral", source: "Channell 1994", weight: 0.5, status: "candidate"}
-  - {id: "stuff_like_that", lemma: "stuff like that", pos: "PHRASE", category: "shared_feature", subcategory: "general_extender", polarity: "neutral", source: "Channell 1994", weight: 0.4, status: "candidate"}
+  # --- evidential / attribution markers -------------------------------------
+  - {id: "apparently",  lemma: "apparently",  pos: "ADV",    category: "prototype", subcategory: "evidential_inferential", polarity: "neutral", source: "Aikhenvald 2004; Aijmer 2009; Prince et al. 1982", status: "active"}
+  - {id: "seemingly",   lemma: "seemingly",   pos: "ADV",    category: "prototype", subcategory: "evidential_inferential", polarity: "neutral", source: "Aikhenvald 2004; Aijmer 2009", status: "active"}
+  - {id: "supposedly",  lemma: "supposedly",  pos: "ADV",    category: "prototype", subcategory: "evidential_reportative", polarity: "neutral", source: "Aikhenvald 2004", status: "active"}
+  - {id: "reportedly",  lemma: "reportedly",  pos: "ADV",    category: "prototype", subcategory: "evidential_reportative", polarity: "neutral", source: "Aikhenvald 2004", status: "active"}
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CHANGE LOG
 # ─────────────────────────────────────────────────────────────────────────────
+# 0.2.2 — Cross-layer ownership, 2026-10-07.
+#   PRINCIPLE  Form-based ownership: a marker whose NK reading is produced by a
+#              grammatical operator (negation, 1st-person subject + complement
+#              clause, modal) scoping over an epistemic head belongs to the
+#              morpho-syntactic layer, where scope is enforced. The lexical layer
+#              keeps markers whose NK meaning is lexicalised in the item itself.
+#   DEMOTED    active→candidate (superseded_by set): not_sure, not_clear_to_me,
+#              no_idea, no_clue → morph.neg.scoped_epistemic; dont_know →
+#              morph.epi.neg_cognition; cant_tell → morph.epi.neg_cognition_modal;
+#              guess_v, suppose_v, assume_v, suspect_v, reckon_v →
+#              morph.hedge.shield_think.
+#   KEPT       unsure, clueless, confused, idk, who_knows, hard_to_tell,
+#              hard_to_say (lexicalised / non-negated fixed phrases).
+#   NOTE       The status flips take effect analysis-side via the YAML status
+#              split (the canonical predicate resolves active/candidate from the
+#              current YAMLs, never from the graph's stale annotation-time
+#              status), so NO lexical re-annotation is needed for them. The
+#              morpho replacements, however, gained new grammatical realisations
+#              (copular "not sure/clear", pro-form shields) that are absent from
+#              the graph for already-annotated units; close that gap with
+#              scripts/backfill_morpho_gap.py — see CHANGELOG 2026-10-07. (The
+#              separate 0.2.1 pass removed the unused M-5/M-6/M-7 entries; it is
+#              recorded below and in CHANGELOG 2026-10-07.)
+#   SOURCES    Literature list rebuilt from verified records (Crossref/OpenAlex;
+#              see nk_citation_mapping.csv, nk_marker_paper_citations.bib).
+#              Book citations replaced by journal papers where one exists.
+#              Corrections: 'Janich & Simmerling 2013' → Janich, Rhein &
+#              Simmerling 2010 (Fachsprache); 'Müller & Stegmüller 2019' →
+#              Müller 2023 (paper) / Müller & Stegmeier 2019 (chapter);
+#              'Janich & Simon 2017' → Simon & Janich 2023 (paper) / Janich,
+#              Rhein & Simon 2023 (chapter). Removed from the header because no
+#              lexical entry cites them: Lakoff 1973, Channell 1994, Simmerling &
+#              Janich 2015 (Lakoff remains in morpho_syntactic_v0.2.yml).
+#              Per-signal payload.source_citation refreshes only on re-annotation.
+# 0.2.1 - Removed a few myself, as they didn't work.
 # 0.2 — Review pass (MARKER_REVIEW.md).
 #   ADDED   M-1 not-knowing phrases; M-2 plausibility shields; M-3 evidentials;
 #           M-5 SE-native NK (repro/opacity/spec/doc/code-comment/abbrev);

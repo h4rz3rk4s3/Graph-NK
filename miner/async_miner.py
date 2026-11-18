@@ -14,6 +14,7 @@ Rate-limit safety:
   - Exponential backoff on 5xx; hard-stop on 401/404 (configuration errors).
   - 403 triggers a full wait-until-reset (secondary rate limit / abuse detection).
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -22,8 +23,10 @@ import json
 import logging
 import re
 import time
+from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
-from typing import Any, AsyncIterator, Optional
+from datetime import UTC
+from typing import Any
 
 import aiohttp
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -43,6 +46,7 @@ _NO_RETRY = {401, 404, 422}
 # ──────────────────────────────────────────────────────────────────────────────
 # Rate-Limit State (shared across all concurrent coroutines via an asyncio.Lock)
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 @dataclass
 class _RateLimitState:
@@ -70,6 +74,7 @@ class _RateLimitState:
 # Main Miner Class
 # ──────────────────────────────────────────────────────────────────────────────
 
+
 class AsyncGitHubMiner:
     """
     Async producer that mines GitHub and publishes raw events to the broker.
@@ -80,14 +85,14 @@ class AsyncGitHubMiner:
     def __init__(self) -> None:
         self._token = settings.github_token
         self._rl = _RateLimitState()
-        self._session: Optional[aiohttp.ClientSession] = None
-        self._mongo: Optional[AsyncIOMotorClient] = None
+        self._session: aiohttp.ClientSession | None = None
+        self._mongo: AsyncIOMotorClient | None = None
         self._db = None
         self._broker = None
 
     # ── lifecycle ─────────────────────────────────────────────────────────────
 
-    async def __aenter__(self) -> "AsyncGitHubMiner":
+    async def __aenter__(self) -> AsyncGitHubMiner:
         await self.start()
         return self
 
@@ -107,9 +112,7 @@ class AsyncGitHubMiner:
             enable_cleanup_closed=True,
         )
         timeout = aiohttp.ClientTimeout(total=60, connect=10)
-        self._session = aiohttp.ClientSession(
-            headers=headers, connector=connector, timeout=timeout
-        )
+        self._session = aiohttp.ClientSession(headers=headers, connector=connector, timeout=timeout)
 
         self._mongo = AsyncIOMotorClient(settings.mongo_uri)
         self._db = self._mongo[settings.mongo_db_name]
@@ -129,9 +132,9 @@ class AsyncGitHubMiner:
     async def _request(
         self,
         url: str,
-        params: Optional[dict] = None,
+        params: dict | None = None,
         method: str = "GET",
-        json_body: Optional[dict] = None,
+        json_body: dict | None = None,
         retries: int = 0,
     ) -> tuple[Any, dict]:
         """
@@ -141,9 +144,7 @@ class AsyncGitHubMiner:
         await self._rl.maybe_wait()
         logging.info("Requesting URL: %s", url)
         try:
-            async with self._session.request(
-                method, url, params=params, json=json_body
-            ) as resp:
+            async with self._session.request(method, url, params=params, json=json_body) as resp:
                 # Update rate-limit state from every response
                 self._rl.update(dict(resp.headers))
 
@@ -160,14 +161,14 @@ class AsyncGitHubMiner:
                     # Secondary rate limit — wait until reset
                     wait = max(0.0, self._rl.reset_at - time.time()) + 5.0
                     logger.warning("HTTP 403 on %s. Waiting %.1fs for reset.", url, wait)
-                    #logger.warning("Response: %s", resp)
+                    # logger.warning("Response: %s", resp)
                     await asyncio.sleep(wait)
                     return await self._request(url, params, method, json_body, retries + 1)
 
                 if resp.status >= 500:
                     if retries >= settings.max_retries:
                         resp.raise_for_status()
-                    backoff = min(2 ** retries, 60)
+                    backoff = min(2**retries, 60)
                     logger.warning("HTTP %d on %s. Backoff %.1fs.", resp.status, url, backoff)
                     await asyncio.sleep(backoff)
                     return await self._request(url, params, method, json_body, retries + 1)
@@ -178,7 +179,7 @@ class AsyncGitHubMiner:
         except aiohttp.ClientError as exc:
             if retries >= settings.max_retries:
                 raise
-            backoff = min(2 ** retries, 60)
+            backoff = min(2**retries, 60)
             logger.warning("Client error on %s: %s. Retry in %.1fs.", url, exc, backoff)
             await asyncio.sleep(backoff)
             return await self._request(url, params, method, json_body, retries + 1)
@@ -186,7 +187,7 @@ class AsyncGitHubMiner:
     # ── pagination helper ─────────────────────────────────────────────────────
 
     async def _paginate(
-        self, endpoint: str, params: Optional[dict] = None
+        self, endpoint: str, params: dict | None = None
     ) -> AsyncIterator[list[dict]]:
         """Async generator yielding pages of results."""
         url = f"{BASE_URL}/{endpoint.lstrip('/')}"
@@ -234,9 +235,7 @@ class AsyncGitHubMiner:
         await asyncio.gather(*tasks, return_exceptions=True)
         logger.info("✔ Completed: %s", repo_full_name)
 
-    async def mine_repositories(
-        self, repo_list: list[str], include_commits: bool = True
-    ) -> None:
+    async def mine_repositories(self, repo_list: list[str], include_commits: bool = False) -> None:
         """Mine multiple repos with bounded concurrency."""
         sem = asyncio.Semaphore(settings.concurrent_requests)
 
@@ -303,9 +302,9 @@ class AsyncGitHubMiner:
         pr_number = pr["number"]
 
         # Reviews
-        #reviews_url = f"{BASE_URL}/repos/{repo_full_name}/pulls/{pr_number}/reviews"
-        #reviews, _ = await self._request(reviews_url)
-        #pr["reviews_data"] = reviews or []
+        # reviews_url = f"{BASE_URL}/repos/{repo_full_name}/pulls/{pr_number}/reviews"
+        # reviews, _ = await self._request(reviews_url)
+        # pr["reviews_data"] = reviews or []
 
         # Comments (code review comments)
         comments_url = f"{BASE_URL}/repos/{repo_full_name}/pulls/{pr_number}/comments"
@@ -332,9 +331,7 @@ class AsyncGitHubMiner:
 
     # ── persistence + event publishing ────────────────────────────────────────
 
-    async def _save_and_publish(
-        self, item_type: str, repo_full_name: str, data: dict
-    ) -> None:
+    async def _save_and_publish(self, item_type: str, repo_full_name: str, data: dict) -> None:
         """
         Persist raw payload to MongoDB, then publish a lightweight event
         to the message broker. This is the only coupling between modules.
@@ -365,7 +362,9 @@ class AsyncGitHubMiner:
         )
         mongo_id = str(
             mongo_result.upserted_id
-            or (await collection.find_one({"id": data.get("id") or data.get("sha")}, {"_id": 1}))["_id"]
+            or (await collection.find_one({"id": data.get("id") or data.get("sha")}, {"_id": 1}))[
+                "_id"
+            ]
         )
 
         # M1 tweak 2: expose PR vs plain-issue distinction so downstream
@@ -377,11 +376,11 @@ class AsyncGitHubMiner:
 
         # Publish event — deliberately minimal: workers pull full data from Mongo
         event = {
-            "item_id":      str(data.get("id") or data.get("sha") or data.get("number")),
-            "item_type":    item_type,
+            "item_id": str(data.get("id") or data.get("sha") or data.get("number")),
+            "item_type": item_type,
             "item_subtype": item_subtype,  # M1 tweak 2
-            "repo_name":    repo_full_name,
-            "mongo_id":     mongo_id,
+            "repo_name": repo_full_name,
+            "mongo_id": mongo_id,
         }
         await self._broker.publish(settings.stream_raw, event)
         logger.debug("Published event for %s/%s", item_type, event["item_id"])
@@ -391,12 +390,13 @@ class AsyncGitHubMiner:
 # Helpers
 # ──────────────────────────────────────────────────────────────────────────────
 
+
 def _collection_for(item_type: str) -> str:
     return {
-        "repository":  "raw_repositories",
-        "issue":       "raw_issues",
+        "repository": "raw_repositories",
+        "issue": "raw_issues",
         "pull_request": "raw_pull_requests",
-        "commit":      "raw_commits",
+        "commit": "raw_commits",
     }.get(item_type, "raw_misc")
 
 
@@ -409,5 +409,6 @@ def _parse_link_header(header: str) -> dict[str, str]:
 
 
 def _utcnow() -> str:
-    from datetime import datetime, timezone
-    return datetime.now(timezone.utc).isoformat()
+    from datetime import datetime
+
+    return datetime.now(UTC).isoformat()

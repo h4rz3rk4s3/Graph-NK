@@ -29,12 +29,11 @@ figures:
     description: "Uncharted / unmapped — spatial journey framing of NK"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.metaphor.spatial.uncharted"
-    weight: 0.75
+    #weight: 0.75
     status: "active"
     patterns:
       - [{LOWER: "uncharted"}]
       - [{LOWER: "unmapped"}]
-      - [{LOWER: "terra"}, {LOWER: "incognita"}]
 
   - figure_id: "rhetor.metaphor.spatial.new_territory"
     family: "metaphor"
@@ -42,7 +41,7 @@ figures:
     description: "Stepping into / entering new/unknown territory"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.metaphor.spatial.new_territory"
-    weight: 0.65
+    #weight: 0.65
     status: "active"
     patterns:
       - [{LOWER: {IN: ["stepping", "venturing", "moving"]}}, {LOWER: "into"}, {LOWER: {IN: ["unknown", "new", "uncharted"]}}]
@@ -56,7 +55,7 @@ figures:
     description: "Blind spot — canonical visibility metaphor for NK"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.metaphor.visibility.blind_spot"
-    weight: 0.8
+    #weight: 0.8
     status: "active"
     patterns:
       - [{LOWER: "blind"}, {LOWER: "spot"}]
@@ -68,7 +67,7 @@ figures:
     description: "In the dark / shot in the dark — inability to see the situation"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.metaphor.visibility.dark"
-    weight: 0.7
+    #weight: 0.7
     status: "active"
     patterns:
       - [{LOWER: "in"}, {LOWER: "the"}, {LOWER: "dark"}]
@@ -81,7 +80,7 @@ figures:
     description: "Overlook / miss — failure-of-sight framing"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.metaphor.visibility.overlook"
-    weight: 0.55
+    #weight: 0.55
     status: "candidate"
     patterns:
       - [{LEMMA: "overlook", POS: "VERB"}]
@@ -94,7 +93,7 @@ figures:
     description: "Knowledge gap / research gap — NK as a void in a container"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.metaphor.gap.knowledge_gap"
-    weight: 0.8
+    #weight: 0.8
     status: "active"
     patterns:
       - [{LOWER: "knowledge"}, {LOWER: {IN: ["gap", "gaps", "hole", "holes"]}}]
@@ -107,7 +106,7 @@ figures:
     description: "Missing piece / part — container fragment metaphor"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.metaphor.gap.missing_piece"
-    weight: 0.65
+    #weight: 0.65
     status: "active"
     patterns:
       - [{LOWER: "missing"}, {LOWER: {IN: ["piece", "part", "link", "step"]}}]
@@ -119,7 +118,7 @@ figures:
     description: "Something like / looks like / acts like — approximative framing"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.comparison.something_like"
-    weight: 0.5
+    #weight: 0.5
     status: "active"
     patterns:
       - [{LOWER: "something"}, {LOWER: "like"}]
@@ -136,7 +135,7 @@ figures:
     description: "'Poor cousin of X' — personification expressing relative neglect"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.personification.poor_cousin"
-    weight: 0.5
+    #weight: 0.5
     status: "candidate"
     patterns:
       - [{LOWER: "poor"}, {LOWER: "cousin"}]
@@ -148,90 +147,10 @@ figures:
     description: "Elephant in the room — acknowledged but unaddressed NK"
     source: "Simmerling & Janich 2015"
     rule_id: "rhetor.personification.elephant_room"
-    weight: 0.7
+    #weight: 0.7
     status: "active"
     patterns:
       - [{LOWER: "elephant"}, {LOWER: "in"}, {LOWER: "the"}, {LOWER: "room"}]
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — Opacity metaphors (NK as inability to see INSIDE). SE-frequent.
-  # ═══════════════════════════════════════════════════════════════════════════
-  - figure_id: "rhetor.metaphor.opacity.black_box"
-    family: "metaphor"
-    subtype: "opacity"
-    description: "Black box — internal workings unknown/opaque"
-    source: "Simmerling & Janich 2015 (container); SE idiom"
-    rule_id: "rhetor.metaphor.opacity.black_box"
-    weight: 0.7
-    status: "active"
-    patterns:
-      - [{LOWER: "black"}, {LOWER: {IN: ["box", "boxes"]}}]
-      - [{LOWER: "opaque"}]
-
-  - figure_id: "rhetor.metaphor.opacity.magic"
-    family: "metaphor"
-    subtype: "opacity"
-    description: "Magic / voodoo / black art — mechanism not understood"
-    source: "SE idiom (opacity framing)"
-    rule_id: "rhetor.metaphor.opacity.magic"
-    weight: 0.55
-    status: "candidate"
-    patterns:
-      - [{LOWER: "some"}, {LOWER: "magic"}]
-      - [{LOWER: {IN: ["voodoo", "witchcraft", "wizardry"]}}]
-      - [{LOWER: "black"}, {LOWER: {IN: ["art", "magic", "arts"]}}]
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — Fog / obscurity (NK as clouded perception).
-  # ═══════════════════════════════════════════════════════════════════════════
-  - figure_id: "rhetor.metaphor.obscurity.fog"
-    family: "metaphor"
-    subtype: "obscurity"
-    description: "Foggy / murky / hazy / cloudy — perception clouded"
-    source: "Simmerling & Janich 2015 (visibility family, extended)"
-    rule_id: "rhetor.metaphor.obscurity.fog"
-    weight: 0.6
-    status: "candidate"
-    patterns:
-      - [{LOWER: {IN: ["foggy", "murky", "hazy", "cloudy", "fuzzy", "nebulous"]}}]
-      - [{LOWER: "a"}, {LOWER: "bit"}, {LOWER: {IN: ["fuzzy", "hazy"]}}]
-
-  # ═══════════════════════════════════════════════════════════════════════════
-  # NEW — Depth / hidden-extent metaphors (unknown scale beneath the surface).
-  # ═══════════════════════════════════════════════════════════════════════════
-  - figure_id: "rhetor.metaphor.depth.iceberg"
-    family: "metaphor"
-    subtype: "hidden_extent"
-    description: "Tip of the iceberg — visible part hides an unknown larger whole"
-    source: "Smithson 2008; SE idiom"
-    rule_id: "rhetor.metaphor.depth.iceberg"
-    weight: 0.7
-    status: "active"
-    patterns:
-      - [{LOWER: "tip"}, {LOWER: "of"}, {LOWER: "the"}, {LOWER: "iceberg"}]
-
-  - figure_id: "rhetor.metaphor.depth.rabbit_hole"
-    family: "metaphor"
-    subtype: "hidden_extent"
-    description: "Rabbit hole — investigation into unknown depth"
-    source: "SE idiom (journey/depth framing)"
-    rule_id: "rhetor.metaphor.depth.rabbit_hole"
-    weight: 0.6
-    status: "candidate"
-    patterns:
-      - [{LOWER: "rabbit"}, {LOWER: "hole"}]
-      - [{LOWER: "down"}, {LOWER: "the"}, {LOWER: "rabbit"}, {LOWER: "hole"}]
-
-  - figure_id: "rhetor.metaphor.depth.can_of_worms"
-    family: "metaphor"
-    subtype: "hidden_extent"
-    description: "Can of worms — opening reveals unforeseen complications"
-    source: "SE idiom (unforeseen-consequences framing)"
-    rule_id: "rhetor.metaphor.depth.can_of_worms"
-    weight: 0.65
-    status: "candidate"
-    patterns:
-      - [{LOWER: "can"}, {LOWER: "of"}, {LOWER: "worms"}]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CHANGE LOG

@@ -1,0 +1,1799 @@
+selection_rank,genre,corpus_id,platform_id,venue_id,artefact_kind,record_id,unit_id,unit_role,position,author_login,created_at,token_count,sha256,unit_text,source_collection,source_found,source_truncated,source_text,n_markers_total,n_lexical,n_morpho_syntactic,n_word_formation,n_rhetorical,marker_rules
+1,tracker,alternative-jira,jira,jira:alternative-jira:apache:ambari,jira_issue,jira_issue:alternative-jira:Apache:AMBARI-20400,jira_issue:alternative-jira:Apache:AMBARI-20400:comment_body:5,comment_body,5,jira:alternative-jira:author_namee86e3dc7-3b72-4f03-8aeb-a9386c783087,2017-03-13T22:06:10.646+0000,91,e3f7872db3ab1244c77b8b2c6fd1ad64a9856bf5f5096a8acc6bfc8af47e88d3,"{color:green}+1 overall{color}.  Here are the results of testing the latest attachment 
+  http://issues.apache.org/jira/secure/attachment/12858534/AMBARI-20400.patch
+  against trunk revision .
+
+    {color:green}+1 {color}.  The patch does not contain any  tags.
+
+    {color:green}+1 tests included{color}.  The patch appears to include 1 new or modified test files.
+
+    {color:green}+1 javac{color}.  The applied patch does not increase the total number of javac compiler warnings.
+
+    {color:green}+1 release audit{color}.  The applied patch does not increase the total number of release audit warnings.
+
+    {color:green}+1 core tests{color}.  The patch passed unit tests in ambari-server.
+
+Test results: https://builds.apache.org/job/Ambari-trunk-test-patch/11010//testReport/
+Console output: https://builds.apache.org/job/Ambari-trunk-test-patch/11010//console
+
+This message is automatically generated.",raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+2,tracker,alternative-jira,jira,jira:alternative-jira:apache:apache-apex-core,jira_issue,jira_issue:alternative-jira:Apache:APEXCORE-22,jira_issue:alternative-jira:Apache:APEXCORE-22:comment_body:3,comment_body,3,jira:alternative-jira:author_nameab192754-126c-4413-b1ad-3d1bc5e5aa26,2015-07-30T17:44:15.477+0000,29,e3f769614a8ae9bfa4bc22d5c626d124a701be9d03d1c04bba1550ce5263cefe,"This makes sense. It will allow users to leverage Java features. I was a little concerned, but I think depending on deeper Java expertise for operator developers is correct.",raw_emails,False,False,,1,0,1,0,0,morph.hedge.shield_think
+3,tracker,alternative-jira,jira,jira:alternative-jira:apache:hadoop-common,jira_issue,jira_issue:alternative-jira:Apache:HADOOP-7183,jira_issue:alternative-jira:Apache:HADOOP-7183:comment_body:13,comment_body,13,jira:alternative-jira:author_named2f88e71-9344-40b3-9cea-f87e593895bd,2011-04-11T23:14:31.960+0000,25,e3f7abef672b5258c3b4b61f5d7a216ebb1c9e87bda27d99d7cef081fde4e32b,"Yes, I think this can be committed now, since it is sufficient for restoring the previous behaviour. I've opened HADOOP-7219 for adding support for ThreadLocals.",raw_emails,False,False,,1,0,1,0,0,morph.hedge.shield_think
+4,tracker,alternative-jira,jira,jira:alternative-jira:apache:hbase,jira_issue,jira_issue:alternative-jira:Apache:HBASE-8774,jira_issue:alternative-jira:Apache:HBASE-8774:comment_body:2,comment_body,2,jira:alternative-jira:author_name8f65ad68-33ae-4d6c-b0a0-e44876fb4407,2013-06-20T10:24:45.244+0000,49,e3f791d1129cdb74ae9f10f77f750b4c687691e9286deeff6164ca4fbfcae62b,"See HBASE-6073. It's also regarding on adding filter to Thrift2.
+
+1 minor problem in the patch:
+{code}
++    boolean this_present_filterString = true && this.isSetFilterString();
++    boolean that_present_filterString = true && that.isSetFilterString();
+{code}
+""true"" is redundant.
+
+In addition, I suggest to add 1 unit test. Anyway, it's a nice patch.",raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_suggest
+5,tracker,alternative-jira,jira,jira:alternative-jira:apache:hive,jira_issue,jira_issue:alternative-jira:Apache:HIVE-10109,jira_issue:alternative-jira:Apache:HIVE-10109:body,body,1,jira:alternative-jira:author_name692396a9-fd38-4a81-8ce1-a20b135e9a15,2015-03-26T23:45:35.000+0000,71,e3f7e7ff0a8b5cbe9c91092c3736696740ab157348e7a08d6b11aa2dcb13a30a,"With ""in table"" in creating an index, you can specify an index table name like db.index_table with a db that is different from the db the table belongs to. However, you can't drop this index any more since Hive assumes the index is always in the same db as the base table.
+
+We should not allow a qualified index table name specified in the ""in table"" value in creating an index.",raw_emails,False,False,,1,1,0,0,0,lex.assume_v
+6,tracker,alternative-jira,jira,jira:alternative-jira:apache:hive,jira_issue,jira_issue:alternative-jira:Apache:HIVE-24117,jira_issue:alternative-jira:Apache:HIVE-24117:title,title,0,jira:alternative-jira:author_name55912724-9c46-444f-806b-a7da1aca05e6,2020-09-03T13:04:01.000+0000,10,e3f7adb7aa299af6377f72ffc3d3624330507f4832943e2925cba3a6a04c78ef,Fix for not setting managed table location in incremental load,raw_emails,False,False,,1,0,0,1,0,affix.prefix.in
+7,tracker,alternative-jira,jira,jira:alternative-jira:apache:ignite,jira_issue,jira_issue:alternative-jira:Apache:IGNITE-11412,jira_issue:alternative-jira:Apache:IGNITE-11412:comment_body:10,comment_body,10,jira:alternative-jira:author_name2af1d693-45f5-4b6b-8e6e-02424330c35d,2019-04-10T13:23:48.387+0000,123,e3f7a2e1b861eeba5ea34f1305ca6e3955fa58f1c7735d3267b012521c1cad0d,"[~ivanan.fed], It seems that a little problem was introduced in this patch. It is caused by reshuffling _rules_ execution. Currently it affects only {{IgniteConfigVariationsAbstractTest}} subclasses. I checked an order of rules execution (via prints) with the patch and observed a following sequence:
+{code}
+GridAbstractTest runRule
+IgniteConfigVariationsAbstractTest rulePrivate
+GridAbstractTest nameRule
+{code}
+
+And it looks really weird and completely not expected for me! And as I see _protected_ {{GridAbstractTest#runRule}} leads us to such trouble. And I do not like to leave it for a separate ticket because a problem was just introduced in current one. Can we use {{nameAndRunRulesChain}} in {{IgniteConfigVariationsAbstractTest}} to wrap it with {{rulePrivate}}? Will it do the trick?
+
+And if something will fail still then you can mark it with {{}} annotation.",raw_emails,False,False,,2,0,2,0,0,morph.evid.inferential_seem
+8,tracker,alternative-jira,jira,jira:alternative-jira:apache:jackrabbit-content-repository,jira_issue,jira_issue:alternative-jira:Apache:JCR-3370,jira_issue:alternative-jira:Apache:JCR-3370:body,body,1,jira:alternative-jira:author_namef728ae93-d7a7-4386-9a2b-8d4d8efb11fb,2012-07-03T00:45:55.000+0000,99,e3f74c7ef0a081ccd2e645265bb7c6cfeb4722495266e641d10d24011bb762db,"The last two lines in the ShareableNodeTest.testGetPath() method incorrectly assume the location of the testRootNode is '/testroot', even though the rest of the tests do not make this assumption and it's possible to configure the tests to use a different location for the testRootNode. These three lines:
+
+        // verify paths of nodes b1/b2 in shared set
+        assertEquals(""/testroot/a1/b1"", b1.getPath());
+        assertEquals(""/testroot/a2/b2"", b2.getPath());
+
+should instead be:
+
+        // verify paths of nodes b1/b2 in shared set
+        String testRootNodePath = testRootNode.getPath();
+        assertEquals(testRootNodePath + ""/a1/b1"", b1.getPath());
+        assertEquals(testRootNodePath + ""/a2/b2"", b2.getPath());
+
+I marked as critical because the TCK test prevents other implementations from correctly proving compatibility.",raw_emails,False,False,,1,1,0,0,0,lex.assume_v
+9,tracker,alternative-jira,jira,jira:alternative-jira:apache:karaf,jira_issue,jira_issue:alternative-jira:Apache:KARAF-3712,jira_issue:alternative-jira:Apache:KARAF-3712:comment_body:2,comment_body,2,jira:alternative-jira:author_name28023c0e-93ab-4a7d-a460-dd385fc93c5a,2015-04-29T12:27:22.497+0000,118,e3f7e8e49d37247096baaf55f563514d431f4fc127e57460068ab97cc6430884,"This require a few things :
+  * upgrade to CXF 3.1
+  * upgrade to bundle repository 2.x
+  * support for writing with the spec'ed xml (missing in bundle repository 2.0.4)
+  * provide access to the spec'ed xml 
+  * provide support for json based repository as read by karaf 4 (see JsonRepository class)
+
+I think a good addition would be to provide each repository managed by cave as a Repository object instead of relying on the bundle repository Repository object which is an aggregation.
+
+I would also get rid of OBR completely since this is completely deprecated.
+We may also want to get rid of bundle repository completely and rely on the felix repository and karat-features-core bundle internal classes.",raw_emails,False,False,,2,0,2,0,0,morph.hedge.shield_think;morph.mod.epistemic_maymight
+10,tracker,alternative-jira,jira,jira:alternative-jira:apache:ofbiz,jira_issue,jira_issue:alternative-jira:Apache:OFBIZ-5573,jira_issue:alternative-jira:Apache:OFBIZ-5573:comment_body:33,comment_body,33,jira:alternative-jira:author_name02bd80dc-c8bc-4dfb-b38a-330e65418351,2014-06-04T20:03:50.498+0000,24,e3f7d9496b3079371b07d124bd6b2881973b9a68057eb792dfbf43e1b1b15d62,"I thought Ioannis would do the java work, but i don't hear anything from him at the moment.
+I will update the document.
+Eric",raw_emails,False,False,,1,0,1,0,0,morph.hedge.shield_think
+11,tracker,alternative-jira,jira,jira:alternative-jira:apache:apache-ripple,jira_issue,jira_issue:alternative-jira:Apache:RIPPLE-42,jira_issue:alternative-jira:Apache:RIPPLE-42:comment_body:8,comment_body,8,jira:alternative-jira:author_namebaddd634-34f8-435d-bd2c-0579f4c7a0e4,2013-09-19T08:37:35.866+0000,140,e3f7795112defa463da87a40fb149abb478e518fd602aabf0afc6acd644a1a16,"Emerson You're definitely not the only one to vote up this, but as Brent and Gord explained me, these two guys are currently the only one actively working behind Ripple Emulator. And this is not their only task. So things has to go slow. If you need to speed things up, you're most welcome to join and fork / update repository yourself! :]
+
+Most people (including me! :]) are waiting for that update, but no one is actually interested in doing update itself or doesn't have time for that (including me :[). We have enough time for yealling, but lack it for actually fixing the problem. Which is bad and pains me horribly. Skills are not the key here, as Ripple (as most Chrome extension) is just a bunch of JS, HTML etc. Which we all use in PhoneGap, right?",raw_emails,False,False,,1,0,1,0,0,morph.syn.tag_question
+12,tracker,alternative-jira,jira,jira:alternative-jira:apache:spark,jira_issue,jira_issue:alternative-jira:Apache:SPARK-24395,jira_issue:alternative-jira:Apache:SPARK-24395:comment_body:3,comment_body,3,jira:alternative-jira:author_name8a89764c-5df6-490f-acab-ede90317a2c4,2018-05-30T06:56:58.007+0000,11,e3f7e8b9e87c23355789129e8b61b9e51c6414dc2d853cefbe5f8aaa2ced703e,I think Oracle returns a different answer. We should fix them.,raw_emails,False,False,,1,0,1,0,0,morph.hedge.shield_think
+13,tracker,alternative-jira,jira,jira:alternative-jira:apache:synapse,jira_issue,jira_issue:alternative-jira:Apache:SYNAPSE-488,jira_issue:alternative-jira:Apache:SYNAPSE-488:comment_body:2,comment_body,2,jira:alternative-jira:author_name0b0873a8-c5d2-4b3d-85b4-3fca6278e40c,2008-12-17T11:43:46.211+0000,103,e3f7c1e1c9131f552972b0fff7bd08c29b677f6f00f58089b100eb4650632e06,"It seems the issue is caused by two problems.
+
+1. LoadbalanceFailoverClient sends the request messages to an endpoint of the form http://host:port. But the dynamic load balance endpoint requires the endpoint to be specified as http://host:port/services/LBService1 for sample 57 to work properly
+
+2. Due to some recent changes in Synapse every time a new endpoint is created it has to be explicitly initialized. However this does not happen for the child endpoints created by the DynamicLoadbalanceEndpoint.
+
+The issue can be successfully resolved by fixing the above two problems. The second problem can be easily fixed. Will commit the changes to the SVN soon.",raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+14,tracker,alternative-jira,jira,jira:alternative-jira:apache:hadoop-yarn,jira_issue,jira_issue:alternative-jira:Apache:YARN-5659,jira_issue:alternative-jira:Apache:YARN-5659:comment_body:23,comment_body,23,jira:alternative-jira:author_namec6c0282e-151f-4ca2-9780-6df0505bbb79,2016-09-27T18:05:24.816+0000,47,e3f7bad3137c27dbea2fb1d54dac84ec7c8dc2e499e34ebeff35d6dde09f9571,"[~sershe],
+
+I'm not quite sure why following is required:
+{code}
+public static URL fromURI(URI uri, Configuration conf)
+{code} 
+Since this changes signature of a public/stable API, this is an incompatible change, could you comment about what is the issue caused by the original conf == null?
+
+Thanks,",raw_emails,False,False,,1,0,0,1,0,affix.prefix.in
+15,tracker,alternative-jira,jira,jira:alternative-jira:jira:identity,jira_issue,jira_issue:alternative-jira:Jira:ID-80,jira_issue:alternative-jira:Jira:ID-80:comment_body:65,comment_body,65,jira:alternative-jira:author_named16013f0-ac70-4a1c-bf54-4f374c51e79b,2016-02-24T22:44:14.252+0000,17,e3f7c2981c7b617c7e09d2c7464e415d08d5a394eb061e8352792ca65621e76a,Is anyone from Atlassian even looking at this thread anymore?  I mean this is getting seriously ridiculous.,raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+16,tracker,alternative-jira,jira,jira:alternative-jira:jira:jira-server-and-data-center,jira_issue,jira_issue:alternative-jira:Jira:JRASERVER-42635,jira_issue:alternative-jira:Jira:JRASERVER-42635:comment_body:2,comment_body,2,jira:alternative-jira:author_name47c311f2-dc1c-49bb-bc6d-39ca0e45da10,2015-04-02T00:17:25.029+0000,63,e3f71b5a4ecb619c76c4b6f16de0ea3c5749399e5c81ea8e11731094fed30067,"Hey [~mikey.schott],
+
+Thanks for your feedback. While I definitely understand why you would want this, I don't see this is a very common use case. Even for people that are creating filters in advance, it seems like you would want to have a test issue returned just to ensure that you've set up the filter correctly.
+
+Thanks,
+Dave Meyer
+Product Manager, JIRA Platform",raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+17,tracker,alternative-jira,jira,jira:alternative-jira:mojang:minecraft:-java-edition,jira_issue,jira_issue:alternative-jira:Mojang:MC-223513,jira_issue:alternative-jira:Mojang:MC-223513:body,body,1,jira:alternative-jira:author_name3d9fb104-9d79-48cf-b207-9fcac7455ea0,2021-04-18T06:34:45.000+0300,128,e3f7ecd08514c173cd0aa0238f1764f009821f7f13df072d842cc8257baae3a4,"Logged onto Minecraft after a few months of inactivity and the upper half of the skybox is showing hexagonal strips of red, green, yellow, and black. Also, during sunrise and sunset blue strips will flash down/up the sky and during the night the strips shrink and come very close together.
+
+I tried both reinstalling Minecraft and reinstalling Java but it's still there. I also tried some earlier versions and still was an issue in 1.13, but in 1.0 there were no problems.
+
+ 
+
+Here is the [launcher log|https://pastebin.com/6hmgPrjJ] (hopefully this was what you were asking for). I can't attach the crash report ofc because it didn't crash. I should've made it clearer but the game ran completely find other than the fact that the sky is now a mess.",raw_emails,False,False,,1,0,0,1,0,affix.prefix.in
+18,tracker,alternative-jira,jira,jira:alternative-jira:mojang:minecraft:-java-edition,jira_issue,jira_issue:alternative-jira:Mojang:MC-60426,jira_issue:alternative-jira:Mojang:MC-60426:comment_body:3,comment_body,3,jira:alternative-jira:author_name46239363-c3c7-40aa-82b2-6377458cb826,2014-07-04T02:12:07.057+0300,45,e3f79d29ef5b3c0fd7360de7f3d9d69ee2ab60ca7347b5231922155b18fc9597,"Oh, the ""NAME""  example actually works, in my case, the real name of this objective is ""Pièces"" (i'm french). So I probably think the commandblock doesn't understand the ""è"". But should I delete this report ? It's the first time I make an issue ^^",raw_emails,False,False,,2,0,2,0,0,morph.hedge.adverbial_perhaps;morph.hedge.shield_think
+19,tracker,alternative-jira,jira,jira:alternative-jira:mojang:minecraft:-java-edition,jira_issue,jira_issue:alternative-jira:Mojang:MC-97470,jira_issue:alternative-jira:Mojang:MC-97470:body,body,1,jira:alternative-jira:author_name520aeeb5-c495-47c0-9c94-ae7f1a3bd8c7,2016-02-18T16:52:04.000+0200,96,e3f72409faa814208135dda20fe86ae052f9e0e5e11c07eb2b47b2d1c0a14724,"Put the summary of the bug you're having here
+Problematic Frame: C  [ig75icd64.dll+0x12177]
+Fatal error found by Java Runtime Enviroment:
+EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffd860a2177, pid=11908, tid=6400
+
+Upon loading a new world in 1.9pre1, it loaded until the terrain hadn't quite loaded yet but the sky was visible and I was in the world. Then it crashed. I thought perhaps this was a bug caused by loading a new world, but then even after loading an old one and reloading the new one, it kept crashing with the same error message.
+
+I have attached the error files.",raw_emails,False,False,,2,0,2,0,0,morph.hedge.adverbial_perhaps;morph.hedge.shield_think
+20,tracker,alternative-jira,jira,jira:alternative-jira:qt:qt,jira_issue,jira_issue:alternative-jira:Qt:QTBUG-72373,jira_issue:alternative-jira:Qt:QTBUG-72373:comment_body:4,comment_body,4,jira:alternative-jira:author_name9d4fb63b-b832-44db-9259-87f5e1731179,2018-12-10T13:37:34.000+0000,45,e3f7ea6abdefba6bd2fae2ad5a3d1e5c7e2df95c0e70e31f822aa19fb163ce7b,"Does your prefix dir contain a previous Qt build? It looks like you store some dependencies in there. As you pass ""-L C:\CraftRoot\lib"" to configure it might be possible, that it will pick up a Qt library that has been installed to this location before",raw_emails,False,False,,3,0,2,0,1,morph.evid.inferential_seem;morph.mod.epistemic_maymight;rhetor.comparison.something_like
+21,tracker,alternative-jira,jira,jira:alternative-jira:redhat:jboss-enterprise-application-platform,jira_issue,jira_issue:alternative-jira:RedHat:JBEAP-2142,jira_issue:alternative-jira:RedHat:JBEAP-2142:comment_body:6,comment_body,6,jira:alternative-jira:author_nameca344735-eccc-4d14-a9f0-3e0525ef2204,2016-01-14T05:56:37.000+0000,523,e3f715cbea1536c4844dfa0ec1f1f791f6f5526ac4485429bc8663a111232211,"I did some tries and manage to reproduce the ""timed out"" in this scenario:
+- Start live server with repliated jounal
+- Start producer which send messages to live server
+- Wait 5 min so there are lots of messages in live
+- Start backup server
+
+Result: After 2 min warning with time out occurs.
+
+Live logs warning with time out:
+{code}
+11:47:45,223 INFO  [org.infinispan.remoting.transport.jgroups.JGroupsTransport] (Incoming-11,ee,dhcp-10-40-5-102) ISPN000094: Received new cluster view for channel hibernate: [dhcp-10-40-5-102|3] (2) [dhcp-10-40-5-102, dhcp-10-40-5-102]
+11:47:49,921 INFO  [org.apache.activemq.artemis.core.server] (Thread-123) AMQ221025: Replication: sending JournalFileImpl: (activemq-data-10.amq id = 3, recordID = 3) (size=10,485,760) to backup. AIOSequentialFile:/home/mnovak/hornetq_eap6_dev/internal/7.0.0.DR1/server1/jboss-eap/standalone/data/activemq/journal/activemq-data-10.amq
+11:47:50,305 INFO  [org.apache.activemq.artemis.core.server] (Thread-123) AMQ221025: Replication: sending JournalFileImpl: (activemq-data-1.amq id = 8, recordID = 8) (size=10,485,760) to backup. AIOSequentialFile:/home/mnovak/hornetq_eap6_dev/internal/7.0.0.DR1/server1/jboss-eap/standalone/data/activemq/journal/activemq-data-1.amq
+11:47:50,430 INFO  [org.apache.activemq.artemis.core.server] (Thread-123) AMQ221025: Replication: sending JournalFileImpl: (activemq-bindings-9.bindings id = 1, recordID = 1) (size=1,048,576) to backup. NIOSequentialFile /home/mnovak/hornetq_eap6_dev/internal/7.0.0.DR1/server1/jboss-eap/standalone/data/activemq/bindings/activemq-bindings-9.bindings
+11:47:50,433 INFO  [org.apache.activemq.artemis.core.server] (Thread-123) AMQ221025: Replication: sending JournalFileImpl: (activemq-bindings-2.bindings id = 7, recordID = 7) (size=1,048,576) to backup. NIOSequentialFile /home/mnovak/hornetq_eap6_dev/internal/7.0.0.DR1/server1/jboss-eap/standalone/data/activemq/bindings/activemq-bindings-2.bindings
+11:49:20,804 WARN  [org.apache.activemq.artemis.core.client] (activemq-failure-check-thread) AMQ212037: Connection failure has been detected: AMQ119014: Did not receive data from /127.0.0.1:59508. It is likely the client has exited or crashed without closing its connection, or the network between the server and client has failed. You also might have configured connection-ttl and client-failure-check-period incorrectly. Please check user manual for more information. The connection will now be closed. [code=CONNECTION_TIMEDOUT]
+11:49:30,822 WARN  [org.apache.activemq.artemis.core.client] (activemq-failure-check-thread) AMQ212041: Timed out waiting for netty channel to close
+11:49:30,833 INFO  [org.apache.activemq.artemis.core.server] (activemq-failure-check-thread) AMQ221021: failed to remove connection
+11:49:32,833 WARN  [org.apache.activemq.artemis.core.client] (activemq-failure-check-thread) AMQ212037: Connection failure has been detected: AMQ119014: Did not receive data from /127.0.0.1:58908. It is likely the client has exited or crashed without closing its connection, or the network between the server and client has failed. You also might have configured connection-ttl and client-failure-check-period incorrectly. Please check user manual for more information. The connection will now be closed. [code=CONNECTION_TIMEDOUT]
+11:49:32,833 WARN  [org.apache.activemq.artemis.core.server] (activemq-failure-check-thread) AMQ222061: Client connection failed, clearing up resources for session 0763732e-baab-11e5-bb2c-0763a33d87c2
+11:49:32,844 WARN  [org.apache.activemq.artemis.core.server] (activemq-failure-check-thread) AMQ222107: Cleared up resources for session 0763732e-baab-11e5-bb2c-0763a33d87c2
+11:49:32,844 WARN  [org.apache.activemq.artemis.core.server] (activemq-failure-check-thread) AMQ222061: Client connection failed, clearing up resources for session 07682e1f-baab-11e5-bb2c-0763a33d87c2
+11:49:32,845 WARN  [org.apache.activemq.artemis.core.server] (activemq-failure-check-thread) AMQ222107: Cleared up resources for session 07682e1f-baab-11e5-bb2c-0763a33d87c2
+11:49:42,846 WARN  [org.apache.activemq.artemis.core.client] (activemq-failure-check-thread) AMQ212041: Timed out waiting for netty channel to close
+11:49:42,848 INFO  [org.apache.activemq.artemis.core.server] (activemq-failure-check-thread) AMQ221021: failed to remove connection
+11:49:56,088 WARN  [org.apache.activemq.artemis.core.server] (Thread-123) AMQ222013: Error when trying to start replication: java.lang.IllegalStateException: AMQ119114: Replication synchronization process timed out after waiting 30,000 milliseconds
+	at org.apache.activemq.artemis.core.replication.ReplicationManager.sendSynchronizationDone(ReplicationManager.java:554)
+	at org.apache.activemq.artemis.core.persistence.impl.journal.JournalStorageManager.startReplication(JournalStorageManager.java:381)
+	at org.apache.activemq.artemis.core.server.impl.SharedNothingLiveActivation$2.run(SharedNothingLiveActivation.java:160)
+	at java.lang.Thread.run(Thread.java:745) [rt.jar:1.8.0_51]
+{code}
+
+backup logs:
+{code}
+11:47:46,491 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0051: Admin console listening on http://127.0.0.1:10990
+11:47:46,491 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: JBoss EAP 7.0.0.GA (WildFly Core 2.0.6.Final-redhat-1) started in 8110ms - Started 335 of 652 services (448 services are lazy, passive or on-demand)
+11:47:48,281 INFO  [org.apache.activemq.artemis.core.server] (AMQ119000: Activation for server ActiveMQServerImpl::serverUUID=null) AMQ221109: Apache ActiveMQ Artemis Backup Server version 1.1.0.redhat-5 [null] started, waiting live to fail before it gets active
+11:49:48,316 WARN  [org.apache.activemq.artemis.core.client] (Thread-0 (ActiveMQ-client-global-threads-1919965713)) AMQ212037: Connection failure has been detected: AMQ119011: Did not receive data from server for org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnection[local= /127.0.0.1:59508, remote=localhost/127.0.0.1:8080] [code=CONNECTION_TIMEDOUT]
+11:51:19,228 INFO  [org.apache.activemq.artemis.core.server] (Thread-1 (ActiveMQ-client-netty-threads-948810394)) AMQ221024: Backup server ActiveMQServerImpl::serverUUID=27f738d3-ba0e-11e5-bef8-d53cb89b059c is synchronized with live-server.
+11:51:20,932 INFO  [org.apache.activemq.artemis.core.server] (Thread-2 (ActiveMQ-server-org.apache.activemq.artemis.core.server.impl.ActiveMQServerImpl$2-1795523661)) AMQ221031: backup announced
+{code}",raw_emails,False,False,,4,0,4,0,0,morph.hedge.adverbial_maybe;morph.mod.epistemic_maymight
+22,tracker,alternative-jira,jira,jira:alternative-jira:redhat:jboss-esb,jira_issue,jira_issue:alternative-jira:RedHat:JBESB-1695,jira_issue:alternative-jira:RedHat:JBESB-1695:body,body,1,jira:alternative-jira:author_named1cb5689-06ec-4d1e-8c6a-82aa778b51cf,2008-04-28T07:13:44.000+0000,79,e3f7247f5293d32a02fdea4cea1576955ed02ace4c3e28c161ed3c494a440e36,"If the SQL listener with transactions is used configured according helloworld_tx_sql and is enhanced with jBPM use - start service, it fails because both datasources are local.
+To prevent the issue these steps should be done
+1) Change the jBPM DS to be XA datasource - this means that schme toll must be also modified
+2) Change QS to use H2 database and XA datasource - it serves users as guidline
+3) Switch to h2 database for all datasources",raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_must_be
+23,tracker,alternative-jira,jira,jira:alternative-jira:redhat:modeshape,jira_issue,jira_issue:alternative-jira:RedHat:MODE-443,jira_issue:alternative-jira:RedHat:MODE-443:comment_body:4,comment_body,4,jira:alternative-jira:author_namef728ae93-d7a7-4386-9a2b-8d4d8efb11fb,2009-06-10T00:31:30.000+0000,194,e3f7efa144b6539470b8eafb13e5097ed634a9714fc4649b428c33788e1bb5f2,"Actually, the batch 'create(...)' methods on the Graph.Batch class do indeed have the ability to create nodes if they are missing.  In fact, both the batch and non-batch works 
+the same way:
+
+   graph.create(path).ifAbsent()...   // or even .orUpdate()
+
+or
+
+   batch.create(path).ifAbsent()...
+
+In fact, this style makes available several other methods than ""ifAbsent()"", such as ""orUpdate()"", ""byAppending()"", and ""orReplace()"".  These correspond to the different NodeConflictBehavior options.
+
+I'll grant you that the ""createIfMissing()"" methods are not available in the batch mode.  Perhaps we should deprecate them, since the above methods are newer, more complete, and just as useful.  I think the only capability that the ""createIfMissing()"" methods have above the others is that they return an interface that has the ""andReturn():Node"" method, but I think all the non-batch ""create()"" methods could do this.
+
+I will open an issue to resolve this discrepency in the Graph API, but I'm also going to reopen this issue for 0.6, since sequencers really should be operating in batch (in case there is an error in the middle of processing, and because a large batch with many operations will be significantly faster for most connectors than the same number of operations submitted individually).",raw_emails,False,False,,3,0,3,0,0,morph.hedge.adverbial_perhaps;morph.hedge.shield_think
+24,tracker,alternative-jira,jira,jira:alternative-jira:spring:spring-rich-client-project,jira_issue,jira_issue:alternative-jira:Spring:RCP-561,jira_issue:alternative-jira:Spring:RCP-561:comment_body:5,comment_body,5,jira:alternative-jira:author_name3ec9cf2d-c2e2-4800-9206-442e1b421951,2008-07-02T08:12:54.546+0000,17,e3f7bf39cd528796a5f5c7fcf932e234fd5372defca435ce8f1e8ac3bcf9bbc1,"I already uploaded the jars, not yet committed the patch as I haven't looked at docking yet.",raw_emails,False,False,,2,0,2,0,0,morph.evid.inferential_seem;morph.tense.past_nk_notyet
+25,tracker,apache-jira,jira,jira:apache-jira:hive,jira_issue,jira_issue:apache-jira:HIVE-24117,jira_issue:apache-jira:HIVE-24117:title,title,0,jira:apache-jira:aasha,2020-09-03 13:04:01,10,e3f7adb7aa299af6377f72ffc3d3624330507f4832943e2925cba3a6a04c78ef,Fix for not setting managed table location in incremental load,raw_emails,False,False,,1,0,0,1,0,affix.prefix.in
+1,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ffmpeg,email,email:curatedemail:ffmpeg:ffmpeg-comment-13454,email:curatedemail:ffmpeg:ffmpeg-comment-13454:body,body,1,,2017-07-04T06:54:23,56,de27974d4b2b6f47da8f474153b10d95b62ae0fef2610a30e574da3f50469d70,"On 30.06.2017, at 20:06, Ricardo Constantino <wiiaboo.com> wrote:
+
+If you still manually add -lvorbis that IMHO defeats the purpose of using pkg-config the first place.
+I don't know if our actual code using vorbisenc depend on libvorbis and libogg, but if it does then the flags for all 3 would have to be requested via pkg-config.",raw_emails,True,False,"Re: [FFmpeg-devel] [PATCH] configure: require pkg-config for
+	libvorbis
+
+On 30.06.2017, at 20:06, Ricardo Constantino <wiiaboo@gmail.com> wrote:
+
+> libvorbis comes with pkg-config files since at least v1.0.1, way back
+> in 2003.
+> 
+> The extra check is needed for shared builds, as the pkg-config file
+> for vorbisenc doesn't include vorbis and ogg if --static isn't used.
+
+If you still manually add -lvorbis that IMHO defeats the purpose of using pkg-config the first place.
+I don't know if our actual code using vorbisenc depend on libvorbis and libogg, but if it does then the flags for all 3 would have to be requested via pkg-config.",2,1,1,0,0,lex.dont_know;morph.epi.neg_cognition
+2,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ffmpeg,email,email:curatedemail:ffmpeg:ffmpeg-mailinglist-109874,email:curatedemail:ffmpeg:ffmpeg-mailinglist-109874:subject,subject,0,Michael Niedermayer,2012-03-08 20:52:37,9,de21c4dbdffd9b9f129e7e2d582eb8b28fb235e0e2d75f9d3c77e97431ed3c47,[FFmpeg-devel] [PATCH] Fix uninitialized reads on malformed ogg	files.,raw_emails,True,False,"[FFmpeg-devel] [PATCH] Fix uninitialized reads on malformed ogg	files.
+
+On Thu, Mar 08, 2012 at 09:04:51PM +0100, Reimar Döffinger wrote:
+> On Thu, Mar 08, 2012 at 05:51:59AM +0100, Michael Niedermayer wrote:
+> > On Wed, Mar 07, 2012 at 02:26:58PM -0800, dalecurtis at chromium.org wrote:
+> > > From: Dale Curtis <dalecurtis at chromium.org>
+> > > 
+> > > The ogg decoder wasn't padding the input buffer with the appropriate
+> > > FF_INPUT_BUFFER_PADDING_SIZE bytes. Which led to uninitialized reads in
+> > > various pieces of parsing code when they thought they had more data than
+> > > they actually did.
+> > 
+> > patch looks good to me
+> > reimar ?
+> 
+> None of the code I am aware of is supposed to require padding, so
+
+oggparse* uses get_bits(), ive not checked if they overread and if
+the patch would fix it. It just looked plausible to me ...
+
+
+> I'd really like to hear what code that is. Bugs tend tocome in bunches,
+> so I'd expect that code to be buggy in more ways.
+
+> I also have some doubts that that add can never cause integer overflows.
+
+the only code that changes the buf size is
+1. init to 65307
+2. *= 2
+
+if we assume that the existing code is free of overflows then the
+largest value achivable is of the form of
+65307 * 2^N where N is very likely 16 but could be 48 when int is
+64bit
+either way theres at least 15 million bytes from these to a overflow
+FF_INPUT_BUFFER_PADDING_SIZE is smaller than 15 million
+
+if the existing code can overflow i suspect it would crash with a
+null pointer dereference before + FF_INPUT_BUFFER_PADDING_SIZE can
+overflow
+
+-- 
+Michael     GnuPG fingerprint: 9FF2128B147EF6730BADF133611EC787040B0FAB
+
+Opposition brings concord. Out of discord comes the fairest harmony.
+-- Heraclitus
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: Digital signature
+URL: <http://ffmpeg.org/pipermail/ffmpeg-devel/attachments/20120308/b83d4f6f/attachment.asc>",1,0,0,1,0,affix.prefix.un
+3,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ffmpeg,email,email:curatedemail:ffmpeg:ffmpeg-mailinglist-201254,email:curatedemail:ffmpeg:ffmpeg-mailinglist-201254:body,body,1,Anton Khirnov,2020-12-30 18:04:03,13,de2beec9ac6cd74798499bf5b86520875285dc00a66383611b390d498ebe4988,"Quoting Andreas Rheinhardt (2020-12-10 12:16:33)
+
+                                                        _defaults
+
+Otherwise looks very good
+
+-- 
+Anton Khirnov",raw_emails,True,False,"[FFmpeg-devel] [PATCH 15/39] avcodec/mpegvideo:	Merge	ff_mpv_decode_defaults into ff_mpv_decode_init
+
+Quoting Andreas Rheinhardt (2020-12-10 12:16:33)
+> These two are always called directly after each other (with the
+> exception of the calls in mpeg_decode_init() where some irrelevant
+> modifications of the avctx (which could just as well be done before
+> ff_mpv_decode_defaults(), because it doesn't have a pointer to the
+> AVCodecContext at all and therefore can't see these modifications at
+> all) are performed in between), so merge ff_mpv_decode() in
+                                                        _defaults
+> ff_mpv_decode_init().
+> 
+> Signed-off-by: Andreas Rheinhardt <andreas.rheinhardt at gmail.com>
+> ---
+
+Otherwise looks very good
+
+-- 
+Anton Khirnov",1,0,1,0,0,morph.evid.inferential_seem
+4,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ffmpeg,email,email:curatedemail:ffmpeg:ffmpeg-patch-29922,email:curatedemail:ffmpeg:ffmpeg-patch-29922:body,body,1,,2021-08-31T18:07:30,28,de27bfbd1996ac67d5123fc4484f41aef0b7fe328b03e1deec9515805389ce24,"Signed-off-by: Nicolas George <george.org>
+---
+ doc/demuxers.texi | 1 +
+ libavformat/concatdec.c | 3 +++
+ tests/extended.ffconcat | 2 +-
+ tests/simple1.ffconcat | 2 +-
+ 4 files changed, 6 insertions(+), 2 deletions(-)",raw_emails,True,False,"[FFmpeg-devel,03/12] lavf/concat: deprecate file_packet_metadata
+
+Signed-off-by: Nicolas George <george@nsup.org>
+---
+ doc/demuxers.texi | 1 +
+ libavformat/concatdec.c | 3 +++
+ tests/extended.ffconcat | 2 +-
+ tests/simple1.ffconcat | 2 +-
+ 4 files changed, 6 insertions(+), 2 deletions(-)",1,0,0,1,0,affix.prefix.in
+5,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-comment-18652811,email:curatedemail:kernel:kernel-comment-18652811:body,body,1,,2016-04-18T17:31:31,62,de2d659ab4a3032d768e92f819693099d96612f21b01810ce9bced21db84e61c,"On ma, 2016-04-18 at 10:15 +0200, Patrik Jakobsson wrote:
+
+I pushed this to -dinq thanks for the review.
+
+Jani, Daniel: I made a mistake pushing this before getting the CI
+result. It wasn't either picked up by PW, so not sure about its status.
+What can we do, revert/resubmit or wait for the next regular CI result?
+
+Sorry for the mess,
+Imre",raw_emails,True,False,"Re: [Intel-gfx] [PATCH] drm/i915/kbl: Reset secondary power well
+	requests left on by DMC/KVMR
+
+On ma, 2016-04-18 at 10:15 +0200, Patrik Jakobsson wrote:
+> On Fri, Apr 15, 2016 at 10:32:58PM +0300, Imre Deak wrote:
+> > The workaround added in c6782b76d31a (""drm/i915/gen9: Reset
+> > secondary power
+> > well requests left on by DMC/KVMR"") needs to be applied on Kabylake
+> > too as
+> > shown by the corresponding timeout errors about power well 1 and
+> > MISC IO
+> > power well disabling in the latest CI run.
+> > 
+> > CC: Patrik Jakobsson <patrik.jakobsson@linux.intel.com>
+> > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> 
+> Ok, so this seems to affect all DMC firmwares we have so far? Any
+> news on the
+> bug report?
+> 
+> Reviewed-by: Patrik Jakobsson <patrik.jakobsson@linux.intel.com>
+
+I pushed this to -dinq thanks for the review.
+
+Jani, Daniel: I made a mistake pushing this before getting the CI
+result. It wasn't either picked up by PW, so not sure about its status.
+What can we do, revert/resubmit or wait for the next regular CI result?
+
+Sorry for the mess,
+Imre
+
+> > ---
+> >  drivers/gpu/drm/i915/intel_runtime_pm.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/gpu/drm/i915/intel_runtime_pm.c
+> > b/drivers/gpu/drm/i915/intel_runtime_pm.c
+> > index 259f66f..1242fb5 100644
+> > --- a/drivers/gpu/drm/i915/intel_runtime_pm.c
+> > +++ b/drivers/gpu/drm/i915/intel_runtime_pm.c
+> > @@ -709,7 +709,7 @@ static void skl_set_power_well(struct
+> > drm_i915_private *dev_priv,
+> >  			DRM_DEBUG_KMS(""Disabling %s\n"",
+> > power_well->name);
+> >  		}
+> >  
+> > -		if (IS_SKYLAKE(dev_priv) || IS_BROXTON(dev_priv))
+> > +		if (IS_GEN9(dev_priv))
+> >  			gen9_sanitize_power_well_requests(dev_priv
+> > , power_well);
+> >  	}
+> >  
+> > -- 
+> > 2.5.0
+> > 
+>",2,1,1,0,0,lex.not_sure;morph.neg.scoped_epistemic
+6,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-comment-23817881,email:curatedemail:kernel:kernel-comment-23817881:body,body,1,,2020-12-03T17:46:13,15,de2b6dff258301c8a6c29a9a5d9c124b73e77c08350c32fc746b05aa6c0aece7,"On 02.12.20 18:51, Randy Dunlap wrote:
+
+Hi,
+
+ok, thanks.
+
+around 6.6kb stripped, 74kb unstripped.
+
+--mtx",raw_emails,True,False,"Re: [PATCH v2] drivers: acpi: add opt-out of apple-specific property
+ parsing
+
+On 02.12.20 18:51, Randy Dunlap wrote:
+
+Hi,
+
+>> +config ACPI_APPLE
+>> +	bool ""Apple ACPI properties support""
+>> +	default y if X86
+>> +	help
+>> +	  Extraction of apple specific ACPI properties.>
+> 	                Apple-specific
+
+ok, thanks.
+
+>> +
+>> +	  Say N if you're sure the kernel won't be used on an Apple machine
+>> +	  and wanna save a few kb of memory. (embedded or high-density VMs)
+> 
+> 	      want to
+> 
+> and kb == kilobits. Is that what you mean here?
+
+around 6.6kb stripped, 74kb unstripped.
+
+--mtx",1,0,0,1,0,affix.prefix.un
+7,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-comment-23844945,email:curatedemail:kernel:kernel-comment-23844945:body,body,1,,2020-12-14T16:50:18,52,de29ebc59a8ce9e7cec1cf3e04c5050c911ebdfa05f31b574aff56f29cd6178e,"Hi Elijah,
+
+On Mon, 14 Dec 2020, Elijah Newren wrote:
+
+I invited you into the GitGitGadget organization.
+
+Recently, I pushed up  to have a proper base branch
+for myself, but I think that was probably not a good idea. I should have
+opened a namespace like  or some such.
+
+Understood.
+
+Thanks,
+Dscho",raw_emails,True,False,"Re: [PATCH 02/11] merge-ort: add initial outline for basic rename
+ detection
+
+Hi Elijah,
+
+On Mon, 14 Dec 2020, Elijah Newren wrote:
+
+> On Mon, Dec 14, 2020 at 7:42 AM Johannes Schindelin
+> <Johannes.Schindelin@gmx.de> wrote:
+> >
+> > Hi Elijah & Stolee,
+> >
+> > On Mon, 14 Dec 2020, Derrick Stolee wrote:
+> >
+> > > On 12/13/2020 2:47 AM, Elijah Newren wrote:
+> > > >
+> > > > Sorry for two different email responses to the same email...
+> > > >
+> > > > Addressing the comments on this patchset mean re-submitting
+> > > > en/merge-ort-impl, and causing conflicts in en/merge-ort-2 and this
+> > > > series en/merge-ort-3.  Since gitgitgadget will not allow me to submit
+> > > > patches against a series that isn't published by Junio, I'll need to
+> > > > ask Junio to temporarily drop both of these series, then later
+> > > > resubmit en/merge-ort-2 after he publishes my updates to
+> > > > en/merge-ort-impl.  Then when he publishes my updates to
+> > > > en/merge-ort-2, I'll be able to submit my already-rebased patches for
+> > > > en/merge-ort-3.
+> > >
+> > > Let's chat privately about perhaps creatin
+> >
+> > Yes, I am totally willing to push up temporary branches if that helps you,
+> > or even giving you push permissions to do that.
+> >
+> > Ciao,
+> > Dscho
+>
+> Given the amount of changes left to push up, I suspect there'll be
+> more cases where it'd be useful.  If I could get push permissions, and
+> a suggested namespace to use for such temporary branches, that'd help.
+
+I invited you into the GitGitGadget organization.
+
+Recently, I pushed up `hanwen/libreftable` to have a proper base branch
+for myself, but I think that was probably not a good idea. I should have
+opened a namespace like `temp/` or some such.
+
+> In this particular case, though, one of my two fears was already
+> realized -- Junio jumped in and did the work of rebasing and conflict
+> resolving for en/merge-ort-2 and en/merge-ort-3.  I didn't want to
+> burden him with that extra work, but what he pushed up for
+> en/merge-ort-2 is identical to what I have.  So, all I have to do is
+> push en/merge-ort-3 with the extra changes I have in it.  So this
+> particular time is taken care of.
+
+Understood.
+
+Thanks,
+Dscho",2,0,2,0,0,morph.hedge.adverbial_perhaps;morph.hedge.shield_think
+8,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-comment-24938497,email:curatedemail:kernel:kernel-comment-24938497:body,body,1,,2022-07-15T07:53:28,237,de2b783b00330d1e2e061c1d6f3b139a3a940656000b18f5f6d8b6715074acea,"""Aneesh Kumar K.V"" <aneesh.kumar.ibm.com> writes:
+
+You dropped the original sysfs interface patches from the series, but
+the kernel internal implementation is still for the original sysfs
+interface.  For example, memory tier ID is for the original sysfs
+interface, not for the new proposed sysfs interface.  So I suggest you
+to implement with the new interface in mind.  What do you think about
+the following design?
+
+- Each NUMA node belongs to a memory type, and each memory type
+  corresponds to a ""abstract distance"", so each NUMA node corresonds to
+  a ""distance"".  For simplicity, we can start with static distances, for
+  example, DRAM (default): 150, PMEM: 250.  The distance of each NUMA
+  node can be recorded in a global array,
+
+    int node_distances[MAX_NUMNODES];
+
+  or, just
+
+    pgdat->distance
+
+- Each memory tier corresponds to a range of distance, for example,
+  0-100, 100-200, 200-300, >300, we can start with static ranges too.
+
+- The core API of memory tier could be
+
+    struct memory_tier *find_create_memory_tier(int distance);
+
+  it will find the memory tier which covers ""distance"" in the memory
+  tier list, or create a new memory tier if not found.
+
+- kmem_dax driver will setup distance for PMEM NUMA nodes before online
+  them.
+
+- When a NUMA node is onlined, we will use find_create_memory_tier() to
+  find or create its memory tier and add the NUMA node into the memory
+  tier.
+
+- Or we can add memory type data structure now.
+
+Best Regards,
+Huang, Ying",raw_emails,True,False,"Re: [PATCH v9 1/8] mm/demotion: Add support for explicit memory tiers
+
+""Aneesh Kumar K.V"" <aneesh.kumar@linux.ibm.com> writes:
+
+> In the current kernel, memory tiers are defined implicitly via a
+> demotion path relationship between NUMA nodes, which is created
+> during the kernel initialization and updated when a NUMA node is
+> hot-added or hot-removed.  The current implementation puts all
+> nodes with CPU into the top tier, and builds the tier hierarchy
+> tier-by-tier by establishing the per-node demotion targets based
+> on the distances between nodes.
+>
+> This current memory tier kernel interface needs to be improved for
+> several important use cases,
+>
+> The current tier initialization code always initializes
+> each memory-only NUMA node into a lower tier.  But a memory-only
+> NUMA node may have a high performance memory device (e.g. a DRAM
+> device attached via CXL.mem or a DRAM-backed memory-only node on
+> a virtual machine) and should be put into a higher tier.
+>
+> The current tier hierarchy always puts CPU nodes into the top
+> tier. But on a system with HBM or GPU devices, the
+> memory-only NUMA nodes mapping these devices should be in the
+> top tier, and DRAM nodes with CPUs are better to be placed into the
+> next lower tier.
+>
+> With current kernel higher tier node can only be demoted to selected nodes on the
+> next lower tier as defined by the demotion path, not any other
+> node from any lower tier.  This strict, hard-coded demotion order
+> does not work in all use cases (e.g. some use cases may want to
+> allow cross-socket demotion to another node in the same demotion
+> tier as a fallback when the preferred demotion node is out of
+> space), This demotion order is also inconsistent with the page
+> allocation fallback order when all the nodes in a higher tier are
+> out of space: The page allocation can fall back to any node from
+> any lower tier, whereas the demotion order doesn't allow that.
+>
+> The current kernel also don't provide any interfaces for the
+> userspace to learn about the memory tier hierarchy in order to
+> optimize its memory allocations.
+>
+> This patch series address the above by defining memory tiers explicitly.
+>
+> This patch introduce explicity memory tiers. The tier ID value
+> of a memory tier is used to derive the demotion order between
+> NUMA nodes.
+>
+> For example, if we have 3 memtiers: memtier100, memtier200, memiter300
+> then the memory tier order is: memtier300 -> memtier200 -> memtier100
+> where memtier300 is the highest tier and memtier100 is the lowest tier.
+>
+> While reclaim we migrate pages from fast(higher) tiers to slow(lower)
+> tiers when the fast(higher) tier is under memory pressure.
+>
+> This patchset introduce 3 memory tiers (memtier100, memtier200 and memtier300)
+> which are created by different kernel subsystems. The default memory
+> tier created by the kernel is memtier200. A kernel parameter is provided
+> to override the default memory tier.
+>
+> Link: https://lore.kernel.org/linux-mm/CAAPL-u9Wv+nH1VOZTj=9p9S70Y3Qz3+63EkqncRDdHfubsrjfw@mail.gmail.com
+> Link: https://lore.kernel.org/linux-mm/7b72ccf4-f4ae-cb4e-f411-74d055482026@linux.ibm.com
+>
+> Signed-off-by: Jagdish Gediya <jvgediya@linux.ibm.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  include/linux/memory-tiers.h | 15 +++++++
+>  mm/Makefile                  |  1 +
+>  mm/memory-tiers.c            | 78 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 94 insertions(+)
+>  create mode 100644 include/linux/memory-tiers.h
+>  create mode 100644 mm/memory-tiers.c
+>
+> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+> new file mode 100644
+> index 000000000000..a81dbc20e0d1
+> --- /dev/null
+> +++ b/include/linux/memory-tiers.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_MEMORY_TIERS_H
+> +#define _LINUX_MEMORY_TIERS_H
+> +
+> +#ifdef CONFIG_NUMA
+> +
+> +#define MEMORY_TIER_HBM_GPU	300
+> +#define MEMORY_TIER_DRAM	200
+> +#define MEMORY_TIER_PMEM	100
+> +
+> +#define DEFAULT_MEMORY_TIER	MEMORY_TIER_DRAM
+> +#define MAX_MEMORY_TIER_ID	400
+> +
+> +#endif	/* CONFIG_NUMA */
+> +#endif  /* _LINUX_MEMORY_TIERS_H */
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 6f9ffa968a1a..d30acebc2164 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -92,6 +92,7 @@ obj-$(CONFIG_KFENCE) += kfence/
+>  obj-$(CONFIG_FAILSLAB) += failslab.o
+>  obj-$(CONFIG_MEMTEST)		+= memtest.o
+>  obj-$(CONFIG_MIGRATION) += migrate.o
+> +obj-$(CONFIG_NUMA) += memory-tiers.o
+>  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+>  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+>  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> new file mode 100644
+> index 000000000000..011877b6dbb9
+> --- /dev/null
+> +++ b/mm/memory-tiers.c
+> @@ -0,0 +1,78 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <linux/types.h>
+> +#include <linux/nodemask.h>
+> +#include <linux/slab.h>
+> +#include <linux/lockdep.h>
+> +#include <linux/moduleparam.h>
+> +#include <linux/memory-tiers.h>
+> +
+> +struct memory_tier {
+> +	struct list_head list;
+> +	int id;
+> +	nodemask_t nodelist;
+> +};
+> +
+> +static DEFINE_MUTEX(memory_tier_lock);
+> +static LIST_HEAD(memory_tiers);
+> +
+> +static void insert_memory_tier(struct memory_tier *memtier)
+> +{
+> +	struct list_head *ent;
+> +	struct memory_tier *tmp_memtier;
+> +
+> +	lockdep_assert_held_once(&memory_tier_lock);
+> +
+> +	list_for_each(ent, &memory_tiers) {
+> +		tmp_memtier = list_entry(ent, struct memory_tier, list);
+> +		if (tmp_memtier->id < memtier->id) {
+> +			list_add_tail(&memtier->list, ent);
+> +			return;
+> +		}
+> +	}
+> +	list_add_tail(&memtier->list, &memory_tiers);
+> +}
+> +
+> +static struct memory_tier *register_memory_tier(unsigned int tier)
+> +{
+> +	struct memory_tier *memtier;
+> +
+> +	if (tier > MAX_MEMORY_TIER_ID)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	memtier = kzalloc(sizeof(struct memory_tier), GFP_KERNEL);
+> +	if (!memtier)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	memtier->id   = tier;
+> +
+> +	insert_memory_tier(memtier);
+> +
+> +	return memtier;
+> +}
+> +
+> +static unsigned int default_memtier = DEFAULT_MEMORY_TIER;
+> +core_param(default_memory_tier, default_memtier, uint, 0644);
+> +
+> +static int __init memory_tier_init(void)
+> +{
+> +	struct memory_tier *memtier;
+> +
+> +	/*
+> +	 * Register only default memory tier to hide all empty
+> +	 * memory tier from sysfs. Since this is early during
+> +	 * boot, we could avoid holding memtory_tier_lock. But
+> +	 * keep it simple by holding locks. So we can add lock
+> +	 * held debug checks in other functions.
+> +	 */
+> +	mutex_lock(&memory_tier_lock);
+> +	memtier = register_memory_tier(default_memtier);
+> +	if (IS_ERR(memtier))
+> +		panic(""%s() failed to register memory tier: %ld\n"",
+> +		      __func__, PTR_ERR(memtier));
+> +
+> +	/* CPU only nodes are not part of memory tiers. */
+> +	memtier->nodelist = node_states[N_MEMORY];
+> +	mutex_unlock(&memory_tier_lock);
+> +	return 0;
+> +}
+> +subsys_initcall(memory_tier_init);
+
+You dropped the original sysfs interface patches from the series, but
+the kernel internal implementation is still for the original sysfs
+interface.  For example, memory tier ID is for the original sysfs
+interface, not for the new proposed sysfs interface.  So I suggest you
+to implement with the new interface in mind.  What do you think about
+the following design?
+
+- Each NUMA node belongs to a memory type, and each memory type
+  corresponds to a ""abstract distance"", so each NUMA node corresonds to
+  a ""distance"".  For simplicity, we can start with static distances, for
+  example, DRAM (default): 150, PMEM: 250.  The distance of each NUMA
+  node can be recorded in a global array,
+
+    int node_distances[MAX_NUMNODES];
+
+  or, just
+
+    pgdat->distance
+
+- Each memory tier corresponds to a range of distance, for example,
+  0-100, 100-200, 200-300, >300, we can start with static ranges too.
+
+- The core API of memory tier could be
+
+    struct memory_tier *find_create_memory_tier(int distance);
+
+  it will find the memory tier which covers ""distance"" in the memory
+  tier list, or create a new memory tier if not found.
+
+- kmem_dax driver will setup distance for PMEM NUMA nodes before online
+  them.
+
+- When a NUMA node is onlined, we will use find_create_memory_tier() to
+  find or create its memory tier and add the NUMA node into the memory
+  tier.
+
+- Or we can add memory type data structure now.
+
+Best Regards,
+Huang, Ying",1,0,1,0,0,morph.evid.inferential_suggest
+9,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-10318535,email:curatedemail:kernel:kernel-patch-10318535:body,body,1,,2018-03-31T04:02:26,55,de2c934dfafa203c3b2ac8ed47c08ab72eb65fb58a797f34921a2e2c3c4d853e,"Block device inodes never have S_DAX set, so kill the check for DAX and
+diversion to dax_writeback_mapping_range().
+
+Cc: Jeff Moyer <jmoyer.com>
+Cc: Ross Zwisler <ross.zwisler.intel.com>
+Cc: Matthew Wilcox <mawilcox.com>
+Cc: Dave Chinner <david.com>
+Reviewed-by: Christoph Hellwig <hch.de>
+Reviewed-by: Jan Kara <jack.cz>
+Signed-off-by: Dan Williams <dan.j.williams.com>
+---
+ fs/block_dev.c | 5 -----
+ 1 file changed, 5 deletions(-)",raw_emails,True,False,"[v8,03/18] block, dax: remove dead code in blkdev_writepages()
+
+Block device inodes never have S_DAX set, so kill the check for DAX and
+diversion to dax_writeback_mapping_range().
+
+Cc: Jeff Moyer <jmoyer@redhat.com>
+Cc: Ross Zwisler <ross.zwisler@linux.intel.com>
+Cc: Matthew Wilcox <mawilcox@microsoft.com>
+Cc: Dave Chinner <david@fromorbit.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ fs/block_dev.c | 5 -----
+ 1 file changed, 5 deletions(-)",1,0,0,1,0,affix.prefix.in
+10,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-12110829,email:curatedemail:kernel:kernel-patch-12110829:body,body,1,,2021-03-02T00:01:32,175,de2ba678e1c31e91fa01e2e7e2979071751c605b19d9647bd278ab10d772ac98,"Currently, the context (fds, mmap-ed areas, etc.) are global. Each test
+mutates this state in some way, in some cases really ""clobbering it""
+(e.g., the events test mremap-ing area_dst over the top of area_src, or
+the minor faults tests overwriting the count_verify values in the test
+areas). We run the tests in a particular order, each test is careful to
+make the right assumptions about its starting state, etc.
+
+But, this is fragile. It's better for a test's success or failure to not
+depend on what some other prior test case did to the global state.
+
+To that end, clear and reinitialize the test context at the start of
+each test case, so whatever prior test cases did doesn't affect future
+tests.
+
+This is particularly relevant to this series because the events test's
+mremap of area_dst screws up assumptions the minor fault test was
+relying on. This wasn't a problem for hugetlb, as we don't mremap in
+that case.
+
+Signed-off-by: Axel Rasmussen <axelrasmussen.com>
+---
+ tools/testing/selftests/vm/userfaultfd.c | 249 ++++++++++++++---------
+ 1 file changed, 151 insertions(+), 98 deletions(-)",raw_emails,True,False,"[v2,4/5] userfaultfd/selftests: reinitialize test context in each test
+
+Currently, the context (fds, mmap-ed areas, etc.) are global. Each test
+mutates this state in some way, in some cases really ""clobbering it""
+(e.g., the events test mremap-ing area_dst over the top of area_src, or
+the minor faults tests overwriting the count_verify values in the test
+areas). We run the tests in a particular order, each test is careful to
+make the right assumptions about its starting state, etc.
+
+But, this is fragile. It's better for a test's success or failure to not
+depend on what some other prior test case did to the global state.
+
+To that end, clear and reinitialize the test context at the start of
+each test case, so whatever prior test cases did doesn't affect future
+tests.
+
+This is particularly relevant to this series because the events test's
+mremap of area_dst screws up assumptions the minor fault test was
+relying on. This wasn't a problem for hugetlb, as we don't mremap in
+that case.
+
+Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
+---
+ tools/testing/selftests/vm/userfaultfd.c | 249 ++++++++++++++---------
+ 1 file changed, 151 insertions(+), 98 deletions(-)",1,0,0,1,0,affix.prefix.in
+11,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-12263461,email:curatedemail:kernel:kernel-patch-12263461:subject,subject,0,,2021-05-18T02:52:32,4,de2a60e4b98a635a4d0b0d556faec2899eab464ec9868e9c7ec99837be47d07f,ssb: remove unreachable code,raw_emails,True,False,"ssb: remove unreachable code
+
+The return value of ssb_bus_unregister can only be 0 or 1, so this
+condition if (err == -EBUSY) will not hold, so delete it.
+
+Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+---
+ drivers/ssb/main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)",1,0,0,1,0,affix.prefix.un
+12,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-12335299,email:curatedemail:kernel:kernel-patch-12335299:body,body,1,,2021-06-21T16:33:27,81,de2731dd9488158f36494da882507d6d15b675b2991605995558b4a0d0876cb1,"Linux 5.14 will add support for nested TSC scaling. Add the
+corresponding feature in QEMU; to keep support for existing kernels,
+do not add it to any processor yet.
+
+The handling of the VMCS enumeration MSR is ugly; once we have more than
+one case, we may want to add a table to check VMX features against.
+
+Signed-off-by: Paolo Bonzini <pbonzini.com>
+---
+ target/i386/cpu.c | 2 +-
+ target/i386/cpu.h | 1 +
+ target/i386/kvm/kvm.c | 12 ++++++++----
+ 3 files changed, 10 insertions(+), 5 deletions(-)",raw_emails,True,False,"target/i386: kvm: add support for TSC scaling
+
+Linux 5.14 will add support for nested TSC scaling. Add the
+corresponding feature in QEMU; to keep support for existing kernels,
+do not add it to any processor yet.
+
+The handling of the VMCS enumeration MSR is ugly; once we have more than
+one case, we may want to add a table to check VMX features against.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/cpu.c | 2 +-
+ target/i386/cpu.h | 1 +
+ target/i386/kvm/kvm.c | 12 ++++++++----
+ 3 files changed, 10 insertions(+), 5 deletions(-)",3,0,2,1,0,affix.prefix.in;morph.mod.epistemic_maymight;morph.tense.past_nk_notyet
+13,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-12796712,email:curatedemail:kernel:kernel-patch-12796712:subject,subject,0,,2022-03-31T02:48:00,8,de2b6fb57158242129fc1dfe53df059e281e14fdffcdf2951a9224e08623cde9,"[v8,16/17] media: mediatek: vcodec: support stateless VP9 decoding",raw_emails,True,False,"[v8,16/17] media: mediatek: vcodec: support stateless VP9 decoding
+
+Add support for VP9 decoding using the stateless API,
+as supported by MT8192. And the drivers is lat and core architecture.
+
+Signed-off-by: George Sun <george.sun@mediatek.com>
+Signed-off-by: Xiaoyong Lu <xiaoyong.lu@mediatek.com>
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+---
+changed compare with v7:
+Using upstream interface to update vp9 prob tables.
+---
+ .../media/platform/mediatek/vcodec/Makefile | 1 +
+ .../vcodec/mtk_vcodec_dec_stateless.c | 26 +-
+ .../platform/mediatek/vcodec/mtk_vcodec_drv.h | 1 +
+ .../vcodec/vdec/vdec_vp9_req_lat_if.c | 2072 +++++++++++++++++
+ .../platform/mediatek/vcodec/vdec_drv_if.c | 4 +
+ .../platform/mediatek/vcodec/vdec_drv_if.h | 1 +
+ 6 files changed, 2102 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c",1,0,0,1,0,affix.suffix.less
+14,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-12981212,email:curatedemail:kernel:kernel-patch-12981212:subject,subject,0,,2022-09-20T01:55:53,6,de2ccac35db261ccac407f64dbb8c51619088c71ae2a006b8de1e1d937a75ab0,[6/7] midx.c: remove unnecessary loop condition,raw_emails,True,False,"[6/7] midx.c: remove unnecessary loop condition
+
+The fill_included_packs_batch() routine is responsible for aggregating
+objects in packs with a non-zero value for the `--batch-size` option of
+the `git multi-pack-index repack` sub-command.
+
+Since this routine is explicitly called only when `--batch-size` is
+non-zero, there is no point in checking that this is the case in our
+loop condition.
+
+Remove the unnecessary part of this condition to avoid confusion.
+
+Signed-off-by: Taylor Blau <me@ttaylorr.com>
+---
+ midx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)",1,0,0,1,0,affix.prefix.un
+15,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-13036213,email:curatedemail:kernel:kernel-patch-13036213:subject,subject,0,,2022-11-08T12:26:56,7,de2d873930f0d8b68d8142b3f080e7375e0f0a0f2ac3c7756758a530255fd7d0,"[liburing,v3] test that unregister_files processes task work",raw_emails,True,False,"[liburing,v3] test that unregister_files processes task work
+
+Ensure that unregister_files processes task work from defer_taskrun even
+when not explicitly flushed.
+
+Signed-off-by: Dylan Yudaken <dylany@meta.com>
+---
+
+v3:
+ - look at register_files return code
+
+v2:
+ - fix return code when ring init fails
+
+test/file-register.c | 57 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+
+
+base-commit: 754bc068ec482c5338a07dd74b7d3892729bb847",1,0,0,1,0,affix.prefix.un
+16,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-13211207,email:curatedemail:kernel:kernel-patch-13211207:body,body,1,,2023-04-14T10:12:40,89,de26a3d3135fa4a850e1e445a5ae0dd092f2dc7ca20d0d846c5fd656346e045c,"Setting the H264_TRANSFORM_8X8 property only works on HFI versions
+
+venc_set_properties, which meant that initializing the encoder would
+always fail unless the hfi_version was >=4xx.
+
+This patch changes venc_set_properties to only set the
+H264_TRANSFORM_8X8 property if the hfi version is >=4xx.
+
+Signed-off-by: Martin Dørum <dorum.com>
+
+---
+
+I have an APQ8016-based board. Before this patch, the Venus driver
+would simply fail with EINVAL when trying to request buffers
+(VIDIOC_REQBUFS). With this patch, encoding works
+(tested using gstreamer's v4l2h264enc).
+
+ drivers/media/platform/qcom/venus/venc.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+--
+2.34.1",raw_emails,True,False,"media: venus: only set H264_TRANSFORM_8X8 on supported hfi versions
+
+Setting the H264_TRANSFORM_8X8 property only works on HFI versions
+>=4xx. The code used to unconditionally set the property in
+venc_set_properties, which meant that initializing the encoder would
+always fail unless the hfi_version was >=4xx.
+
+This patch changes venc_set_properties to only set the
+H264_TRANSFORM_8X8 property if the hfi version is >=4xx.
+
+Signed-off-by: Martin Dørum <dorum@noisolation.com>
+
+---
+
+I have an APQ8016-based board. Before this patch, the Venus driver
+would simply fail with EINVAL when trying to request buffers
+(VIDIOC_REQBUFS). With this patch, encoding works
+(tested using gstreamer's v4l2h264enc).
+
+ drivers/media/platform/qcom/venus/venc.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+--
+2.34.1",1,0,0,1,0,affix.prefix.in
+17,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-patch-13223265,email:curatedemail:kernel:kernel-patch-13223265:body,body,1,,2023-04-25T12:44:53,393,de25bd1631a7d0968b632b561f9f31f8ced0d612439190b870797e27e0d4acee,"Now the __pageblock_pfn_to_page() is used by set_zone_contiguous(), which
+checks whether the given zone contains holes, and uses pfn_to_online_page()
+to validate if the start pfn is online and valid, as well as using pfn_valid()
+to validate the end pfn.
+
+However, the __pageblock_pfn_to_page() function may return non-NULL even
+if the end pfn of a pageblock is in a memory hole in some situations. For
+example, if the pageblock order is MAX_ORDER, which will fall into 2
+sub-sections, and the end pfn of the pageblock may be hole even though
+the start pfn is online and valid.
+
+See below memory layout as an example and suppose the pageblock order
+is MAX_ORDER.
+
+[ 0.000000] Zone ranges:
+[ 0.000000] DMA [mem 0x0000000040000000-0x00000000ffffffff]
+[ 0.000000] DMA32 empty
+[ 0.000000] Normal [mem 0x0000000100000000-0x0000001fa7ffffff]
+[ 0.000000] Movable zone start for each node
+[ 0.000000] Early memory node ranges
+[ 0.000000] node 0: [mem 0x0000000040000000-0x0000001fa3c7ffff]
+[ 0.000000] node 0: [mem 0x0000001fa3c80000-0x0000001fa3ffffff]
+[ 0.000000] node 0: [mem 0x0000001fa4000000-0x0000001fa402ffff]
+[ 0.000000] node 0: [mem 0x0000001fa4030000-0x0000001fa40effff]
+[ 0.000000] node 0: [mem 0x0000001fa40f0000-0x0000001fa73cffff]
+[ 0.000000] node 0: [mem 0x0000001fa73d0000-0x0000001fa745ffff]
+[ 0.000000] node 0: [mem 0x0000001fa7460000-0x0000001fa746ffff]
+[ 0.000000] node 0: [mem 0x0000001fa7470000-0x0000001fa758ffff]
+[ 0.000000] node 0: [mem 0x0000001fa7590000-0x0000001fa7dfffff]
+
+Focus on the last memory range, and there is a hole for the range [mem
+0x0000001fa7590000-0x0000001fa7dfffff]. That means the last pageblock
+will contain the range from 0x1fa7c00000 to 0x1fa7ffffff, since the
+pageblock must be 4M aligned. And in this pageblock, these pfns will
+fall into 2 sub-section (the sub-section size is 2M aligned).
+
+So, the 1st sub-section (indicates pfn range: 0x1fa7c00000 -
+0x1fa7dfffff ) in this pageblock is valid by calling subsection_map_init()
+in free_area_init(), but the 2nd sub-section (indicates pfn range:
+0x1fa7e00000 - 0x1fa7ffffff ) in this pageblock is not valid.
+
+This did not break anything until now, but the zone continuous is fragile
+in this possible scenario. So as previous discussion[1], it is better to
+add some comments to explain this possible issue in case there are some
+future pfn walkers that rely on this.
+
+[1] https://lore.kernel.org/all/87r0sdsmr6.fsf-desk2.ccr.corp.intel.com/
+
+Signed-off-by: Baolin Wang <baolin.wang.alibaba.com>
+Acked-by: Michal Hocko <mhocko.com>
+---
+Changes from v3:
+ - Update the comments to make it clear.
+ - Add acked tag from Michal.
+Changes from v2:
+ - Update the commit log and comments per Michal, thanks.
+Changes from v1:
+ - Update the comments per Ying and Mike, thanks.
+---
+ mm/page_alloc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)",raw_emails,True,False,"[v4] mm/page_alloc: add some comments to explain the possible hole in __pageblock_pfn_to_page()
+
+Now the __pageblock_pfn_to_page() is used by set_zone_contiguous(), which
+checks whether the given zone contains holes, and uses pfn_to_online_page()
+to validate if the start pfn is online and valid, as well as using pfn_valid()
+to validate the end pfn.
+
+However, the __pageblock_pfn_to_page() function may return non-NULL even
+if the end pfn of a pageblock is in a memory hole in some situations. For
+example, if the pageblock order is MAX_ORDER, which will fall into 2
+sub-sections, and the end pfn of the pageblock may be hole even though
+the start pfn is online and valid.
+
+See below memory layout as an example and suppose the pageblock order
+is MAX_ORDER.
+
+[ 0.000000] Zone ranges:
+[ 0.000000] DMA [mem 0x0000000040000000-0x00000000ffffffff]
+[ 0.000000] DMA32 empty
+[ 0.000000] Normal [mem 0x0000000100000000-0x0000001fa7ffffff]
+[ 0.000000] Movable zone start for each node
+[ 0.000000] Early memory node ranges
+[ 0.000000] node 0: [mem 0x0000000040000000-0x0000001fa3c7ffff]
+[ 0.000000] node 0: [mem 0x0000001fa3c80000-0x0000001fa3ffffff]
+[ 0.000000] node 0: [mem 0x0000001fa4000000-0x0000001fa402ffff]
+[ 0.000000] node 0: [mem 0x0000001fa4030000-0x0000001fa40effff]
+[ 0.000000] node 0: [mem 0x0000001fa40f0000-0x0000001fa73cffff]
+[ 0.000000] node 0: [mem 0x0000001fa73d0000-0x0000001fa745ffff]
+[ 0.000000] node 0: [mem 0x0000001fa7460000-0x0000001fa746ffff]
+[ 0.000000] node 0: [mem 0x0000001fa7470000-0x0000001fa758ffff]
+[ 0.000000] node 0: [mem 0x0000001fa7590000-0x0000001fa7dfffff]
+
+Focus on the last memory range, and there is a hole for the range [mem
+0x0000001fa7590000-0x0000001fa7dfffff]. That means the last pageblock
+will contain the range from 0x1fa7c00000 to 0x1fa7ffffff, since the
+pageblock must be 4M aligned. And in this pageblock, these pfns will
+fall into 2 sub-section (the sub-section size is 2M aligned).
+
+So, the 1st sub-section (indicates pfn range: 0x1fa7c00000 -
+0x1fa7dfffff ) in this pageblock is valid by calling subsection_map_init()
+in free_area_init(), but the 2nd sub-section (indicates pfn range:
+0x1fa7e00000 - 0x1fa7ffffff ) in this pageblock is not valid.
+
+This did not break anything until now, but the zone continuous is fragile
+in this possible scenario. So as previous discussion[1], it is better to
+add some comments to explain this possible issue in case there are some
+future pfn walkers that rely on this.
+
+[1] https://lore.kernel.org/all/87r0sdsmr6.fsf@yhuang6-desk2.ccr.corp.intel.com/
+
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+---
+Changes from v3:
+ - Update the comments to make it clear.
+ - Add acked tag from Michal.
+Changes from v2:
+ - Update the commit log and comments per Michal, thanks.
+Changes from v1:
+ - Update the comments per Ying and Mike, thanks.
+---
+ mm/page_alloc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)",7,1,5,1,0,affix.prefix.in;lex.suppose_v;morph.evid.inferential_suggest;morph.mod.epistemic_maymight;morph.mod.epistemic_must_be
+18,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-series-294115,email:curatedemail:kernel:kernel-series-294115:body,body,1,,2020-05-27T10:29:20,343,de27837a49ac29b90b1ba9801f01267485ca6778277e65d2be6b958a4a1866bd,"v3:
+ * Introduce virtio_pci_optimal_num_queues() helper to enforce VIRTIO_QUEUE_MAX
+   in one place
+ * Use VIRTIO_SCSI_VQ_NUM_FIXED constant in all cases [Cornelia]
+ * Update hw/core/machine.c compat properties for QEMU 5.0 [Michael]
+v3:
+ * Add new performance results that demonstrate the scalability
+ * Mention that this is PCI-specific [Cornelia]
+v2:
+ * Let the virtio-DEVICE-pci device select num-queues because the optimal
+   multi-queue configuration may differ between virtio-pci, virtio-mmio, and
+   virtio-ccw [Cornelia]
+
+Enabling multi-queue on virtio-pci storage devices improves performance on SMP
+guests because the completion interrupt is handled on the vCPU that submitted
+the I/O request.  This avoids IPIs inside the guest.
+
+Note that performance is unchanged in these cases:
+1. Uniprocessor guests.  They don't have IPIs.
+2. Application threads might be scheduled on the sole vCPU that handles
+   completion interrupts purely by chance.  (This is one reason why benchmark
+   results can vary noticably between runs.)
+3. Users may bind the application to the vCPU that handles completion
+   interrupts.
+
+Set the number of queues to the number of vCPUs by default on virtio-blk and
+virtio-scsi PCI devices.  Older machine types continue to default to 1 queue
+for live migration compatibility.
+
+Random read performance:
+      IOPS
+q=1    78k
+q=32  104k  +33%
+
+Boot time:
+      Duration
+q=1        51s
+q=32     1m41s  +98%
+
+Guest configuration: 32 vCPUs, 101 virtio-blk-pci disks
+
+Previously measured results on a 4 vCPU guest were also positive but showed a
+smaller 1-4% performance improvement.  They are no longer valid because
+significant event loop optimizations have been merged.
+
+Stefan Hajnoczi (5):
+  virtio-pci: add virtio_pci_optimal_num_queues() helper
+  virtio-scsi: introduce a constant for fixed virtqueues
+  virtio-scsi: default num_queues to -smp N
+  virtio-blk: default num_queues to -smp N
+  vhost-user-blk: default num_queues to -smp N
+
+ hw/virtio/virtio-pci.h             |  9 +++++++++
+ include/hw/virtio/vhost-user-blk.h |  2 ++
+ include/hw/virtio/virtio-blk.h     |  2 ++
+ include/hw/virtio/virtio-scsi.h    |  5 +++++
+ hw/block/vhost-user-blk.c          |  6 +++++-
+ hw/block/virtio-blk.c              |  6 +++++-
+ hw/core/machine.c                  |  8 +++++++-
+ hw/scsi/vhost-scsi.c               |  3 ++-
+ hw/scsi/vhost-user-scsi.c          |  5 +++--
+ hw/scsi/virtio-scsi.c              | 13 +++++++++----
+ hw/virtio/vhost-scsi-pci.c         |  9 +++++++--
+ hw/virtio/vhost-user-blk-pci.c     |  4 ++++
+ hw/virtio/vhost-user-scsi-pci.c    |  9 +++++++--
+ hw/virtio/virtio-blk-pci.c         |  7 ++++++-
+ hw/virtio/virtio-pci.c             |  7 +++++++
+ hw/virtio/virtio-scsi-pci.c        |  9 +++++++--
+ 16 files changed, 87 insertions(+), 17 deletions(-)",raw_emails,True,False,"virtio-pci: enable blk and scsi multi-queue by default
+
+v3:
+ * Introduce virtio_pci_optimal_num_queues() helper to enforce VIRTIO_QUEUE_MAX
+   in one place
+ * Use VIRTIO_SCSI_VQ_NUM_FIXED constant in all cases [Cornelia]
+ * Update hw/core/machine.c compat properties for QEMU 5.0 [Michael]
+v3:
+ * Add new performance results that demonstrate the scalability
+ * Mention that this is PCI-specific [Cornelia]
+v2:
+ * Let the virtio-DEVICE-pci device select num-queues because the optimal
+   multi-queue configuration may differ between virtio-pci, virtio-mmio, and
+   virtio-ccw [Cornelia]
+
+Enabling multi-queue on virtio-pci storage devices improves performance on SMP
+guests because the completion interrupt is handled on the vCPU that submitted
+the I/O request.  This avoids IPIs inside the guest.
+
+Note that performance is unchanged in these cases:
+1. Uniprocessor guests.  They don't have IPIs.
+2. Application threads might be scheduled on the sole vCPU that handles
+   completion interrupts purely by chance.  (This is one reason why benchmark
+   results can vary noticably between runs.)
+3. Users may bind the application to the vCPU that handles completion
+   interrupts.
+
+Set the number of queues to the number of vCPUs by default on virtio-blk and
+virtio-scsi PCI devices.  Older machine types continue to default to 1 queue
+for live migration compatibility.
+
+Random read performance:
+      IOPS
+q=1    78k
+q=32  104k  +33%
+
+Boot time:
+      Duration
+q=1        51s
+q=32     1m41s  +98%
+
+Guest configuration: 32 vCPUs, 101 virtio-blk-pci disks
+
+Previously measured results on a 4 vCPU guest were also positive but showed a
+smaller 1-4% performance improvement.  They are no longer valid because
+significant event loop optimizations have been merged.
+
+Stefan Hajnoczi (5):
+  virtio-pci: add virtio_pci_optimal_num_queues() helper
+  virtio-scsi: introduce a constant for fixed virtqueues
+  virtio-scsi: default num_queues to -smp N
+  virtio-blk: default num_queues to -smp N
+  vhost-user-blk: default num_queues to -smp N
+
+ hw/virtio/virtio-pci.h             |  9 +++++++++
+ include/hw/virtio/vhost-user-blk.h |  2 ++
+ include/hw/virtio/virtio-blk.h     |  2 ++
+ include/hw/virtio/virtio-scsi.h    |  5 +++++
+ hw/block/vhost-user-blk.c          |  6 +++++-
+ hw/block/virtio-blk.c              |  6 +++++-
+ hw/core/machine.c                  |  8 +++++++-
+ hw/scsi/vhost-scsi.c               |  3 ++-
+ hw/scsi/vhost-user-scsi.c          |  5 +++--
+ hw/scsi/virtio-scsi.c              | 13 +++++++++----
+ hw/virtio/vhost-scsi-pci.c         |  9 +++++++--
+ hw/virtio/vhost-user-blk-pci.c     |  4 ++++
+ hw/virtio/vhost-user-scsi-pci.c    |  9 +++++++--
+ hw/virtio/virtio-blk-pci.c         |  7 ++++++-
+ hw/virtio/virtio-pci.c             |  7 +++++++
+ hw/virtio/virtio-scsi-pci.c        |  9 +++++++--
+ 16 files changed, 87 insertions(+), 17 deletions(-)",5,0,3,2,0,affix.prefix.in;affix.prefix.un;morph.mod.epistemic_maymight
+19,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:kernel,email,email:curatedemail:kernel:kernel-series-728887,email:curatedemail:kernel:kernel-series-728887:body,body,1,,2023-03-10T20:29:14,598,de26fd34a3745201e75c60696e1e83734797fc4fe61b3f03907e60819928e9eb,"Recently the rtw88 driver has gained locking support for the ""slow"" bus
+types (USB, SDIO) as part of USB support. Thanks to everyone who helped
+make this happen!
+
+Based on the USB work (especially the locking part and various
+bugfixes) this series adds support for SDIO based cards. It's the
+result of a collaboration between Jernej and myself. Neither of us has
+access to the rtw88 datasheets. All of our work is based on studying
+the RTL8822BS and RTL8822CS vendor drivers and trial and error.
+
+Jernej and myself have tested this with RTL8822BS and RTL8822CS cards.
+Other users have confirmed that RTL8821CS support is working as well.
+RTL8723DS may also work (we tried our best to handle rtw_chip_wcpu_11n
+where needed) but has not been tested at this point.
+
+Jernej's results with a RTL8822BS:
+- Main functionality works
+- Had a case where no traffic got across the link until he issued a
+  scan
+
+My results with a RTL8822CS:
+- 2.4GHz and 5GHz bands are both working
+- TX throughput on a 5GHz network is between 50 Mbit/s and 90 Mbit/s
+- RX throughput on a 5GHz network is at 19 Mbit/s (this seems to be
+  an combination of the location of my board and the cheap antenna
+  which are both hurting RX performance)
+
+A user shared his results on his own RTL8822CS off-list with me:
+- 50Mbit/s throughput in both directions
+
+A user shared his results on RTL8821CS off-list with me:
+- 50Mbps down and 25Mbps on a 5GHz network
+
+Why is this an RFC?
+- I think it's worth to get another round of feedback from the rtw88
+  maintainers
+- As with most patches: testing is very welcome. If things are working
+  fine then a Tested-by is appreciated (with some details about the
+  card, throughput, ...). If something doesn't work for you: please
+  still report back so we can investigate that problem!
+
+Changes since v1 at [0]:
+- removed patches 1-8 as they have been submitted and separately (they
+  were indepdent and this helped cutting down the size of this series)
+- dropped patch ""rtw88: ps: Increase LEAVE_LPS_TRY_CNT for SDIO based
+  chipsets"" as the underlying issue has been fixed - most likely with
+  upstream commit 823092a53556eb (""wifi: rtw88: fix race condition
+  when doing H2C command"")
+- rework the code so we don't need a new HCI specific power_switch
+  callback by utilizing the RTW_FLAG_POWERON flag which was recently
+  introduced
+- various patches include the feedback from reviewers and build
+  testing robots (see the individual patches for details)
+
+[0] https://lore.kernel.org/lkml/a2449a2d1e664bcc8962af4667aa1290.com/T/
+
+Jernej Skrabec (1):
+  wifi: rtw88: Add support for the SDIO based RTL8822BS chipset
+
+Martin Blumenstingl (8):
+  wifi: rtw88: Clear RTW_FLAG_POWERON early in rtw_mac_power_switch()
+  wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets
+  wifi: rtw88: mac: Support SDIO specific bits in the power on sequence
+  wifi: rtw88: main: Add the {cpwm,rpwm}_addr for SDIO based chipsets
+  wifi: rtw88: main: Reserve 8 bytes of extra TX headroom for SDIO cards
+  mmc: sdio: add Realtek SDIO vendor ID and various wifi device IDs
+  wifi: rtw88: Add support for the SDIO based RTL8822CS chipset
+  wifi: rtw88: Add support for the SDIO based RTL8821CS chipset
+
+ drivers/net/wireless/realtek/rtw88/Kconfig    |   36 +
+ drivers/net/wireless/realtek/rtw88/Makefile   |   12 +
+ drivers/net/wireless/realtek/rtw88/debug.h    |    1 +
+ drivers/net/wireless/realtek/rtw88/mac.c      |   51 +-
+ drivers/net/wireless/realtek/rtw88/mac.h      |    1 -
+ drivers/net/wireless/realtek/rtw88/main.c     |    9 +-
+ drivers/net/wireless/realtek/rtw88/reg.h      |   12 +
+ .../net/wireless/realtek/rtw88/rtw8821cs.c    |   35 +
+ .../net/wireless/realtek/rtw88/rtw8822bs.c    |   35 +
+ .../net/wireless/realtek/rtw88/rtw8822cs.c    |   35 +
+ drivers/net/wireless/realtek/rtw88/sdio.c     | 1251 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/sdio.h     |  175 +++
+ include/linux/mmc/sdio_ids.h                  |    9 +
+ 13 files changed, 1654 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821cs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822bs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sdio.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sdio.h",raw_emails,True,False,"rtw88: Add SDIO support
+
+Recently the rtw88 driver has gained locking support for the ""slow"" bus
+types (USB, SDIO) as part of USB support. Thanks to everyone who helped
+make this happen!
+
+Based on the USB work (especially the locking part and various
+bugfixes) this series adds support for SDIO based cards. It's the
+result of a collaboration between Jernej and myself. Neither of us has
+access to the rtw88 datasheets. All of our work is based on studying
+the RTL8822BS and RTL8822CS vendor drivers and trial and error.
+
+Jernej and myself have tested this with RTL8822BS and RTL8822CS cards.
+Other users have confirmed that RTL8821CS support is working as well.
+RTL8723DS may also work (we tried our best to handle rtw_chip_wcpu_11n
+where needed) but has not been tested at this point.
+
+Jernej's results with a RTL8822BS:
+- Main functionality works
+- Had a case where no traffic got across the link until he issued a
+  scan
+
+My results with a RTL8822CS:
+- 2.4GHz and 5GHz bands are both working
+- TX throughput on a 5GHz network is between 50 Mbit/s and 90 Mbit/s
+- RX throughput on a 5GHz network is at 19 Mbit/s (this seems to be
+  an combination of the location of my board and the cheap antenna
+  which are both hurting RX performance)
+
+A user shared his results on his own RTL8822CS off-list with me:
+- 50Mbit/s throughput in both directions
+
+A user shared his results on RTL8821CS off-list with me:
+- 50Mbps down and 25Mbps on a 5GHz network
+
+Why is this an RFC?
+- I think it's worth to get another round of feedback from the rtw88
+  maintainers
+- As with most patches: testing is very welcome. If things are working
+  fine then a Tested-by is appreciated (with some details about the
+  card, throughput, ...). If something doesn't work for you: please
+  still report back so we can investigate that problem!
+
+Changes since v1 at [0]:
+- removed patches 1-8 as they have been submitted and separately (they
+  were indepdent and this helped cutting down the size of this series)
+- dropped patch ""rtw88: ps: Increase LEAVE_LPS_TRY_CNT for SDIO based
+  chipsets"" as the underlying issue has been fixed - most likely with
+  upstream commit 823092a53556eb (""wifi: rtw88: fix race condition
+  when doing H2C command"")
+- rework the code so we don't need a new HCI specific power_switch
+  callback by utilizing the RTW_FLAG_POWERON flag which was recently
+  introduced
+- various patches include the feedback from reviewers and build
+  testing robots (see the individual patches for details)
+
+
+[0] https://lore.kernel.org/lkml/a2449a2d1e664bcc8962af4667aa1290@realtek.com/T/
+
+
+Jernej Skrabec (1):
+  wifi: rtw88: Add support for the SDIO based RTL8822BS chipset
+
+Martin Blumenstingl (8):
+  wifi: rtw88: Clear RTW_FLAG_POWERON early in rtw_mac_power_switch()
+  wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets
+  wifi: rtw88: mac: Support SDIO specific bits in the power on sequence
+  wifi: rtw88: main: Add the {cpwm,rpwm}_addr for SDIO based chipsets
+  wifi: rtw88: main: Reserve 8 bytes of extra TX headroom for SDIO cards
+  mmc: sdio: add Realtek SDIO vendor ID and various wifi device IDs
+  wifi: rtw88: Add support for the SDIO based RTL8822CS chipset
+  wifi: rtw88: Add support for the SDIO based RTL8821CS chipset
+
+ drivers/net/wireless/realtek/rtw88/Kconfig    |   36 +
+ drivers/net/wireless/realtek/rtw88/Makefile   |   12 +
+ drivers/net/wireless/realtek/rtw88/debug.h    |    1 +
+ drivers/net/wireless/realtek/rtw88/mac.c      |   51 +-
+ drivers/net/wireless/realtek/rtw88/mac.h      |    1 -
+ drivers/net/wireless/realtek/rtw88/main.c     |    9 +-
+ drivers/net/wireless/realtek/rtw88/reg.h      |   12 +
+ .../net/wireless/realtek/rtw88/rtw8821cs.c    |   35 +
+ .../net/wireless/realtek/rtw88/rtw8822bs.c    |   35 +
+ .../net/wireless/realtek/rtw88/rtw8822cs.c    |   35 +
+ drivers/net/wireless/realtek/rtw88/sdio.c     | 1251 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/sdio.h     |  175 +++
+ include/linux/mmc/sdio_ids.h                  |    9 +
+ 13 files changed, 1654 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821cs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822bs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822cs.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sdio.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sdio.h",9,0,6,3,0,affix.prefix.in;morph.evid.inferential_seem;morph.hedge.adverbial_maybe;morph.hedge.shield_think;morph.mod.epistemic_maymight;morph.neg.nobody_nothing
+20,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ozlabs,email,email:curatedemail:ozlabs:ozlabs-comment-876967,email:curatedemail:ozlabs:ozlabs-comment-876967:subject,subject,0,,2014-10-10T07:54:54,12,de2a0ef0cfaba6c4ef56c2aa1a6176bc770da7180894f44f82e5445d911e09cf,"Re: [PATCH,
+	Pointer Bounds Checker 14/x] Passes [8/n] Remove useless builtin
+	calls",raw_emails,True,False,"Re: [PATCH,
+	Pointer Bounds Checker 14/x] Passes [8/n] Remove useless builtin
+	calls
+
+On Wed, Oct 8, 2014 at 9:08 PM, Ilya Enkovich <enkovich.gnu@gmail.com> wrote:
+> Hi,
+>
+> This patch adds removal of user calls to chkp builtins which become useless after instrumentation.
+>
+> Thanks,
+> Ilya
+> --
+> 2014-10-08  Ilya Enkovich  <ilya.enkovich@intel.com>
+>
+>         * tree-chkp.c (chkp_remove_useless_builtins): New.
+>         (chkp_execute): Remove useless calls to Pointer Bounds
+>         Checker builtins.
+>
+>
+> diff --git a/gcc/tree-chkp.c b/gcc/tree-chkp.c
+> index 5443950..b424af8 100644
+> --- a/gcc/tree-chkp.c
+> +++ b/gcc/tree-chkp.c
+> @@ -3805,6 +3805,49 @@ chkp_instrument_function (void)
+>         }
+>  }
+>
+> +/* Find init/null/copy_ptr_bounds calls and replace them
+> +   with assignments.  It should allow better code
+> +   optimization.  */
+> +
+> +static void
+> +chkp_remove_useless_builtins ()
+> +{
+> +  basic_block bb, next;
+> +  gimple_stmt_iterator gsi;
+> +
+> +  bb = ENTRY_BLOCK_PTR_FOR_FN (cfun)->next_bb;
+> +  do
+> +    {
+> +      next = bb->next_bb;
+
+Please don't use ->next_bb but instead use FOR_EACH_BB_FN (cfun, bb)
+instead.
+
+> +      for (gsi = gsi_start_bb (bb); !gsi_end_p (gsi); gsi_next (&gsi))
+> +        {
+> +          gimple stmt = gsi_stmt (gsi);
+> +         tree fndecl;
+> +         enum built_in_function fcode;
+> +
+> +         /* Find builtins returning first arg and replace
+> +            them with assignments.  */
+> +         if (gimple_code (stmt) == GIMPLE_CALL
+> +             && (fndecl = gimple_call_fndecl (stmt))
+> +             && DECL_BUILT_IN_CLASS (fndecl) == BUILT_IN_NORMAL
+> +             && (fcode = DECL_FUNCTION_CODE (fndecl))
+> +             && (fcode == BUILT_IN_CHKP_INIT_PTR_BOUNDS
+> +                 || fcode == BUILT_IN_CHKP_NULL_PTR_BOUNDS
+> +                 || fcode == BUILT_IN_CHKP_COPY_PTR_BOUNDS
+> +                 || fcode == BUILT_IN_CHKP_SET_PTR_BOUNDS))
+> +           {
+> +             tree res = gimple_call_arg (stmt, 0);
+> +             if (!update_call_from_tree (&gsi, res))
+> +               gimplify_and_update_call_from_tree (&gsi, res);
+
+update_call_from_tree should always succeed with res being a call argument.
+
+Richard.
+
+> +             stmt = gsi_stmt (gsi);
+> +             update_stmt (stmt);
+> +           }
+> +        }
+> +      bb = next;
+> +    }
+> +  while (bb);
+> +}
+> +
+>  /* Initialize pass.  */
+>  static void
+>  chkp_init (void)
+> @@ -3872,6 +3915,8 @@ chkp_execute (void)
+>
+>    chkp_instrument_function ();
+>
+> +  chkp_remove_useless_builtins ();
+> +
+>    chkp_function_mark_instrumented (cfun->decl);
+>
+>    chkp_fix_cfg ();",1,0,0,1,0,affix.suffix.less
+21,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ozlabs,email,email:curatedemail:ozlabs:ozlabs-comment-917422,email:curatedemail:ozlabs:ozlabs-comment-917422:body,body,1,,2014-12-02T07:49:45,63,de2c93a6630d064e5ecc5c4e183ade336eb86703bda419c30a59ee488176a630,"Hi Hans,
+
+On Tue, Dec 2, 2014 at 7:32 AM, Hans Verkuil <hverkuil.nl> wrote:
+
+OK makes sense I'll prefix it with 'am437x-'. probably fixing all the review
+comments i'll post a v2 end of the day.
+
+Thanks,
+--Prabhakar Lad
+--
+To unsubscribe from this list: send the line ""unsubscribe devicetree"" in
+the body of a message to majordomo.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html",raw_emails,True,False,"Re: [PATCH] media: platform: add VPFE capture driver support for
+	AM437X
+
+Hi Hans,
+
+On Tue, Dec 2, 2014 at 7:32 AM, Hans Verkuil <hverkuil@xs4all.nl> wrote:
+> On 12/01/2014 11:27 PM, Prabhakar Lad wrote:
+>> Hi Hans,
+>>
+>> On Mon, Dec 1, 2014 at 11:00 AM, Hans Verkuil <hverkuil@xs4all.nl> wrote:
+>>> On 12/01/2014 11:11 AM, Hans Verkuil wrote:
+>>>> Hi all,
+>>>>
+>>>> Thanks for the patch, review comments are below.
+>>>>
+>>>> For the next version I would appreciate if someone can test this driver with
+>>>> the latest v4l2-compliance from the v4l-utils git repo. If possible test streaming
+>>>> as well (v4l2-compliance -s), ideally with both a sensor and a STD receiver input.
+>>>> But that depends on the available hardware of course.
+>>>>
+>>>> I'd like to see the v4l2-compliance output. It's always good to have that on
+>>>> record.
+>>>>
+>>>>
+>>>> On 11/24/2014 02:10 AM, Lad, Prabhakar wrote:
+>>>>> From: Benoit Parrot <bparrot@ti.com>
+>>>>>
+>>>>> This patch adds Video Processing Front End (VPFE) driver for
+>>>>> AM437X family of devices
+>>>>> Driver supports the following:
+>>>>> - V4L2 API using MMAP buffer access based on videobuf2 api
+>>>>> - Asynchronous sensor/decoder sub device registration
+>>>>> - DT support
+>>>>>
+>>>>> Signed-off-by: Benoit Parrot <bparrot@ti.com>
+>>>>> Signed-off-by: Darren Etheridge <detheridge@ti.com>
+>>>>> Signed-off-by: Lad, Prabhakar <prabhakar.csengg@gmail.com>
+>>>>> ---
+>>>>>  .../devicetree/bindings/media/ti-am437xx-vpfe.txt  |   61 +
+>>>>>  MAINTAINERS                                        |    9 +
+>>>>>  drivers/media/platform/Kconfig                     |    1 +
+>>>>>  drivers/media/platform/Makefile                    |    2 +
+>>>>>  drivers/media/platform/am437x/Kconfig              |   10 +
+>>>>>  drivers/media/platform/am437x/Makefile             |    2 +
+>>>>>  drivers/media/platform/am437x/vpfe.c               | 2764 ++++++++++++++++++++
+>>>>>  drivers/media/platform/am437x/vpfe.h               |  286 ++
+>>>>>  drivers/media/platform/am437x/vpfe_regs.h          |  140 +
+>>>>>  include/uapi/linux/Kbuild                          |    1 +
+>>>>>  include/uapi/linux/am437x_vpfe.h                   |  122 +
+>>>>>  11 files changed, 3398 insertions(+)
+>>>
+>>> Can the source names be improved? There are too many 'vpfe' sources.
+>>> Perhaps prefix all with 'am437x-'?
+>>>
+>> I did think of it but, dropped it as anyway the source's are present
+>> in am437x folder, again naming the files am437x-xxx.x didn't make
+>> me feel good. If you still insists I'll do it.
+>
+> Yes, please do. If you look at most other drivers they all have a prefix.
+>
+> Another reason is that the media_build system expects unique names.
+>
+OK makes sense I'll prefix it with 'am437x-'. probably fixing all the review
+comments i'll post a v2 end of the day.
+
+Thanks,
+--Prabhakar Lad
+--
+To unsubscribe from this list: send the line ""unsubscribe devicetree"" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html",3,0,1,2,0,affix.prefix.un;morph.hedge.adverbial_perhaps
+22,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ozlabs,email,email:curatedemail:ozlabs:ozlabs-patch-1461782,email:curatedemail:ozlabs:ozlabs-patch-1461782:body,body,1,,2021-04-02T15:54:06,14,de278563e8f724f9581cac4b2dae136ca926cd2d37e897af1010e824477086d6,"Signed-off-by: Akihiko Odaki <akihiko.odaki.com>
+---
+ block/io.c | 2 ++
+ 1 file changed, 2 insertions(+)",raw_emails,True,False,"[v4,3/3] block/io: Merge discard request alignments
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
+---
+ block/io.c | 2 ++
+ 1 file changed, 2 insertions(+)",1,0,0,1,0,affix.prefix.in
+23,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ozlabs,email,email:curatedemail:ozlabs:ozlabs-patch-1665359,email:curatedemail:ozlabs:ozlabs-patch-1665359:body,body,1,,2022-08-10T18:46:09,78,de20514558e50e76f04135a60afb7e9fc5f8fae96f9e70907ec88323649a9081,"From: Conor Dooley <conor.dooley.com>
+
+""uart"" is not a node name that complies with the dt-schema.
+Change the node name to ""serial"" to ix warnings seen during
+dt-validate on a dtbdump of the virt machine such as:
+/stuff/qemu/qemu.dtb: uart: $nodename:0: 'uart' does not match '^serial(@.*)?$'
+ From schema: /stuff/linux/Documentation/devicetree/bindings/serial/8250.yaml
+
+Reported-by: Rob Herring <robh.org>
+Link: https://lore.kernel.org/linux-riscv/20220803170552.GA2250266-robh.org/
+Fixes: 04331d0b56 (""RISC-V VirtIO Machine"")
+Reviewed-by: Alistair Francis <alistair.francis.com>
+Signed-off-by: Conor Dooley <conor.dooley.com>
+---
+ hw/riscv/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)",raw_emails,True,False,"[v3,1/4] hw/riscv: virt: fix uart node name
+
+From: Conor Dooley <conor.dooley@microchip.com>
+
+""uart"" is not a node name that complies with the dt-schema.
+Change the node name to ""serial"" to ix warnings seen during
+dt-validate on a dtbdump of the virt machine such as:
+/stuff/qemu/qemu.dtb: uart@10000000: $nodename:0: 'uart@10000000' does not match '^serial(@.*)?$'
+ From schema: /stuff/linux/Documentation/devicetree/bindings/serial/8250.yaml
+
+Reported-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/linux-riscv/20220803170552.GA2250266-robh@kernel.org/
+Fixes: 04331d0b56 (""RISC-V VirtIO Machine"")
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ hw/riscv/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)",1,0,0,1,0,affix.prefix.in
+24,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ozlabs,email,email:curatedemail:ozlabs:ozlabs-patch-462301,email:curatedemail:ozlabs:ozlabs-patch-462301:body,body,1,,2015-04-18T12:52:43,16,de2fbbdfa2634f72e64cc2d3673ca01ab4996c23f7ddd43587701c779e911baf,"Signed-off-by: Jörg Krause <joerg.krause.rocks>
+---
+ boot/uboot/Config.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)",raw_emails,True,False,"[1/4] boot/uboot: bump to version 2015.04
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ boot/uboot/Config.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)",1,0,0,1,0,affix.prefix.in
+25,review_email,curated-email-code-reviews,mailing_list,mailing_list:curated-email-code-reviews:ozlabs,email,email:curatedemail:ozlabs:ozlabs-patch-713865,email:curatedemail:ozlabs:ozlabs-patch-713865:body,body,1,,2017-01-11T17:29:25,16,de2e30446468d1a8ee92da08685f3498762956af008989eb2bfa97a9e928d935,"Signed-off-by: Marc-André Lureau <marcandre.lureau.com>
+---
+ qemu-char.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)",raw_emails,True,False,"[09/40] char-parallel: convert parallel to finalize
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ qemu-char.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)",1,0,0,1,0,affix.prefix.in
+1,chat,disco,discord,discord:disco:Discord Gophers/golang,chat,chat_message:disco:Discord-Gophers:golang:golang_Feb2020-Apr2020:25131,chat_message:disco:Discord-Gophers:golang:golang_Feb2020-Apr2020:25131:message,message,0,discord:disco:Jkari,2020-02-29T04:30:37.335000,5,9fa8ada353ddcac070075862bba7aebebe2d97821c004a273d9cf97f9cd9c3ae,seems like this is correct,raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+2,chat,disco,discord,discord:disco:Discord Gophers/golang,chat,chat_message:disco:Discord-Gophers:golang:golang_Feb2020-Apr2020:59486,chat_message:disco:Discord-Gophers:golang:golang_Feb2020-Apr2020:59486:message,message,0,discord:disco:Kayal,2020-04-17T21:54:14.890000,29,9fa266fc2967c7d98e3efb843cf93f380e4a158d54cf1c069c73f5c5092143f9,is there a better way to handle json in go? I keep having to create structs to unmarshal the json data its taking up 250 lines between 5 structs,raw_emails,False,False,,1,0,0,1,0,affix.prefix.un
+3,chat,disco,discord,discord:disco:Python/python-general,chat,chat_message:disco:Python:python-general:pythongeneralAug2020:12559,chat_message:disco:Python:python-general:pythongeneralAug2020:12559:message,message,0,discord:disco:Tayten,2020-08-03T06:06:04.566000,20,9fab1ec1af60c3187f0a51b76e44ed0e9594b027bb3ea27c9ac031865b45f71c,good luck. not sure i can help much more but i'm sure you'll figure it out if you stay motivated,raw_emails,False,False,,2,1,1,0,0,lex.not_sure;morph.neg.scoped_epistemic
+4,chat,disco,discord,discord:disco:Python/python-general,chat,chat_message:disco:Python:python-general:pythongeneralJun2020:7645,chat_message:disco:Python:python-general:pythongeneralJun2020:7645:message,message,0,discord:disco:Dorin,2020-06-02T16:51:51.282000,8,9fa1efce2a148c776726b5165bc6d6b1f33509403765fe469f36bfecf5538e7d,understood pycharm will do the rest i guess,raw_emails,False,False,,2,1,1,0,0,lex.guess_v;morph.hedge.shield_think
+5,chat,disco,discord,discord:disco:Python/python-general,chat,chat_message:disco:Python:python-general:pythongeneralMar2020:34865,chat_message:disco:Python:python-general:pythongeneralMar2020:34865:message,message,0,discord:disco:Frances,2020-03-20T15:14:06.249000,6,9fa2771e2c8159f4bf85f66fc28029539331596c5b4a94d7de48f52182be92af,i have but nobody is responding,raw_emails,False,False,,1,0,1,0,0,morph.neg.nobody_nothing
+6,chat,gittercom,gitter,gitter:gittercom:Dogfalo,chat,chat_message:gittercom:Dogfalo:550983f477c8d5b10f4fb310,chat_message:gittercom:Dogfalo:550983f477c8d5b10f4fb310:message,message,0,gitter:gittercom:KomiDesign,2015-03-18T13:56:04.293Z,29,9fa93a032853b7f3f739422e7a3748b6fd39230e0df291e8c0661f2a6444fac3,comparing to my other files sizes of the theme is a lot.. the biggest has 32kb ..and as i said some people might want to download only some elements,raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_maymight
+7,chat,gittercom,gitter,gitter:gittercom:TheOdinProject,chat,chat_message:gittercom:TheOdinProject:5a43cc3929ec6ac3118d0cbc,chat_message:gittercom:TheOdinProject:5a43cc3929ec6ac3118d0cbc:message,message,0,gitter:gittercom:abosalah2,2017-12-27T16:37:13.058Z,15,9fa8738fad5804d306fdb805003394e81e923f7914d1ae589800f1554683cae5,I am getting Unexpected token const when I tried && and my code doesn't work,raw_emails,False,False,,1,0,0,1,0,affix.prefix.un
+8,chat,gittercom,gitter,gitter:gittercom:akkadev,chat,chat_message:gittercom:akkadev:581b0acae462097a3001cddd,chat_message:gittercom:akkadev:581b0acae462097a3001cddd:message,message,0,gitter:gittercom:ktoso,2016-11-03T10:00:42.425Z,4,9fa4c78906967baccc0a7985333a45447aa43eefb3203fb2c62bc29d64f651d4,hm ill look again,raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+9,chat,gittercom,gitter,gitter:gittercom:angular,chat,chat_message:gittercom:angular:55114985bb9b35940a30cf23,chat_message:gittercom:angular:55114985bb9b35940a30cf23:message,message,0,gitter:gittercom:San4oPanso,2015-03-24T11:24:53.438Z,7,9faa45bbc2a3fd1bf109ed882a65aec48c15431a85f420a2a36c8953edabb613,it is true for standard  and maybe,raw_emails,False,False,,1,0,1,0,0,morph.hedge.adverbial_maybe
+10,chat,gittercom,gitter,gitter:gittercom:angular,chat,chat_message:gittercom:angular:59a40413ba0f0f6e38ef487d,chat_message:gittercom:angular:59a40413ba0f0f6e38ef487d:message,message,0,gitter:gittercom:codecab,2017-08-28T11:52:51.556Z,36,9fa5e7abefd03d2a9a754c4f156fed976ef2a596bf8015f53dc780e5932a5d3b,"hey everyone, i'm new to angularjs and am struggeling with ui-router. i have defined a route and created a link to it, but when i click it, nothing happens. I tried logging stateChange events, but silence",raw_emails,False,False,,1,0,1,0,0,morph.neg.nobody_nothing
+11,chat,gittercom,gitter,gitter:gittercom:appium,chat,chat_message:gittercom:appium:5841924a444b37787684a1e0,chat_message:gittercom:appium:5841924a444b37787684a1e0:message,message,0,gitter:gittercom:sankleta,2016-12-02T15:24:58.726Z,29,9fa75fdd6437f7dba75fb6f90b3af84c02d62cf93ef4369928a1124d2148c421,Hi! I'm using Appium 1.6.0 with Android SDK  24.4.1. During apk installation I get this error which I have never seen before  Have you ever seen something like this?,raw_emails,False,False,,1,0,0,0,1,rhetor.comparison.something_like
+12,chat,gittercom,gitter,gitter:gittercom:appium,chat,chat_message:gittercom:appium:5852b850af6b364a29b7be07,chat_message:gittercom:appium:5852b850af6b364a29b7be07:message,message,0,gitter:gittercom:premji9892_twitter,2016-12-15T15:35:44.838Z,22,9fa9c648e05ee531cf32ac78ff375d2f0b5301aeedfd58fc1a9bc55433033fbd,I unable to test hybrid android app. not able to locate as webview. How to do it please explain for hybrid app.,raw_emails,False,False,,1,0,0,1,0,affix.prefix.un
+13,chat,gittercom,gitter,gitter:gittercom:aurelia,chat,chat_message:gittercom:aurelia:55c2d5b39fb911ea312a4c27,chat_message:gittercom:aurelia:55c2d5b39fb911ea312a4c27:message,message,0,gitter:gittercom:jedd-ahyoung,2015-08-06T03:34:11.918Z,9,9fa1c43bc7775fe2b3f5d0e0f8e013fa326218c4faf65e2cf77f6dcd21c173f5,everything else about it i think is fairly relevant,raw_emails,False,False,,1,0,1,0,0,morph.hedge.shield_think
+14,chat,gittercom,gitter,gitter:gittercom:aurelia,chat,chat_message:gittercom:aurelia:562a5b2edd7fb14516cfad1e,chat_message:gittercom:aurelia:562a5b2edd7fb14516cfad1e:message,message,0,gitter:gittercom:jkesselring,2015-10-23T16:07:10.042Z,6,9fab7bcaee29342c2f1f7ac9f8a5fdcfd149ec54fabb9eb052fa03903bca6607,I think I see my misunderstanding..,raw_emails,False,False,,1,0,1,0,0,morph.hedge.shield_think
+15,chat,gittercom,gitter,gitter:gittercom:aurelia,chat,chat_message:gittercom:aurelia:5a0e007a71ad3f8736f339a9,chat_message:gittercom:aurelia:5a0e007a71ad3f8736f339a9:message,message,0,gitter:gittercom:jsobell,2017-11-16T21:17:46.967Z,15,9fa2564613831957633e1fe420699cd23f124dd0325d3af211930792777ca4d6,It looks like it doesn't treat content and value in the same way of <select>,raw_emails,False,False,,2,0,1,0,1,morph.evid.inferential_seem;rhetor.comparison.something_like
+16,chat,gittercom,gitter,gitter:gittercom:ceylon,chat,chat_message:gittercom:ceylon:5501a1cd4c839f3268162fb7,chat_message:gittercom:ceylon:5501a1cd4c839f3268162fb7:message,message,0,gitter:gittercom:davidfestal,2015-03-12T14:25:17.461Z,9,9fa90a879117fed79be71461a0c7906e7d2a932ff1d1ea48086d8825fe333aec,"well, the let might have no Java source equivalent",raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_maymight
+17,chat,gittercom,gitter,gitter:gittercom:ceylon,chat,chat_message:gittercom:ceylon:558da5cf047db3dc4dc54eb9,chat_message:gittercom:ceylon:558da5cf047db3dc4dc54eb9:message,message,0,gitter:gittercom:davidfestal,2015-06-26T19:19:43.798Z,7,9fa7fdf1425ac93b72cf9ec22e31490c5a93603ffe2e31b1c00d57cc8682ed8f,so it seems that it works now,raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+18,chat,gittercom,gitter,gitter:gittercom:lagom,chat,chat_message:gittercom:lagom:5aafaa32fa066c5325486bde,chat_message:gittercom:lagom:5aafaa32fa066c5325486bde:message,message,0,gitter:gittercom:erip,2018-03-19T12:16:50.443Z,58,9fafb45cc89398c86ce646a881aca5abb7457923b90c01266e9e8bcce40748cf,"Does anyone have recommendations for handling a situation where you might want to configure some static initial conditions, but also add dynamic configuration? It's very bad to dynamically rewrite config to a file, but it's also tough to tell a persistent entity to persist an initial config because you'd have to convert your config to an event stream.",raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_maymight
+19,chat,gittercom,gitter,gitter:gittercom:marionettejs,chat,chat_message:gittercom:marionettejs:54be9450723506dd0c0f7d32,chat_message:gittercom:marionettejs:54be9450723506dd0c0f7d32:message,message,0,gitter:gittercom:benmccormick,2015-01-20T17:45:52.827Z,34,9faacaeeb539ba3c91d5c008368227b14a0769620b6f53698a8aacc6960c8a9e,"cool.  If you have questions or something doesn't look right, feel free to comment there or here, I always appreciate feedback, especially on stuff like this that I'm trying to create as a resource",raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+20,chat,gittercom,gitter,gitter:gittercom:sschmid,chat,chat_message:gittercom:sschmid:5b6970d66d45752f989defa4,chat_message:gittercom:sschmid:5b6970d66d45752f989defa4:message,message,0,gitter:gittercom:T2RKUS,2018-08-07T10:13:42.070Z,13,9facec2faf7a6bc0c316631561cfb0f336cca279a335cf2bfb8fc34cf0b8174e,idk why making that value smaller makes it bigger in the scene but..,raw_emails,False,False,,1,1,0,0,0,lex.idk
+21,chat,gittercom,gitter,gitter:gittercom:tonsky,chat,chat_message:gittercom:tonsky:59325cf06549436c7d0fff78,chat_message:gittercom:tonsky:59325cf06549436c7d0fff78:message,message,0,gitter:gittercom:matrixbot,2017-06-03T06:53:36.543Z,25,9fad9618fa7cf358150e75eb9560fa85f2e4612d3e53d1811b1afcbcdbdc1561,"I haven\u2019t tried d/react yet, because I\u2019m still struggling with CORS. Just thinking ahead. the  looks like the right way to go! Thanks muchly, man!",raw_emails,False,False,,2,0,1,0,1,morph.evid.inferential_seem;rhetor.comparison.something_like
+22,chat,livechat-gitter,gitter,gitter:livechat-gitter:angular_angular_chatFormat,chat,chat_message:livechat-gitter:angular_angular_chatFormat:484643:dc4c8693f9e5,chat_message:livechat-gitter:angular_angular_chatFormat:484643:dc4c8693f9e5:message,message,0,gitter:livechat-gitter:lazarljubenovic,2017-10-10 17:01:58,7,9fa72518d6f7c3c46889293803a3d84c845f2cd726f9ad587c9dc9cb010a624c,seems like a hot observable without replaying,raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_seem
+23,chat,livechat-gitter,gitter,gitter:livechat-gitter:angular_angular_chatFormat,chat,chat_message:livechat-gitter:angular_angular_chatFormat:50728:f411370e04e7,chat_message:livechat-gitter:angular_angular_chatFormat:50728:f411370e04e7:message,message,0,gitter:livechat-gitter:ericmartinezr,2016-03-19 01:54:12,2,9fa8290a66edb7f77624415b00da619d2cb492ad55767f1844d3d07da91f128c,:| nothing,raw_emails,False,False,,1,0,1,0,0,morph.neg.nobody_nothing
+24,chat,livechat-gitter,gitter,gitter:livechat-gitter:angular_angular_chatFormat,chat,chat_message:livechat-gitter:angular_angular_chatFormat:747822:a25f70308136,chat_message:livechat-gitter:angular_angular_chatFormat:747822:a25f70308136:message,message,0,gitter:livechat-gitter:hungerregnuh,2019-02-27 19:36:54,10,9fa9626fa325c2c0d76cc3d7afe393b48571cfd9aef1d47bfe43f76f308cd295,"it’s not indeterminent, did you read the link brad posted?",raw_emails,False,False,,1,0,0,1,0,affix.prefix.in
+25,chat,preethac-slack,slack,slack:preethac-slack:elmlang/beginners,chat,chat_message:preethac-slack:elmlang:beginners:unknown:19465,chat_message:preethac-slack:elmlang:beginners:unknown:19465:message,message,0,slack:preethac-slack:Laquita,2019-03-26T11:58:50.869200,43,9fa0c15689530a842a4f0756a07539025f861c73e75c79db3adfd0f8370409f5,"<> I recently implemented an infinite scroll, that goes up and down, and discards rows along the way. I might have some thoughts for you on how to go about implementing that, if that interests you, or if <> hasnt already helped you.",raw_emails,False,False,,2,0,1,1,0,affix.prefix.in;morph.mod.epistemic_maymight
+1,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:10052210,so_post:sotorrent:10052210:body,body,0,stackoverflow:sotorrent:737790,2012-04-07T06:02:33Z,294,fe3be76fdd165dba5f69242a3326612e4cc6606ff53572af72ec26c121330ca1,"The general answer to multi-threading is to de-recursivate a recursive implementation thanks to a stack (LIFO or FIFO). When implementing such an algorithm, the number of threads is a fixed parameter for the algorithm (number of cores for instance).
+
+To implement it, the language call stack is replaced by a stack storing last context as a checkpoint when the tested condition ends the recursivity. In your case it is either  or  values matchs targeted sum.
+
+After de-recursivation, a first implementation is to run multiple threads to consume the stack BUT the stack access becomes a contention point because it may require synchronization.
+
+A better scalable solution is to dedicate a stack for each thread but an initial production of contexts in the stack is required.
+
+I propose a mix approach with a first thread working recursively for a limited number of  as a maximum recursion depth: 2 for the small data set in example, but I recommend 3 if larger. Then this first part delegates the generated intermediate contexts to a pool of threads which will process remaining  with a non-recursive implementation. This code is not based on the complex algorithm you use but on a rather ""basic"" implementation:
+
+You can check which thread has found outputted result and check all are involed: the main thread in recursive mode and the two thread from the pool in context stack mode.
+
+Now this implementation is scalable when  is high:
+
+the maximum recursion depth is limited to the main thread at a low level
+
+each thread from the pool works with its own context stack without contention with others
+
+the parameters to tune now are  and
+
+So the answer is yes, your algorithm can be parallelized. Here is a fully recursive implementation based on your code:",raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_maymight
+2,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:10818437,so_post:sotorrent:10818437:body,body,1,stackoverflow:sotorrent:971904,2012-05-30T14:33:46Z,173,fe389f02e24c10c335890be5474f7edabb919844c5286d4d41e78382790ce05a,"Right, I know this is a very stupid question, but I have no luck with w/e i'm trying to do.
+
+I'm trying to use the objdetect.hpp header file, so I've included the folder C:\OpenCV2.1\include\opencv2\ aswell as C:\OpenCV2.1\include\opencv and a whole bunch of other libraries and dlls when I was following the instructions on http://opencv.willowgarage.com/wiki/VisualC%2B%2B_VS2010
+
+But the openCV version in that tutorial were outdated and doesn't even have the objdetect.hpp file. So I went to download the latest one (OpenCV 2.4.0), but now when I complie it, it gives me an error C1083: Cannot open include file: ""opencv2/core/core.hpp"" No such file directory.
+
+Am I suppost to put all the OpenCV folders/files in the same directory as my C++ project? Or how do I fix it? I've tried putting it in the same place as my C++ project, but when I do a  the folder doesn't appear.
+
+Again, I know this is a stupid question, but please help.
+
+Let me know if anyone require more info coz I'm not too sure whatelse to put.
+
+Thanks",raw_emails,False,False,,2,0,1,1,0,affix.prefix.in;morph.evid.inferential_seem
+3,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:1117872,so_post:sotorrent:1117872:body,body,0,stackoverflow:sotorrent:11176,2009-07-13T05:53:54Z,21,fe3af94cba2f66474356503ac2e5aa4b5dd0c46d90cd6af0f205b1edf97ad45d,"You might ask Justin Bronn, the creator of GeoDjango, directly. He is also a lawyer that specializes in intellectual property.
+
+http://djangopeople.net/jbronn/",raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_maymight
+4,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:11215099,so_post:sotorrent:11215099:body,body,1,stackoverflow:sotorrent:1174024,2012-06-26T20:02:06Z,100,fe3b5622bd49aceb2e50cc84466decafe9997a7610aa3fa49152174dc4bfc032,"I would like to configure JBoss 4.2.x to utilize the JBoss Web Native Connectors instead of the default Ajp processor. This is in order to avoid a bug in the Jboss 4.2.x Ajp processor of which results in many hung threads and performance hits.
+
+I cannot seem to find any installation instructions on this. Does anyone have any info how to do this?
+
+Does the latest Native Connector from the download site 1 work for my old version of JBoss?
+
+If I can find a step-by-step guide, I will publish it in a wiki for anyone else in the community.",raw_emails,False,False,,2,0,1,1,0,affix.prefix.in;morph.evid.inferential_seem
+5,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:11800649,so_post:sotorrent:11800649:body,body,0,stackoverflow:sotorrent:471795,2012-08-03T17:39:32Z,301,fe34d67a605cf35a36786c4a7e9bac6e5c4360ad104336df8f3cf83c84814794,"Probably the most popular WebSocket server is Socket.IO. It is implemented in Node (Javascript) and has fallbacks to long-polling/AJAX when WebSockets support is not available.
+
+The most well supported implementation of WebSockets is the python pywebsocket project which is used by both Mozilla and Google for developing and testing their client browser implementations. In addition, pywebsocket is designed to easily integrate with Apache allowing you to run your web server and websocket service on the same port(s).
+
+If your application just needs a WebSocket based messaging service and is largely peer-to-peer you might consider using a commercial WebSocket service like Pusher. That could save you from having to host and manage your own server for this.
+
+I would not recommend PHP for WebSocket servers. Until recently there wasn't a PHP implementation that supported both the older and newer WebSocket protocol variation. The older is still used by current iOS devices and the newer IETF 6455 version of the protocol is used by Chrome, Firefox, IE10 and the Flash based WebSocket polyfill web-socket-js.
+
+Also, you ask if PHP is still considered to be the most supported and secure for web servers. Certainly, PHP has always had great documentation and examples and very wide deployment so you could argue it's well supported. However, PHP falls near the bottom of the list in terms of security. I would certainly not rewrite your application from scratch in PHP.
+
+If you are partial to C like languages, you might consider libwebsockets which you could use to build a C or C++ WebSocket server. Andy Green developed and maintains libwebsockets and participated in the IETF working group that developed the standard.
+
+Ruby is another language/community that has seen a lot of uptake of WebSockets (perhaps second behind Node). The most popular websocket library for Ruby is em-weboskcet.",raw_emails,False,False,,4,0,4,0,0,morph.hedge.adverbial_perhaps;morph.mod.epistemic_maymight
+6,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:11825478,so_post:sotorrent:11825478:body,body,0,stackoverflow:sotorrent:567292,2012-08-06T09:18:30Z,111,fe382031aa799b5d3681e17a0d961884febf159cb0b5cefefde902e17cb726b5,"The Python compiler and bytecode interpreter handles, where possible, references to local variables as slots into a defined-size array.  This means that if a local variable is not initialised (assigned to) in a scope then the language will not know that a slot for the variable exists in the scope, and will instead look for the variable in an enclosing scope or the global scope.  Looking at a disassembly of the function :
+
+You can see that without an assignment to  in local scope  will look for it in global scope.
+
+The right way to do this is to explicitly state which variables you expect the  function to return, using unpacking:",raw_emails,False,False,,4,0,3,1,0,affix.prefix.un;morph.evid.inferential_seem
+7,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:12143649,so_post:sotorrent:12143649:body,body,0,stackoverflow:sotorrent:972393,2012-08-27T14:10:07Z,198,fe3e1db60ed1aed4efa9756d2a51369617a3188d695df82626e186b1c1c5bf84,"When you send data back from the server, how are you handling the response? For example if you just send back a [{},{},{}] I don't think Backbone automatically knows to treat that as a collection. Thus, it sets the  attribute as what it gets, your vanilla array.
+
+What you can do, is override your set function inside your model which will take the array of objects passed in and write to the collection as proper. See this example:
+
+So basically as long as your server response is properly namespaced (response.ContactPersons) then after parsing it will pass your response to the set function. The collection data is treated specially as a collection. Here, I'm just reseting the collection that already exists with the new data. All your other model attributes should continue to be passed on to the original .
+
+UPDATE - Growing doubt about own answer
+
+I haven't been able to get this question/answer out of my mind. It certainly works, but I'm becoming unconvinced that using a modified  vs. just doing things in  is any better. If someone has some comments on the difference between using a modified  vs.  with nested models, I'd really welcome the input.",raw_emails,False,False,,3,1,1,1,0,affix.prefix.un;lex.doubt_n;morph.hedge.shield_think
+8,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:12617388,so_post:sotorrent:12617388:body,body,0,stackoverflow:sotorrent:29005,2012-09-27T08:42:59Z,71,fe3e70cdff1d20e57b04e2dcb09df20319de26ba9e03f0a416fd1834a0b0ef2e,"is used for situations when you get booted off the backend for some reason - the most likely cause being the backend going down for maintenance or something similar.
+
+When in this state, the library will try and reconnect on its own, and since we never take all of the backend sites down at once unless something truly catastrophic is going on, it'll likely switch back to  in a few seconds.",raw_emails,False,False,,2,0,2,0,0,morph.hedge.adverbial_maybe
+9,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:12847324,so_post:sotorrent:12847324:body,body,0,stackoverflow:sotorrent:1147718,2012-10-11T19:46:34Z,6,fe367987866c7e03103fafef9ecd3ef3cdcf317643d26aad71718aab43531fd7,May be this would be helful.,raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_maymight
+10,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:14296723,so_post:sotorrent:14296723:body,body,0,stackoverflow:sotorrent:335858,2013-01-12T18:43:59Z,34,fe3a00666fc3a95173979f23b869c61812c21c98ed9065279ed099c5d1a3e383,"It depends on what kind of memory you mean: the constant will not be replicated in the data memory, but it will become part of the code memory embedded within the compiled IL code.",raw_emails,False,False,,1,0,1,0,0,morph.hedge.approximator_kind_of
+11,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:15276156,so_post:sotorrent:15276156:body,body,1,stackoverflow:sotorrent:1892900,2013-03-07T16:15:00Z,108,fe3301b200b0241b31c6caceec42c402d983c22ca1295a1867b84418b920fe53,"I have a list of integers, and I want to generate a list containing a list of all the continuous integers.
+
+I have the following which works, but seems like a poor way to do it:
+
+I've seen other questions suggesting that itertools.groupby is an efficient way to do this, but I'm not familiar with that function and I seem to be having trouble with writing a lambda function to describe the continuous nature.
+
+Question: Is there a better way to be doing this (possibly with itertools.groupby?)
+
+Considerations: full_list will have between 1 and 59 integers, will always be sorted, and integers will be between 0 and 59.",raw_emails,False,False,,4,0,4,0,0,morph.evid.inferential_seem;morph.evid.inferential_suggest;morph.hedge.adverbial_perhaps
+12,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:1879990,so_post:sotorrent:1879990:body,body,0,stackoverflow:sotorrent:33036,2009-12-10T10:07:05Z,47,fe3f5557734dce26ddfd6495ff808787760da07faa03c10caa32ee07808a687e,"Why not just use the field name as the GET variable?
+
+and then access the page using inventory.php?sorting=year etc.
+
+This makes the URL more readable, predicatable and means you can support new fields by just adding them to the array without needing to write new switch cases.",raw_emails,False,False,,1,0,0,1,0,affix.prefix.in
+13,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:2058980,so_post:sotorrent:2058980:body,body,1,stackoverflow:sotorrent:83952,2010-01-13T17:50:26Z,159,fe3bd5d45095bb15c45e29b43c04bc0a310b2070b37bc37eaf2aebedfb57d71d,"I am building a application with on WM6.1, few question about the resource control.
+My app is build by vs2008/.NET CF 3.5
+
+one of the window form,
+I place only one webbrowser control, and run the program,
+
+then open the control panel and view the memory usage of applicationm it grow from 25MB to 29MB,nothing special.
+
+After that,
+I need place 30 webbrowser control to simulate the repeater to represent some content by following code and re-run the program:
+
+Then , memory usage is grow from 25MB to 31MB.
+It only cost more 2MB. Maybe these 2MB is not consumed by webbrowser,it because the html content of those 30 webbrowser.
+
+So my question is,
+
+1.On .NET world, is it generated multiple instance of control UI are still only cost one instance resource ?
+
+2.What is the best way to dispose these 30 webbrowser control on form_unload?
+using GC.Collect();? or .net CF will done for me?
+
+Thanks you very much.",raw_emails,False,False,,2,0,2,0,0,morph.hedge.adverbial_maybe;morph.neg.nobody_nothing
+14,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:2445100,so_post:sotorrent:2445100:body,body,1,stackoverflow:sotorrent:67550,2010-03-15T04:35:15Z,39,fe3b6d5e615cb158031e09fc1dd589d13f5bb30a9defcb19170bfe307e071c5f,"Googled for this to no avail. Didn't find anything in the API either. I was expecting some kind of class method or configuration option to set it...
+
+So, rather than calling
+
+for every method, it could be called automatically.",raw_emails,False,False,,1,0,1,0,0,morph.hedge.approximator_kind_of
+15,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:2943941,so_post:sotorrent:2943941:body,body,0,stackoverflow:sotorrent:191708,2010-05-31T13:49:29Z,118,fe3c8e8984a88efdf33d456f77134f60a28231c4acf093684ad39c7e4dcf71bb,"Chris Date and Dave McGoveran formalised the ""Principle of Orthogonal Design"". Roughly speaking it means that in database design you should avoid the possibility of allowing the same tuple in two different relvars. The aim being to avoid certain types of redundancy and ambiguity that could result.
+
+Arguably it isn't always totally practical to do that and it isn't necessarily clear cut exactly when the principle is being broken. However, I do think it's a good guiding rule, if only because it avoids the problem of duplicate logic in data access code or constraints, i.e. it's a good DRY principle. Avoid having tables with potentially overlapping meanings unless there is some database constraint that prevents duplication between them.",raw_emails,False,False,,3,0,3,0,0,morph.hedge.adverbial_perhaps;morph.hedge.approximator_somehow;morph.hedge.shield_think
+16,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:3345517,so_post:sotorrent:3345517:body,body,0,stackoverflow:sotorrent:393194,2010-07-27T15:59:07Z,22,fe372d501cffeb9c37818b8a7d7ca4df339294877e58b276d8d51cdc84033714,"Maybe you should try putting the background image onto a panel rather than the frame. Here's one way to do it:
+
+http://www.blog.pythonlibrary.org/2010/03/18/wxpython-putting-a-background-image-on-a-panel/",raw_emails,False,False,,1,0,1,0,0,morph.hedge.adverbial_maybe
+17,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:3673383,so_post:sotorrent:3673383:body,body,1,stackoverflow:sotorrent:423546,2010-09-09T02:30:33Z,144,fe345e5b3e067d9b8eb77b5f4df81b0b1b0ade6d8d9361a3e126a47b18943fae,"I have  simple serial port program that is supposed to read the serial port and echo back the characters typed.  I can get this to work fine by polling the serial recieved with a timer, but I'd like to use the dataReceived event instead.  For some reason the event will occur once but never again.
+
+I've tried porting this to a PC and it works great, but on this Windows CE device it really doesn't want to cooperate.  I know the serial object is still open because i've had a timer running spitting text out of the Win CE device even after it stop echoing back its receive data.  I also had the timer output bsp.BytesToRead, and I could see that value climb as I typed more keys in on my PC that talked serially to the Windows CE device.  Am I missing something?",raw_emails,False,False,,1,1,0,0,0,lex.suppose_v
+18,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:4092207,so_post:sotorrent:4092207:body,body,0,stackoverflow:sotorrent:474283,2010-11-03T22:24:25Z,48,fe3930ccadfd3ab83a7dc062e87545087441ccf2416118ac948146abde74ac51,"If you are doing this to prevent HTML injection on a website then a much better solution is to just escape HTML special characters before sending them to the browser. Most web development environments/libraries will have a standard function to do this, for example PHP has  and  functions.",raw_emails,False,False,,1,0,0,1,0,affix.prefix.in
+19,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:4390981,so_post:sotorrent:4390981:body,body,1,stackoverflow:sotorrent:535222,2010-12-08T18:38:15Z,62,fe3895b4aad12b272bad0b85452ebcda97e404602dd0663ecd0dabbb41578460,"I have a content page with multiple pages, they are being shown as website/index?content=home&page=1, 2, 3 etc...
+
+but now I want to create something like a text field button that links to the number the visitor puts in like Go to (21) and it redirects to website/index?content=home&page=21.
+I want to do it without any mysql or databank entries
+I appreciate any help!",raw_emails,False,False,,1,0,0,0,1,rhetor.comparison.something_like
+20,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:4630605,so_post:sotorrent:4630605:body,body,0,stackoverflow:sotorrent:118703,2011-01-07T21:47:48Z,8,fe3f2af4aa267bc9a92e27d025f3240932611621a329d94f19d9cb7200551325,There is no way to configure this font.,raw_emails,False,False,,1,0,1,0,0,morph.neg.scoped_epistemic
+21,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:5008108,so_post:sotorrent:5008108:body,body,0,stackoverflow:sotorrent:127320,2011-02-15T18:50:51Z,30,fe38c8380b593767c7944c0417807db3e22aeeb96f964502233e710db04ed2f3,If you can depend on other libraries then I'd suggest you use the libphonenumber open source library from Google to validate your phone number. It has validation support as well.,raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_suggest
+22,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:5479376,so_post:sotorrent:5479376:body,body,0,stackoverflow:sotorrent:320121,2011-03-29T21:51:22Z,31,fe3fd04962fde9cc9d67fe001bc73a452e87f252f862aab59e532be9d210cbf7,"I also suggest that you also try with OpenTBS.
+It is able to edit an OpenDocument file using the technical of templates, but it can also retrieve XML in an OpenDocument.",raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_suggest
+23,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:6682060,so_post:sotorrent:6682060:body,body,1,stackoverflow:sotorrent:841073,2011-07-13T16:11:25Z,49,fe3a646dab751c6c6836081e1a791ccf2870940858df681161ca93b60557554f,"Im building an application which has to record various sensor values simulatneously into a .csv file(if sensors are available).Can any one suggest ways to keep inserting values into the csv file(of a table form).Is it possible to record all the .csv values in a single sensor change event.
+
+Anva",raw_emails,False,False,,1,0,1,0,0,morph.evid.inferential_suggest
+24,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_answer,so_post:sotorrent:8645252,so_post:sotorrent:8645252:body,body,0,stackoverflow:sotorrent:664659,2011-12-27T13:38:25Z,19,fe3ecf92ff4db1dad4809cc159b67d78e7fab01cbc95fffecbfd81873d841901,"According to me go with Navigation bar application and then set icons for each view.
+this might help you,",raw_emails,False,False,,1,0,1,0,0,morph.mod.epistemic_maymight
+25,qa,sotorrent,stackoverflow,stackoverflow:sotorrent,so_question,so_post:sotorrent:8689674,so_post:sotorrent:8689674:body,body,1,stackoverflow:sotorrent:1002288,2011-12-31T17:57:43Z,63,fe36d4f8aed06243c34c2a77fa99d450ef2f3d92fa5030bd14718ba303dada71,"An interview question.
+
+How to implement division by addition? suppose they are all int.
+
+My idea
+
+Add divisor to itself until it is larger than dividend.
+Each iteration, keep the sum result before addition.
+
+The quotient is the sum result before the last addition. the remainder can be counted by adding 1 until the .
+
+It is , any better ideas? bit operation?",raw_emails,False,False,,1,1,0,0,0,lex.suppose_v

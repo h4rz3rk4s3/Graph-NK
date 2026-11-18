@@ -110,6 +110,129 @@ se_artefact_layer:
         source_text_unit: {type: string, description: "ID of the TextUnit containing the reference"}
 
 # ─────────────────────────────────────────────────────────────────────────────
+# MULTI-PLATFORM CORPUS LAYER (v0.8)
+# ─────────────────────────────────────────────────────────────────────────────
+# Cross-platform comparability layer for the curated MSR corpora. The GitHub
+# nodes above (Repository/Issue/PullRequest/Commit/Comment/EmailMessage) become
+# :Artefact + a family label + a platform label; new corpora (Jira, Bugzilla,
+# Slack, Discord, Gitter, IRC, Stack Overflow, curated email) get first-class
+# nodes of their own. Platform comparison (RQ6 / FRAMEWORK_DESIGN §4) is done
+# through the shared :Artefact label and the platform_id property, never through
+# ID prefixes.
+# ─────────────────────────────────────────────────────────────────────────────
+multiplatform_corpus_layer:
+  design_principle: >
+    One shared :Artefact label for every text-owning source object, with
+    family labels (:IssueArtefact, :MessageArtefact, :PostArtefact,
+    :CommitArtefact) and platform labels (:GitHubIssue, :JiraIssue, ...) added
+    on top. "arena" (RQ6) is the platform/communication-channel-kind level;
+    :Venue is the concrete container. See FRAMEWORK_DESIGN.md §4.8.
+
+  nodes:
+    Platform:
+      natural_key: [platform_id]
+      description: "Comparison dimension for RQ6: the kind of communication channel/platform."
+      properties:
+        platform_id: {type: string, enum: [github, jira, bugzilla, slack, discord, gitter, irc, stackoverflow, mailing_list]}
+        name: {type: string}
+        kind: {type: string, description: "coarse grouping: issue_tracker | chat | qa_site | email"}
+
+    Venue:
+      natural_key: [venue_id]
+      description: "The concrete container within a platform: one repository, Jira project, Slack channel, IRC channel, SO site, Bugzilla product, mailing list."
+      properties:
+        venue_id: {type: string, example: "github:python/cpython", description: "{platform}:{corpus_or_org}:{external_id}"}
+        platform_id: {type: string}
+        corpus_id: {type: string}
+        external_id: {type: string}
+        name: {type: string, nullable: true}
+
+    Corpus:
+      natural_key: [corpus_id]
+      description: "A curated dataset release with citation/license provenance."
+      properties:
+        corpus_id: {type: string}
+        name: {type: string, nullable: true}
+        version: {type: string, nullable: true}
+        citation: {type: string, nullable: true}
+        license: {type: string, nullable: true}
+        source_uri: {type: string, nullable: true}
+
+    Conversation:
+      natural_key: [conversation_id]
+      description: "Dataset-provided or inferred conversational grouping (Slack/Discord conversation IDs, IRC gold conversations, Gitter dialogs). Distinct from Venue (channel) and Message (utterance)."
+      properties:
+        conversation_id: {type: string}
+        platform_id: {type: string}
+        venue_id: {type: string}
+        corpus_id: {type: string}
+        source_label: {type: string, nullable: true, description: "the raw label from the dataset, e.g. 'T1234' or '1'"}
+
+    Artefact:
+      natural_key: [record_id]
+      description: "Shared base label for every text-owning source object, across all platforms. record_id is globally namespaced. Do NOT construct by string-splitting — see FRAMEWORK_DESIGN.md §4.8."
+      properties:
+        record_id: {type: string, example: "jira_issue:apachejira:HBASE-1234"}
+        platform_id: {type: string}
+        venue_id: {type: string}
+        corpus_id: {type: string}
+        artefact_kind: {type: string, description: "issue | pull_request | commit | email | chat | irc | so_question | so_answer | so_comment"}
+        source_corpus: {type: string, description: "alias of corpus_id, indexed for corpus-membership queries (no per-record CONTAINS edges)"}
+        created_at: {type: datetime, nullable: true}
+        metadata_json: {type: string, nullable: true, description: "JSON-serialised per-record leftovers; parse with apoc.convert.fromJsonMap"}
+
+    # Family + platform specialisations (multi-label on one node):
+    #   :Artefact:IssueArtefact:GitHubIssue    (:Issue repo key kept)
+    #   :Artefact:IssueArtefact:JiraIssue
+    #   :Artefact:IssueArtefact:BugzillaIssue
+    #   :Artefact:IssueArtefact:OpenMentIssue / :NumFocusIssue
+    #   :Artefact:MessageArtefact:EmailMessage (existing :EmailMessage urn key kept)
+    #   :Artefact:MessageArtefact:SlackMessage / :DiscordMessage / :GitterMessage / :IRCMessage
+    #   :Artefact:PostArtefact:StackOverflowQuestion / :StackOverflowAnswer / :StackOverflowComment
+    #   :Artefact:CommitArtefact:GitHubCommit  (:Commit sha key kept)
+    #
+    # record_id uniqueness (ontology.cypher §1): besides the shared
+    # artefact_record_id constraint on :Artefact, each externally-upserted
+    # family label carries its OWN record_id constraint (chatmessage_record_id,
+    # jiraissue_record_id, bugzillaissue_record_id, sopost_record_id). The
+    # projector MERGEs on the family label directly, and without a per-label
+    # constraint Neo4j falls back to a full label scan that grows linearly with
+    # the corpus (CHANGELOG 2026-08-16). The :Artefact constraint alone does
+    # not accelerate MERGE (m:ChatMessage {...}).
+
+  relationships:
+    HAS_VENUE:
+      from: Platform
+      to: Venue
+    COVERS:
+      from: Corpus
+      to: Venue
+      description: "Corpus provenance at venue granularity (not per-record — see FRAMEWORK_DESIGN.md §4.8)."
+    CONTAINS:
+      from: [Venue, Conversation]
+      to: [Artefact]
+      description: "Container-to-artefact; CONTAINS stays container-only."
+    HAS_CONVERSATION:
+      from: Venue
+      to: Conversation
+    AUTHORED:
+      from: Actor
+      to: [Artefact]
+      description: "Reuses the existing :Actor node; external actors get namespaced login = '<platform>:<corpus_short>:<id>'."
+    HAS_TEXT:
+      from: [Issue, PullRequest, Commit, Comment, EmailMessage, Artefact]
+      to: TextUnit
+      description: "role vocabulary shared across platforms: title | body | comment_body | subject | commit_message | message"
+    REPLIES_TO:
+      from: [Artefact, EmailMessage]
+      to: [Artefact, EmailMessage]
+      description: "Message-level reply/threading links (IRC gold links, curated-email threading, Gitter no-reply-by-default)."
+    ANSWERS:
+      from: StackOverflowAnswer
+      to: StackOverflowQuestion
+      description: "Only when the source dataset provides the answer→question mapping (emotion workbook: parent Post IDs)."
+
+# ─────────────────────────────────────────────────────────────────────────────
 # LAYER 2 — NK-analytical
 # ─────────────────────────────────────────────────────────────────────────────
 nk_analytical_layer:

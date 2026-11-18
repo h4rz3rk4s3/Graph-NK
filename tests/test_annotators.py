@@ -1,7 +1,7 @@
 """
 Golden-example tests for all annotators.
 
-Rules (AGENTS.md §4):
+Rules (AGENTS.md §8):
   - At least one example per signal category each annotator can emit.
   - Tests are synchronous — annotators are CPU-bound.
   - No external services (Neo4j, Redis, Mongo) required.
@@ -229,7 +229,7 @@ def test_intentional_double_count(nlp, lexicon_ann, rhetor_ann):
     """
     'blind spot' must produce BOTH a lexical and a rhetorical signal.
     This is intentional — the two signals have different categorical meanings.
-    See AGENTS.md §3.3 and FRAMEWORK_DESIGN.md §5 Module 3d.
+    See AGENTS.md §5.3 and FRAMEWORK_DESIGN.md §5 Module 3d.
     """
     text = "This is a serious blind spot in the architecture."
     lex_signals    = run(lexicon_ann, nlp, text)

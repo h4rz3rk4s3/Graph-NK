@@ -30,10 +30,9 @@ The parser tolerates violations of A1 (desynced pairs are re-synced by looking
 for the next action line) and logs loudly on malformed records.
 
 Usage:
-    python -m miner.gmane_ingester --files data/gmane/*.gz \
-        --groups gmane.comp.python.devel gmane.comp.gcc.devel \
-        --lang en --max 50000
+    python -m miner.gmane_ingester --files webis-gmane-19-part01.gz webis-gmane-19-part02.gz webis-gmane-19-part03.gz webis-gmane-19-part04.gz webis-gmane-19-part05.gz webis-gmane-19-part06.gz webis-gmane-19-part07.gz webis-gmane-19-part08.gz webis-gmane-19-part10.gz --groups gmane.comp.bitcoin.devel --lang en
 """
+
 from __future__ import annotations
 
 import argparse
@@ -43,8 +42,9 @@ import gzip
 import hashlib
 import json
 import logging
-from datetime import datetime, timezone
-from typing import Any, AsyncIterator, Callable, Iterator
+from collections.abc import Callable, Iterator
+from datetime import UTC, datetime
+from typing import Any
 
 from progress import Progress
 from settings import settings
@@ -60,6 +60,7 @@ PATH_TO_DATA = "/Volumes/Samsung SSD 990 PRO 4TB/Gmane_email_corpus/"
 
 # ── Record parsing ────────────────────────────────────────────────────────────
 
+
 def _clean_urn(raw_id: str) -> str:
     """'<urn:uuid:c1d9...>' → 'urn:uuid:c1d9...'. Tolerates missing brackets."""
     return raw_id.strip().lstrip("<").rstrip(">")
@@ -68,7 +69,7 @@ def _clean_urn(raw_id: str) -> str:
 def iter_bulk_records(
     path: str,
     *,
-    progress_cb: "Callable[[int], None] | None" = None,
+    progress_cb: Callable[[int], None] | None = None,
     progress_every_lines: int = 2000,
 ) -> Iterator[tuple[str, dict[str, Any]]]:
     """
@@ -94,8 +95,11 @@ def iter_bulk_records(
     with open(path, "rb") as raw:
         with gzip.open(raw, "rt", encoding="utf-8", errors="replace") as fh:
             for line_no, line in enumerate(fh, start=1):
-                if progress_cb is not None and progress_every_lines \
-                        and line_no % progress_every_lines == 0:
+                if (
+                    progress_cb is not None
+                    and progress_every_lines
+                    and line_no % progress_every_lines == 0
+                ):
                     progress_cb(raw.tell())
                 line = line.strip()
                 if not line:
@@ -110,20 +114,25 @@ def iter_bulk_records(
                 if "index" in obj and isinstance(obj["index"], dict) and "_id" in obj["index"]:
                     # Action line
                     if pending_urn is not None:
-                        logger.warning("%s:%d — action line without source; resyncing", path, line_no)
+                        logger.warning(
+                            "%s:%d — action line without source; resyncing", path, line_no
+                        )
                     pending_urn = _clean_urn(str(obj["index"]["_id"]))
                 else:
                     # Source line
                     if pending_urn is None:
-                        logger.warning("%s:%d — source line without action; skipping", path, line_no)
+                        logger.warning(
+                            "%s:%d — source line without action; skipping", path, line_no
+                        )
                         continue
                     yield pending_urn, obj
                     pending_urn = None
             if progress_cb is not None:
-                progress_cb(raw.tell())   # final position, so callers land on 100%
+                progress_cb(raw.tell())  # final position, so callers land on 100%
 
 
 # ── Filtering ─────────────────────────────────────────────────────────────────
+
 
 def record_in_scope(
     doc: dict[str, Any],
@@ -139,6 +148,7 @@ def record_in_scope(
 
 
 # ── Ingest ────────────────────────────────────────────────────────────────────
+
 
 async def ingest(
     file_paths: list[str],
@@ -180,17 +190,19 @@ async def ingest(
 
                 res = await coll.update_one(
                     {"urn": urn},
-                    {"$set": {
-                        **doc,
-                        "urn": urn,
-                        "_meta": {
-                            "item_type": "email",
-                            "group": doc.get("group", ""),
-                            "mined_at": datetime.now(timezone.utc).isoformat(),
-                            "processed": False,
-                            "content_sha256": content_sha256,
-                        },
-                    }},
+                    {
+                        "$set": {
+                            **doc,
+                            "urn": urn,
+                            "_meta": {
+                                "item_type": "email",
+                                "group": doc.get("group", ""),
+                                "mined_at": datetime.now(UTC).isoformat(),
+                                "processed": False,
+                                "content_sha256": content_sha256,
+                            },
+                        }
+                    },
                     upsert=True,
                 )
                 if res.upserted_id is not None:
@@ -199,14 +211,17 @@ async def ingest(
                     found = await coll.find_one({"urn": urn}, {"_id": 1})
                     mongo_id = found["_id"]
 
-                await broker.publish(settings.stream_raw, {
-                    "item_type":    "email",
-                    "item_subtype": "email",
-                    # repo_name carries the namespaced group so downstream
-                    # plumbing (which keys on repo_name) works unchanged.
-                    "repo_name":    f"gmane:{doc.get('group', '')}",
-                    "mongo_id":     str(mongo_id),
-                })
+                await broker.publish(
+                    settings.stream_raw,
+                    {
+                        "item_type": "email",
+                        "item_subtype": "email",
+                        # repo_name carries the namespaced group so downstream
+                        # plumbing (which keys on repo_name) works unchanged.
+                        "repo_name": f"gmane:{doc.get('group', '')}",
+                        "mongo_id": str(mongo_id),
+                    },
+                )
 
                 ingested += 1
                 prog.add(1)
@@ -221,7 +236,9 @@ async def ingest(
         mongo.close()
         logger.info(
             "Gmane ingest done: %d ingested / %d scanned (filters excluded %d).",
-            ingested, scanned, scanned - ingested,
+            ingested,
+            scanned,
+            scanned - ingested,
         )
 
 
@@ -231,20 +248,27 @@ class _MaxReached(Exception):
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
+
 def main() -> None:
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
     )
     p = argparse.ArgumentParser(description="Ingest Webis Gmane Email Corpus files.")
-    p.add_argument("--files", nargs="+", required=True,
-                   help="Corpus .gz files (globs ok).")
-    p.add_argument("--groups", nargs="*", default=None,
-                   help="Gmane group allowlist (default: all — NOT recommended at corpus scale).")
-    p.add_argument("--lang", nargs="*", default=["en"],
-                   help="Language filter (default: en). Pass no value to disable.")
-    p.add_argument("--max", type=int, default=None,
-                   help="Stop after this many ingested emails.")
+    p.add_argument("--files", nargs="+", required=True, help="Corpus .gz files (globs ok).")
+    p.add_argument(
+        "--groups",
+        nargs="*",
+        default=None,
+        help="Gmane group allowlist (default: all — NOT recommended at corpus scale).",
+    )
+    p.add_argument(
+        "--lang",
+        nargs="*",
+        default=["en"],
+        help="Language filter (default: en). Pass no value to disable.",
+    )
+    p.add_argument("--max", type=int, default=None, help="Stop after this many ingested emails.")
     args = p.parse_args()
 
     paths: list[str] = []

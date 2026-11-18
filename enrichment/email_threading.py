@@ -35,13 +35,21 @@ async def run_email_threading_enrichment() -> None:
     )
     try:
         async with driver.session() as session:
+            # Chunked transaction (CHANGELOG 2026-08-18): the un-chunked version
+            # tried to create + lock ~870k REPLIES_TO edges in ONE transaction,
+            # stalling Neo4j until the Bolt socket timed out ("read timed out" /
+            # "No data"). CALL ... IN TRANSACTIONS commits every 10k rows, so the
+            # whole pass is ~15s with near-zero memory and no long-held locks.
             result = await session.run(
                 """
                 MATCH (reply:EmailMessage)
                 WHERE reply.in_reply_to IS NOT NULL AND reply.in_reply_to <> ''
                 MATCH (parent:EmailMessage {message_id: reply.in_reply_to})
                 WHERE parent <> reply
-                MERGE (reply)-[:REPLIES_TO]->(parent)
+                CALL {
+                  WITH reply, parent
+                  MERGE (reply)-[:REPLIES_TO]->(parent)
+                } IN TRANSACTIONS OF 10000 ROWS
                 RETURN count(*) AS edges
                 """
             )

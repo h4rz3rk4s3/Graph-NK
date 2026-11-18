@@ -37,7 +37,7 @@ class Signal:
     """
     A single, provenance-carrying piece of NK evidence.
 
-    Rules (AGENTS.md §3.2–3.3):
+    Rules (AGENTS.md §5.2–5.3):
       - rule_id and rule_version are MANDATORY — no signal without them.
       - Signals are never collapsed or filtered by the annotator.
       - The classifier emits Signal + ClassifierVerdict (two separate records).
@@ -61,7 +61,7 @@ class Signal:
     # weight  — float [0,1], a rule's provisional confidence. Optional; None
     #           means "not yet assessed." Ingest NEVER filters on this — every
     #           Signal is written regardless of weight (signal pluralism,
-    #           AGENTS.md §3.2). Weight is for analysis-time scoring only.
+    #           AGENTS.md §5.2). Weight is for analysis-time scoring only.
     # status  — "active" | "candidate". "candidate" rules are still ingested
     #           (kept in the graph with full provenance) but are conventionally
     #           excluded from headline counts until empirically calibrated
@@ -145,6 +145,7 @@ def make_nlp(model: str | None = None):
 
     model = model or settings.spacy_model
     nlp = spacy.load(model, disable=["ner"])
+    #nlp.add_pipe("lemmatizer")
     # Sentence boundaries: the parser (now enabled) supplies doc.sents
     # directly. The sentencizer fallback is only needed if a caller opts out
     # of the parser via an explicit disable=[...] override.

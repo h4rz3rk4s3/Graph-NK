@@ -39,8 +39,8 @@ prefixes:
     min_stem_length: 4
     target_pos: [ADJ, NOUN, VERB]
     source: "Janich & Simmerling 2013"
-    weight: 0.5
-    status: "active"
+    #weight: 0.5 
+    status: "candidate"
     # C-8: allowlist wins over blocklist so these NK forms are never dropped.
     allowlist:
       - unclear
@@ -78,8 +78,8 @@ prefixes:
     min_stem_length: 4
     target_pos: [ADJ, NOUN]
     source: "Janich & Simmerling 2013"
-    weight: 0.4
-    status: "active"
+    #weight: 0.4
+    status: "candidate"
     allowlist:
       - incomplete
       - inconsistent
@@ -116,8 +116,8 @@ prefixes:
     min_stem_length: 3
     target_pos: [ADJ, NOUN]
     source: "Janich & Simmerling 2013"
-    weight: 0.7
-    status: "active"
+    #weight: 0.7
+    status: "candidate"
     blocklist: []
     # 'non' is a strong NK signal when attached to descriptors
     # (non-deterministic, non-obvious, non-trivial, non-reproducible).
@@ -129,7 +129,7 @@ prefixes:
     min_stem_length: 4
     target_pos: [ADJ, NOUN, VERB]
     source: "Janich & Simmerling 2013"
-    weight: 0.4
+    #weight: 0.4
     status: "candidate"
     blocklist:
       - display
@@ -149,8 +149,8 @@ prefixes:
     min_stem_length: 5
     target_pos: [ADJ, VERB]
     source: "Janich & Simmerling 2013 (extended, C-8)"
-    weight: 0.55
-    status: "active"
+    #weight: 0.55
+    status: "candidate"
     allowlist:
       - underspecified
       - underdocumented
@@ -174,7 +174,7 @@ prefixes:
     min_stem_length: 4
     target_pos: [VERB, NOUN, ADJ]
     source: "Janich & Simmerling 2013 (extended)"
-    weight: 0.5
+    #weight: 0.5
     status: "candidate"
     allowlist:
       - misunderstand
@@ -199,8 +199,8 @@ suffixes:
     min_word_length: 6
     target_pos: [ADJ]
     source: "Janich & Simmerling 2013"
-    weight: 0.45
-    status: "active"
+    #weight: 0.45
+    status: "candidate"
     blocklist:
       - unless
       - less
@@ -218,8 +218,8 @@ suffixes:
     min_word_length: 6
     target_pos: [ADJ]
     source: "Janich & Simmerling 2013 (relabelled, C-2)"
-    weight: 0.5
-    status: "active"
+    #weight: 0.5
+    status: "candidate"
     mode: "allowlist_only"              # do NOT scan all -able adjectives.
     allowlist:
       - questionable
@@ -256,7 +256,7 @@ suffixes:
     min_word_length: 6
     target_pos: [ADJ]
     source: "extended (contrastive control)"
-    weight: 0.0
+    #weight: 0.0
     status: "candidate"
     polarity: "certainty"
     blocklist:
@@ -268,6 +268,9 @@ suffixes:
 # ─────────────────────────────────────────────────────────────────────────────
 # CHANGE LOG
 # ─────────────────────────────────────────────────────────────────────────────
+# 0.2.1 - Moved all to candidate and commented out the weights. Word 
+# formation markers are too imprecise following a qualitative analysis. 
+# Hence, we don't use them anymore. [08.10.26]
 # 0.2 — Review pass (MARKER_REVIEW.md §2).
 #   C-2  '-able' → allowlist_only, relabelled affix_modality → shared_feature/
 #        epistemic_potentiality; capability adjectives explicitly blocked.

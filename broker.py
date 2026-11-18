@@ -12,8 +12,10 @@ All consumers use the simple XREAD/XREADGROUP pattern.
 No fancy consumer-group acknowledgement for v0 — pipeline is run to completion
 on a single machine, restart is cheap.
 """
+
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 from typing import Any, AsyncIterator
@@ -61,6 +63,7 @@ class RedisBroker:
         batch_size: int = 100,
         block_ms: int = 2000,
         trim: bool = False,
+        stop_event: asyncio.Event | None = None,
     ) -> AsyncIterator[list[dict[str, Any]]]:
         """
         Yield batches of events from `stream` from the beginning.
@@ -72,6 +75,13 @@ class RedisBroker:
         This reclaims Redis memory as the stream is drained. Only enable trim
         for SINGLE-consumer streams; deleting entries another consumer still
         needs would lose data.
+
+        `stop_event` (CHANGELOG 2026-08-21, Milestone C): producer-aware exit.
+        When provided, idle rounds no longer terminate the consumer — it keeps
+        blocking at the tail until the event is SET *and* the stream is drained.
+        This lets Phase 2 run concurrently with producers that may be silent for
+        seconds (model loading) without the premature-exit failure of 2026-08-18.
+        Without it the old 2-idle-rounds exit is preserved for standalone drains.
 
         Yields lists of parsed event dicts.
         """
@@ -88,7 +98,19 @@ class RedisBroker:
 
             entries = await self._client.xread({stream: last_id}, count=batch_size, block=block_ms)
             if not entries:
-                # No messages for block_ms — treat as end of stream for this run
+                # No messages for block_ms — end of stream. With a stop_event,
+                # only exit once the producers have signalled they are done AND
+                # the stream is empty (nothing left to drain); otherwise keep
+                # waiting — producers may legitimately be silent for a while.
+                if stop_event is not None:
+                    if stop_event.is_set() and await self.stream_length(stream) == 0:
+                        if trim and pending_trim:
+                            await self._client.xdel(stream, *pending_trim)
+                        logger.info("Stream %s drained; producers done. Stopping consumer.", stream)
+                        return
+                    idle_rounds = 0
+                    continue
+                # Old behaviour: two idle rounds = exhausted.
                 idle_rounds += 1
                 if idle_rounds >= 2:
                     if trim and pending_trim:
@@ -108,13 +130,25 @@ class RedisBroker:
                         batch.append(json.loads(fields[b"payload"]))
                     except (KeyError, json.JSONDecodeError) as exc:
                         logger.warning("Skipping malformed message %s: %s", msg_id, exc)
+                # Trim the IDs regardless of whether any payload parsed: a batch
+                # of ALL-malformed messages must still be consumed, or the stream
+                # never drains and stop_event-aware read_all hangs forever.
+                if trim:
+                    pending_trim = ids
                 if batch:
-                    if trim:
-                        pending_trim = ids
                     yield batch
 
     async def stream_length(self, stream: str) -> int:
         return await self._client.xlen(stream)
+
+    async def set(self, key: str, value: str) -> None:
+        """Store a string scalar (used for the annotator resume high-water mark)."""
+        await self._client.set(key, value)
+
+    async def get(self, key: str) -> str | None:
+        """Read a string scalar previously stored with set(); None if absent."""
+        raw = await self._client.get(key)
+        return raw.decode() if isinstance(raw, bytes) else raw
 
     async def close(self) -> None:
         await self._client.aclose()

@@ -1,0 +1,29 @@
+taxonomy,type_id,name,parent,confidence,access,has_vagueness,priority
+roberts_2013,roberts.unknown_unknowns,Unknown unknowns,,high,full_primary,True,1
+roberts_2013,roberts.known_unknowns,Known unknowns,,high,full_primary,True,1
+roberts_2013,roberts.knowable_known_unknowns,Knowable known unknowns,,medium,full_primary,True,1
+roberts_2013,roberts.unknown_knowns,Unknown knowns,,medium,full_primary,True,1
+roberts_2013,roberts.errors,Errors,,high,full_primary,True,1
+roberts_2013,roberts.taboos,Taboos,,high,full_primary,True,1
+roberts_2013,roberts.denials,Denials,,high,full_primary,True,1
+roberts_2013,roberts.secrecy,Secrecy,,high,full_primary,True,1
+roberts_2013,roberts.privacy,Privacy,,medium,full_primary,True,1
+smithson_1989,smithson.error,Error,,medium,partial_or_secondary,True,3
+smithson_1989,smithson.irrelevance,Irrelevance,,medium-high,partial_or_secondary,True,3
+smithson_1989,smithson.distortion,Distortion,smithson.error,medium-high,partial_or_secondary,True,3
+smithson_1989,smithson.confusion,Confusion,smithson.distortion,medium-high,partial_or_secondary,True,3
+smithson_1989,smithson.inaccuracy,Inaccuracy,smithson.distortion,medium-high,partial_or_secondary,True,3
+smithson_1989,smithson.incompleteness,Incompleteness,smithson.error,high,partial_or_secondary,True,3
+smithson_1989,smithson.absence,Absence,smithson.incompleteness,high,partial_or_secondary,True,3
+smithson_1989,smithson.uncertainty,Uncertainty,smithson.incompleteness,high,partial_or_secondary,True,3
+smithson_1989,smithson.probability,Probability,smithson.uncertainty,low,partial_or_secondary,True,3
+smithson_1989,smithson.vagueness,Vagueness,smithson.uncertainty,medium,partial_or_secondary,True,3
+smithson_1989,smithson.ambiguity,Ambiguity,smithson.uncertainty,medium,partial_or_secondary,True,3
+smithson_1989,smithson.untopicality,Untopicality,smithson.irrelevance,high,partial_or_secondary,True,3
+smithson_1989,smithson.taboo,Taboo,smithson.irrelevance,medium,partial_or_secondary,True,3
+smithson_1989,smithson.undecidability,Undecidability,smithson.irrelevance,medium,partial_or_secondary,True,3
+gross_2010,gross.ignorance,Ignorance,,low,partial_or_secondary,True,4
+gross_2010,gross.non_knowledge,Non-knowledge (Nichtwissen),,low,partial_or_secondary,True,4
+gross_2010,gross.negative_knowledge,Negative knowledge,,low,partial_or_secondary,True,4
+gross_2010,gross.nescience,Nescience,,medium,partial_or_secondary,True,4
+gross_2010,gross.surprise,Surprise,,medium,partial_or_secondary,True,4
